@@ -47,3 +47,22 @@
     - <b>Derrick: </b>
     
         - As a college student I want to be able to see which user/traveler adds which plan to the itinerary so that I can see how the planning work is being distributed and who to discuss with if I want to know more about a specific plan.
+
+## Wireframe
+
+### Current Trips Page:
+
+<img width="926" alt="image" src="https://user-images.githubusercontent.com/71234828/177360731-8f2e3bfd-7558-4474-82c3-096e931399c2.png">
+
+### Trip Display Page:
+
+<img width="877" alt="image" src="https://user-images.githubusercontent.com/71234828/177361000-e33f60fb-a0c7-47df-a3d8-cbdfb0daf317.png">
+
+### Choose Activity Page:
+
+<img width="873" alt="image" src="https://user-images.githubusercontent.com/71234828/177361279-c98b1484-6733-4307-aaac-d8a40e981880.png">
+
+### Choose Flight Page:
+
+<img width="962" alt="image" src="https://user-images.githubusercontent.com/71234828/177361416-17b343b1-4110-47a6-9d29-422e70acfcb1.png">
+
