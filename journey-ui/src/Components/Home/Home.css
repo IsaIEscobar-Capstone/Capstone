@@ -1,0 +1,19 @@
+.header{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    color: white;
+    padding-top: 15%;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size:xx-large;
+}
+.buttons{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    gap: 40px;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+.button1{
+    height: 50px;
+}
