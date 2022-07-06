@@ -1,13 +1,22 @@
 import './App.css';
 import * as React from "react";
 import { BrowserRouter, Routes, Route} from "react-router-dom";
-// import axios from "axios"
 
 import Home from "../Home/Home";
 import Register from "../Register/Register"
 import Login from "../Login/Login"
 
 function App() {
+  const [signUpErrorMessage, setSignUpErrorMessage] = React.useState("");
+  const [signInErrorMessage, setSignInErrorMessage] = React.useState("");
+
+  function handleSignUpErrorMessage(message) {
+    setSignUpErrorMessage(message);
+  }
+  function handleSignInErrorMessage(message) {
+    setSignInErrorMessage(message);
+  }
+
   return (
     <div className = "App">
       <BrowserRouter>
@@ -22,13 +31,19 @@ function App() {
           <Route
           path="/users/register"
           element={
-            <Register/>
+            <Register
+              signUpErrorMessage={signUpErrorMessage}
+              handleSignUpErrorMessage={handleSignUpErrorMessage}
+            />
           }
           />
           <Route 
           path="/users/login"
           element={
-            <Login/>
+            <Login
+              signInErrorMessage={signInErrorMessage}
+              handleSignInErrorMessage={handleSignInErrorMessage}
+            />
           }
           />
         </Routes>

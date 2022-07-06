@@ -26,7 +26,7 @@ app.post('/users/register', async(req, res) => {
       await user.signUp()
       res.send({ loginMessage: "User logged!", RegisterMessage: '', typeStatus: "success",  infoUser: infoUser });
     } catch (error){
-      res.send({ loginMessage: error.message, RegisterMessage: '', typeStatus: "danger",  infoUser: infoUser});
+      res.status(400).send({ loginMessage: error.message, RegisterMessage: '', typeStatus: "danger",  infoUser: infoUser});
     }
 })
 
@@ -36,8 +36,7 @@ app.post('/users/login', async (req, res) => {
     const user = await Parse.User.logIn(req.body.username, req.body.password)
     res.send({"user" : user})
   } catch (error) {
-    res.status(400)
-    res.send({"error" : "Login failed: " + error })
+    res.status(400).send({"error" : error.message })
   }
 })
 

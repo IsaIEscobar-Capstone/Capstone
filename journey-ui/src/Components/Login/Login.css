@@ -1,0 +1,38 @@
+#logo {
+    margin-bottom: -80px;
+}
+
+#username {
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 5px;
+    height: 50px;
+    width: 400px;
+    margin-bottom: 40px;
+}
+
+#password {
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 5px;
+    height: 50px;
+    width: 400px;
+    margin-bottom: 40px;
+}
+
+#signIn {
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 5px;
+    height: 50px;
+    width: 100px;
+    margin-bottom: 40px;
+    color: white;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+#backButton {
+    margin-top: 30px;
+    padding: 10px;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
