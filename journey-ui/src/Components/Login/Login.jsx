@@ -1,12 +1,12 @@
-import './Register.css';
-import axios from "axios"
+import "./Login.css";
+import * as React from "react";
 import { Link } from "react-router-dom";
+import axios from "axios"
 
-export default function Register(){
+export default function Login(){
     const PORT = 3001
     const response = () => {
-      axios.post(`http://localhost:${PORT}/users/register`, {
-      email : document.getElementById('email').value,
+      axios.post(`http://localhost:${PORT}/users/login`, {
       username : document.getElementById('username').value,
       password : document.getElementById('password').value,
     })
@@ -21,13 +21,17 @@ export default function Register(){
     }
     return (
       <div className = "Login">
-        <input id="email" placeholder="Email..." input="text"/>
         <input id="username" placeholder="Username..." input="text"/>
         <input id="password" placeholder="Password..." input="text"/>
-        <button onClick={response}>Sign up</button>
+        <button onClick={response}>Sign in</button>
         <Link to='/' style={{textDecoration: 'none' }}>
         <p className="BackButton">Back To Home</p>
         </Link>
       </div>
     );
+    // return(
+    //     <div className="login">
+    //         <p>Login</p>
+    //     </div>
+    // )
 }

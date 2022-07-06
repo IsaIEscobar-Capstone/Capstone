@@ -30,4 +30,16 @@ app.post('/users/register', async(req, res) => {
     }
 })
 
+// Expects parameters for username and password
+app.post('/users/login', async (req, res) => {
+  try {
+    const user = await Parse.User.logIn(req.body.username, req.body.password)
+    res.send({"user" : user})
+  } catch (error) {
+    res.status(400)
+    res.send({"error" : "Login failed: " + error })
+  }
+})
+
+
 module.exports = app
