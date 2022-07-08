@@ -1,12 +1,14 @@
 import "./Login.css";
 import * as React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router';
 import axios from "axios"
 
 import background from "../Images/Background.png";
 import journey from "../Images/JourneyStraight.png";
 
 export default function Login(props){
+    let navigate = useNavigate();
     const PORT = 3001
     const response = () => {
       props.handleSignInErrorMessage("");
@@ -16,7 +18,11 @@ export default function Login(props){
     })
 
     .then(function(response) {
-      console.log(response)
+      console.log("hi: " + response.data.sessionToken)
+      props.handleSessionToken(response.data.sessionToken)
+      props.handleUsername(document.getElementById('username').value);
+      navigate("/users/dashboard")
+      console.log(props.username)
     })
 
     .catch(function(error) {
@@ -34,12 +40,12 @@ export default function Login(props){
         }}>
       <Link to='/' id="backButton" onClick={()=> props.handleSignInErrorMessage("")} style={{textDecoration: 'none', color: 'white', border: '2px solid white' , borderRadius: '5px', width: '200px', marginRight: '90%'}}>Back To Home</Link>
       <div className = "Login">
-        <img id="logo" src={journey} height='400px'/>
+        <img id="logo" src={journey} height='400px' alt='logo'/>
         <section>
-            <input id="username" placeholder="Username..." input="text" />
+            <input id="username" placeholder="Username..." type="text" />
         </section>
         <section>
-            <input id="password" placeholder="Password..." input="text"/>
+            <input id="password" placeholder="Password..." type="password"/>
         </section>
         <section>
             <button id="signIn" onClick={response}>Sign in</button>
