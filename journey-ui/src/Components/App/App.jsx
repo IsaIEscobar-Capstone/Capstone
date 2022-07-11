@@ -1,6 +1,6 @@
 import './App.css';
 import * as React from "react";
-import { BrowserRouter, Routes, Route} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "../Home/Home";
 import Register from "../Register/Register";
@@ -31,52 +31,56 @@ function App() {
   }
 
   return (
-    <div className ="App">
+    <div className="App">
       <BrowserRouter>
-      <main>
-        <Routes>
-        <Route
+        <main>
+          <Routes>
+            <Route
               path="/"
               element={
-                <Home/>
+                <Home />
               }
             />
-          <Route
-          path="/users/register"
-          element={
-            <Register
-            signUpErrorMessage={signUpErrorMessage}
-            handleSignUpErrorMessage={handleSignUpErrorMessage}
-            sessionToken={sessionToken}
-            handleSessionToken={handleSessionToken}
-            username={username}
-            handleUsername={handleUsername}
-            currentRoute={currentRoute}
-            handleCurrentRoute={handleCurrentRoute}
-          />
-          }
-          />
-          <Route 
-          path="/users/login"
-          element={
-            <Login
-            signInErrorMessage={signInErrorMessage}
-            handleSignInErrorMessage={handleSignInErrorMessage}
-            sessionToken={sessionToken}
-            handleSessionToken={handleSessionToken}
-            username={username}
-            handleUsername={handleUsername}
-            currentRoute={currentRoute}
-            handleCurrentRoute={handleCurrentRoute}
-          />
-          }
-          />
-          <Route
-            path="/users/dashboard"
-            element={<Dashboard username={username} />}
-          />
-        </Routes>
-      </main>
+            <Route
+              path="/users/register"
+              element={
+                <Register
+                  signUpErrorMessage={signUpErrorMessage}
+                  handleSignUpErrorMessage={handleSignUpErrorMessage}
+                  sessionToken={sessionToken}
+                  handleSessionToken={handleSessionToken}
+                  username={username}
+                  handleUsername={handleUsername}
+                  currentRoute={currentRoute}
+                  handleCurrentRoute={handleCurrentRoute}
+                />
+              }
+            />
+            <Route
+              path="/users/login"
+              element={
+                <Login
+                  signInErrorMessage={signInErrorMessage}
+                  handleSignInErrorMessage={handleSignInErrorMessage}
+                  sessionToken={sessionToken}
+                  handleSessionToken={handleSessionToken}
+                  username={username}
+                  handleUsername={handleUsername}
+                  currentRoute={currentRoute}
+                  handleCurrentRoute={handleCurrentRoute}
+                />
+              }
+            />
+            <Route
+              path="/users/dashboard"
+              element={<Dashboard
+                username={username}
+                sessionToken={sessionToken}
+                handleSessionToken={handleSessionToken}
+              />}
+            />
+          </Routes>
+        </main>
       </BrowserRouter>
     </div>
   );
