@@ -82,7 +82,10 @@ function App() {
             />
             <Route
               path="/users/trip"
-              element={<Trip/>}
+              element={<Trip                
+              sessionToken={sessionToken}
+              handleSessionToken={handleSessionToken}
+              />}
             />
           </Routes>
         </main>

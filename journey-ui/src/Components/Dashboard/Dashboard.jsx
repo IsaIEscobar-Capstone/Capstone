@@ -2,7 +2,7 @@ import "./Dashboard.css";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import background from "../Images/Background.png";
-import axios from "axios"
+import axios from "axios";
 // import journey from "../Images/Journey.png";
 
 
