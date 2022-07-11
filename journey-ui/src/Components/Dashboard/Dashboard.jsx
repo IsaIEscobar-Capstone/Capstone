@@ -36,8 +36,15 @@ export default function Dashboard(props) {
             }}>
                 <Link to='/' onClick={response} id="logOut" style={{textDecoration: 'none', color: 'white', border: '2px solid white' , borderRadius: '5px', width: '200px', marginRight: '90%'}}>Log Out</Link>
             <div className="Home">
-                <div className="header">
+                <div className="Header">
                     <p>Welcome {props.username.toUpperCase()}</p>
+                    <hr id="DashDivide"/>
+                </div>
+                <div className="Dash">
+                    <p style={{paddingLeft:'10px', height: '20px', width: '100px'}}>Current Trips:</p>
+                    <Link to= '/users/trip' id="NewTrip"style={{marginLeft:'100px', textDecoration: 'none', color: 'white', border: '2px solid white' , borderRadius: '5px', height: '20px', width: '200px', marginTop: '34%'}}>New Trip</Link>
+                    <hr id="TripsDivide"/>
+                    <p style={{paddingRight:'42%', height: '20px', width: '100px'}}>Past Trips:</p>
                 </div>
             </div>
         </div>

@@ -6,6 +6,7 @@ import Home from "../Home/Home";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
 import Dashboard from "../Dashboard/Dashboard";
+import Trip from "../Trip/Trip";
 
 function App() {
   const [signUpErrorMessage, setSignUpErrorMessage] = React.useState("");
@@ -78,6 +79,10 @@ function App() {
                 sessionToken={sessionToken}
                 handleSessionToken={handleSessionToken}
               />}
+            />
+            <Route
+              path="/users/trip"
+              element={<Trip/>}
             />
           </Routes>
         </main>
