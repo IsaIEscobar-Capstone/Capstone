@@ -1,0 +1,21 @@
+.calendar-content {
+    color: white;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: 1fr;
+    margin-left: 20%;
+    max-width: 63%;
+}
+
+#day-number {
+    display: flex;
+    justify-content: left;
+    padding-bottom: 50%;
+    margin-top: 0%;
+    margin-left: 5%;
+    padding-left: 7%;
+    border-width: 4px;
+    border-color: white;
+    border-radius: 10px;
+    border: solid;
+}

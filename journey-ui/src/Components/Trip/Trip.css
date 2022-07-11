@@ -11,3 +11,10 @@
     color: white;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;;
 }
+
+.weekly-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5%;
+}

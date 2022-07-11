@@ -37,7 +37,7 @@ export default function Dashboard(props) {
                 <Link to='/' onClick={response} id="logOut" style={{textDecoration: 'none', color: 'white', border: '2px solid white' , borderRadius: '5px', width: '200px', marginRight: '90%'}}>Log Out</Link>
             <div className="Home">
                 <div className="Header">
-                    <p>Welcome {props.username.toUpperCase()}</p>
+                    <p>{props.username.toUpperCase()}'S Trip Dashboard</p>
                     <hr id="DashDivide"/>
                 </div>
                 <div className="Dash">
