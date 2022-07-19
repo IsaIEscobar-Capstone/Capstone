@@ -8,7 +8,7 @@ import CalendarDays from "../Calendar/Calendar";
 export default function Trip(props) {
 
     const [currentDay, setCurrentDay] = React.useState(new Date())
-    const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 
                     'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -41,7 +41,7 @@ export default function Trip(props) {
                 backgroundRepeat: "no-repeat",
                 backgroundSize: 'cover',
                 width: '100vw',
-                height: '100vh'
+                height: '150vh'
             }}>
                 <div className="returnButtons">
                 <Link to='/' onClick={response} id= "dashLogOut" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px'}}>Log Out</Link>
@@ -53,7 +53,7 @@ export default function Trip(props) {
             </div> */}
             <div className="Home">
                 <div className="Header">
-                    <p>New Trip</p>
+                    <h2>{props.currentTrip}</h2>
                     <h2>{months[currentDay.getMonth()]} {currentDay.getFullYear()}</h2>
                 </div>
                 <div className="weekly-header">

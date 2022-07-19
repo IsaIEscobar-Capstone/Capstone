@@ -29,3 +29,17 @@
     justify-content:center;
     gap: 5px;
 }
+
+/* Popup container */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+.popupText {
+    background-color: white;
+    border-radius: 10px;
+    color: black;
+    height: 25vh;
+    width: 20vw;
+}

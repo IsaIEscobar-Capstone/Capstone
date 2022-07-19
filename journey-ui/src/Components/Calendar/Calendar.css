@@ -3,8 +3,9 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: 1fr;
-    margin-left: 20%;
-    max-width: 63%;
+    margin-left: 15%;
+    max-width: 70%;
+    /* max-height: 10%; */
 }
 
 #day-number {
@@ -13,9 +14,15 @@
     padding-bottom: 50%;
     margin-top: 0%;
     margin-left: 5%;
+    margin-bottom: 4%;
     padding-left: 7%;
     border-width: 4px;
     border-color: white;
-    border-radius: 10px;
+    border-radius: 7px;
     border: solid;
+    font-size: small;
+}
+
+.calendar-day:hover {
+    color:black
 }
