@@ -5,24 +5,23 @@
     grid-template-rows: 1fr;
     margin-left: 15%;
     max-width: 70%;
-    /* max-height: 10%; */
 }
 
 #day-number {
-    display: flex;
-    justify-content: left;
-    padding-bottom: 50%;
-    margin-top: 0%;
-    margin-left: 5%;
-    margin-bottom: 4%;
-    padding-left: 7%;
     border-width: 4px;
     border-color: white;
     border-radius: 7px;
     border: solid;
+    display: flex;
     font-size: small;
+    justify-content: left;
+    margin-top: 0%;
+    margin-left: 5%;
+    margin-bottom: 4%;
+    padding-bottom: 50%;
+    padding-left: 7%;
 }
 
 .calendar-day:hover {
-    color:black
+    color: black
 }
