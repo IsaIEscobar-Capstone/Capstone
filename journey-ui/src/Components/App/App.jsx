@@ -14,6 +14,7 @@ function App() {
   const [sessionToken, setSessionToken] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [currentRoute, setCurrentRoute] = React.useState("/");
+  const [currentTrip, setCurrentTrip] = React.useState("");
 
   function handleSignUpErrorMessage(message) {
     setSignUpErrorMessage(message);
@@ -29,6 +30,9 @@ function App() {
   }
   function handleCurrentRoute(route) {
     setCurrentRoute(route)
+  }
+  function handleCurrentTrip(trip) {
+    setCurrentTrip(trip)
   }
 
   return (
@@ -78,11 +82,16 @@ function App() {
                 username={username}
                 sessionToken={sessionToken}
                 handleSessionToken={handleSessionToken}
+                handleCurrentTrip={handleCurrentTrip}
               />}
             />
             <Route
               path="/users/trip"
-              element={<Trip/>}
+              element={<Trip                
+              sessionToken={sessionToken}
+              handleSessionToken={handleSessionToken}
+              currentTrip={currentTrip}
+              />}
             />
           </Routes>
         </main>

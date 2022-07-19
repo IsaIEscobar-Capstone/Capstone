@@ -1,0 +1,20 @@
+.returnButtons {
+    align-items: center;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    gap: 10px;
+    max-width: fit-content;
+    max-height: 5%;
+    margin-left: 2%;
+    margin-top: -0.4%;
+    text-decoration: none;
+}
+
+.weekly-header {
+    display: flex;
+    flex-direction: row;
+    gap: 7%;
+    justify-content: center;
+}

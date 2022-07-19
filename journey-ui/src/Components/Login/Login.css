@@ -24,15 +24,15 @@
     background-color: transparent;
     border: 2px solid white;
     border-radius: 5px;
+    color: white;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     height: 50px;
     width: 100px;
     margin-bottom: 40px;
-    color: white;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 #backButton {
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     margin-top: 30px;
     padding: 10px;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }

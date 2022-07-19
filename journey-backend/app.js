@@ -41,6 +41,7 @@ app.post('/users/login', async (req, res) => {
   }
 })
 
+// Excpects sessionToken
 app.post('/users/dashboard', async (req, res) => {
   let sessionToken = req.body.sessionToken
   let query = new Parse.Query("_Session")
@@ -63,6 +64,24 @@ app.post('/users/dashboard', async (req, res) => {
       return null
     }
   })
+})
+
+app.post('/users/trip', async(req, res) => {
+  let vacationName = req.body.vacationName
+  let username = req.body.username
+  const trip = new Parse.Object("Trip");
+
+  trip.set("TripName", vacationName)
+  trip.set("Travelers", [username])
+  trip.set("Activities", [])
+
+  try{
+      //Save the Object
+      let result = await trip.save();
+      console.log('New object created with objectId: ' + result.id);
+  }catch(error){
+      console.log('Failed to create new object, with error code: ' + error.message);
+  }
 })
 
 

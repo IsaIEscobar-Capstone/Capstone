@@ -26,7 +26,7 @@ export default function Login(props){
     })
 
     .catch(function(error) {
-      props.handleSignInErrorMessage("Sign in failed: " + error.response.data.error);
+      props.handleSignInErrorMessage("Sign in failed: " + error.response.data);
     })
     }
     return (
@@ -38,7 +38,7 @@ export default function Login(props){
             width: '100vw',
             height: '100vh'
         }}>
-      <Link to='/' id="backButton" onClick={()=> props.handleSignInErrorMessage("")} style={{textDecoration: 'none', color: 'white', border: '2px solid white' , borderRadius: '5px', width: '200px', marginRight: '90%'}}>Back To Home</Link>
+        <Link to='/' id="backButton" onClick={()=> props.handleSignInErrorMessage("")} style={{textDecoration: 'none', color: 'white', border: '2px solid white' , borderRadius: '5px', width: '200px', marginRight: '90%'}}>Back To Home</Link>
       <div className = "Login">
         <img id="logo" src={journey} height='400px' alt='logo'/>
         <section>
