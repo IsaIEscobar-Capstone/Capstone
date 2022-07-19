@@ -50,6 +50,10 @@
 
 ## Wireframe
 
+### Initial Page:
+
+<img width="527" alt="Screen Shot 2022-07-19 at 4 57 51 PM" src="https://user-images.githubusercontent.com/71234828/179867628-0f17ba84-30e3-448f-a233-ee6acbd81a27.png">
+
 ### Current Trips Page:
 
 <img width="926" alt="image" src="https://user-images.githubusercontent.com/71234828/177360731-8f2e3bfd-7558-4474-82c3-096e931399c2.png">
@@ -66,3 +70,6 @@
 
 <img width="962" alt="image" src="https://user-images.githubusercontent.com/71234828/177361416-17b343b1-4110-47a6-9d29-422e70acfcb1.png">
 
+### Stretch Features:
+
+<img width="542" alt="Screen Shot 2022-07-19 at 4 59 24 PM" src="https://user-images.githubusercontent.com/71234828/179867761-40b5b3a2-9858-425b-84f8-8e561b10912b.png">
