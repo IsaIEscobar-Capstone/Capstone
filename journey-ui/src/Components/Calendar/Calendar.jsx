@@ -1,9 +1,61 @@
 import "./Calendar.css";
+import * as React from "react";
 
 function CalendarDays(props) {
     let firstDayOfMonth = new Date(props.day.getFullYear(), props.day.getMonth(), 1);
     let weekdayOfFirstDay = firstDayOfMonth.getDay();
     let currentDays = [];
+
+    const [visibility, setVisibility] = React.useState('hidden');
+
+    function popUp() {
+        if (visibility == 'hidden') {
+            setVisibility('visible')
+        }
+        else {
+            setVisibility('hidden')
+        }
+    }
+
+    function nextClicked() {
+        if (props.day.getMonth() < 11) {
+            props.day.setMonth(parseInt(props.day.getMonth()) + 1)
+        }
+        else {
+            props.day.setMonth(0)
+            props.day.setFullYear(props.day.getFullYear() + 1)
+        }
+            var new_d = {
+                currentMonth: (true),
+                date: (new Date(props.day)),
+                month: props.day.getMonth(),
+                number: props.day.getDate(),
+                selected: (firstDayOfMonth.toDateString() === props.day.toDateString()),
+                year: props.day.getFullYear()
+            }
+            props.changeCurrentDate(new_d);
+        }
+
+    function prevClicked() {
+        if (props.day.getMonth() > 0) {
+            props.day.setMonth(parseInt(props.day.getMonth()) - 1)
+        }
+        else {
+            props.day.setMonth(11)
+            props.day.setFullYear(props.day.getFullYear() -1)
+        }
+            var new_d = {
+                currentMonth: (true),
+                date: (new Date(props.day)),
+                month: props.day.getMonth(),
+                number: props.day.getDate(),
+                selected: (firstDayOfMonth.toDateString() === props.day.toDateString()),
+                year: props.day.getFullYear()
+            }
+            props.changeCurrentDate(new_d);
+        }
+    
+
 
     
     for (let day = 0; day < 42; day++) {
@@ -39,6 +91,8 @@ function CalendarDays(props) {
             )
         })
         }
+        <button onClick={prevClicked}>Prev</button>
+        <button onClick={nextClicked}>Next</button>
       </div>
     )
   }

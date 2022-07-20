@@ -31,6 +31,10 @@ export default function Trip(props) {
     }
 
     function changeCurrentDate(day) {
+        console.log(day)
+        console.log(day.year)
+        console.log(day.month)
+        console.log(day.number)
         setCurrentDay(new Date(day.year, day.month, day.number));
     }
 
