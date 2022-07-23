@@ -25,3 +25,10 @@
 .calendar-day:hover {
     color: black
 }
+
+.activities-section {
+    display: grid;
+    margin-top: 2vh;
+    justify-content: space-between;
+    position: absolute;
+}

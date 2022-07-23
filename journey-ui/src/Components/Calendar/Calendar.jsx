@@ -10,11 +10,12 @@ function CalendarDays(props) {
     let currentDays = [];
 
     const [visibility, setVisibility] = React.useState('hidden');
-    const [startDate, setStartDate] = React.useState(new Date());
-    const [endDate, setEndDate] = React.useState(new Date());
+    const [startDate, setStartDate] = React.useState(props.day);
+    const [endDate, setEndDate] = React.useState(props.day);
     const [activityName, setActivityName] = React.useState('');
     const [activityDescription, setActivityDescription] = React.useState('');
     const [activityList, setActivityList] = React.useState([]);
+    const [dVisibility, setDVisibility] = React.useState('hidden');
 
     function handleStartChange(date) {
         setStartDate(date)
@@ -26,21 +27,24 @@ function CalendarDays(props) {
 
     function onStartFormSubmit(e) {
         e.preventDefault();
-        console.log(startDate)
+        console.log('start:' + startDate)
     }
 
     function onEndFormSubmit(e) {
         e.preventDefault();
-        console.log(endDate)
+        console.log('end:' + endDate)
     }
 
     function popUp() {
         if (visibility == 'hidden') {
+            setStartDate(new Date());
             setVisibility('visible')
         }
         else {
             setVisibility('hidden')
         }
+
+        // setStartDate(props.day);
     }
 
     function nextClicked() {
@@ -82,13 +86,16 @@ function CalendarDays(props) {
     }
 
     function clearActivity() {
-        setStartDate(new Date());
-        setEndDate(new Date());
+        // setStartDate(props.day);
+        // setStartDate(new Date());
+        // setEndDate(new Date());
+        setEndDate(props.day)
         setActivityName('');
         setActivityDescription('');
     }
 
     function createActivity() {
+        // setStartDate(props.day);
 
         let activity = {
             name: activityName,
@@ -97,11 +104,20 @@ function CalendarDays(props) {
             description: activityDescription
         }
         setActivityList([...activityList, activity])
-
-        setStartDate(new Date());
-        setEndDate(new Date());
+        setEndDate(props.day)
+        // setEndDate(new Date());
         setActivityName('');
         setActivityDescription('');
+        console.log(activityList);
+    }
+
+    function descriptionPopUp() {
+        if (dVisibility == 'hidden') {
+            setDVisibility('visible')
+        }
+        else {
+            setDVisibility('hidden')
+        }
     }
 
 
@@ -128,20 +144,45 @@ function CalendarDays(props) {
         currentDays.push(calendarDay);
     }
 
+    React.useEffect(() => { setStartDate(props.day); });
+
     return (
         <div className="calendar-content">
             {
                 currentDays.map((day) => {
+                    let aName = []
+                    for (let i = 0; i < activityList.length; i++) {
+                        if (activityList[i].startDate.getTime() === day.date.getTime() || activityList[i].endDate.getTime() === day.date.getTime()) {
+                            aName.push(activityList[i])
+                            console.log('name: ' + activityList[i].name)
+                        }
+                    }
                     return (
                         <div className={"calendar-day" + (day.currentMonth ? " current" : "") + (day.selected ? " selected" : "")}
-                            onClick={() => { props.changeCurrentDate(day); popUp(); }} key={"calendar-day" + day.number + day.currentMonth + (day.selected ? " selected" : "")}>
-                            <p id="day-number">{day.number}</p>
+                            onClick={() => { props.changeCurrentDate(day); clearActivity(); popUp(); }} key={"calendar-day" + day.number + day.currentMonth + (day.selected ? " selected" : "")}>
+                            <div id="day-number">{day.number}
+                                <section className='activities-section'>
+                                    {
+                                        aName.map((activity) => {
+                                            return (
+                                                <section>
+                                                    <p onClick={descriptionPopUp}style={{}}>{activity.name}</p>
+                                                    <span className="popupDescription" id="myDescription" style={{ visibility: dVisibility}}>
+                                                        <button onClick={descriptionPopUp}>X</button>
+                                                        {activity.description}
+                                                    </span>
+                                                </section>
+                                            )
+                                        })
+                                    }
+                                </section>
+                            </div>
                         </div>
                     )
                 })
             }
             <span className="popupText" id="myPopup" style={{ position: 'absolute', visibility: visibility, marginLeft: '450px', height: '500px', width: '450px' }}>New Activity
-            <button onClick={() => {popUp(); clearActivity();}}>X</button>
+                <button onClick={() => { clearActivity(); popUp(); }}>X</button>
                 <section>
                     <input id="activityName" value={activityName} onChange={(e) => setActivityName(e.target.value)} type="text" />
                 </section>
@@ -169,7 +210,7 @@ function CalendarDays(props) {
                 </form>
                 <p>Description:</p>
                 <input id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
-                <button onClick={() => {createActivity(); popUp();}}>Create Activity</button>
+                <button onClick={() => { createActivity(); popUp(); }}>Create Activity</button>
             </span>
             <button onClick={prevClicked}>Prev</button>
             <button onClick={nextClicked}>Next</button>
