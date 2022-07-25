@@ -12,32 +12,37 @@ app.use(morgan('tiny'))
 
 Parse.initialize("f3uKzoRyLgM4hnYMxkTFbZr6oABcuO4kHbAxQ3Ur", "hJKEz9itTiqQbFq0bx5bRyO15LI95m9H44kSWLR0", `${masterKey}`);
 Parse.serverURL = 'https://parseapi.back4app.com/'
+// Parse.Cloud.useMasterKey();
 
 // Expects parameters for username and password
-app.post('/users/register', async(req, res) => {
-    let infoUser = req.body;
-    let user = new Parse.User();
+app.post('/users/register', async (req, res) => {
+  let infoUser = req.body;
+  let user = new Parse.User();
+  let userData = new Parse.Object("User_Data");
 
-    user.set("username", infoUser.username);
-    user.set("email", infoUser.email);
-    user.set("password", infoUser.password);
-    user.set("logged_in", true)
+  user.set("username", infoUser.username);
+  user.set("email", infoUser.email);
+  user.set("password", infoUser.password);
+  user.set("logged_in", true)
 
-    try{
-      await user.signUp();
-      res.send({"sessionToken" : user.getSessionToken()});
-    } catch (error){
-      res.status(400).send({ loginMessage: error.message, RegisterMessage: '', typeStatus: "danger",  infoUser: infoUser});
-    }
+  userData.set("User_id", infoUser.username);
+
+  try {
+    await user.signUp();
+    await userData.save();
+    res.send({ "sessionToken": user.getSessionToken() });
+  } catch (error) {
+    res.status(400).send({ loginMessage: error.message, RegisterMessage: '', typeStatus: "danger", infoUser: infoUser });
+  }
 })
 
 // Expects parameters for username and password
 app.post('/users/login', async (req, res) => {
   try {
     const user = await Parse.User.logIn(req.body.username, req.body.password)
-    res.send({"sessionToken" : user.getSessionToken()})
+    res.send({ "sessionToken": user.getSessionToken() })
   } catch (error) {
-    res.status(400).send({"error" : error.message })
+    res.status(400).send({ "error": error.message })
   }
 })
 
@@ -48,11 +53,11 @@ app.post('/users/dashboard', async (req, res) => {
 
   query.equalTo("sessionToken", sessionToken)
 
-  query.first({useMasterKey: true}).then(function(user) {
-    if(user) {
+  query.first({ useMasterKey: true }).then(function (user) {
+    if (user) {
       console.log(user)
 
-      user.destroy({useMasterKey:true}).then(function(res) {
+      user.destroy({ useMasterKey: true }).then(function (res) {
         console.log("session destroyed")
       }).catch(function (error) {
         console.log(error)
@@ -66,21 +71,34 @@ app.post('/users/dashboard', async (req, res) => {
   })
 })
 
-app.post('/users/trip', async(req, res) => {
+app.post('/users/trip', async (req, res) => {
   let vacationName = req.body.vacationName
   let username = req.body.username
+  let userQ = new Parse.Query("User_Data")
   const trip = new Parse.Object("Trip");
+
+  userQ.equalTo("User_id", username)
+  console.log(userQ.toJSON())
 
   trip.set("TripName", vacationName)
   trip.set("Travelers", [username])
-  trip.set("Activities", [])
+  trip.set("Activities", []) 
 
-  try{
-      //Save the Object
-      let result = await trip.save();
-      console.log('New object created with objectId: ' + result.id);
-  }catch(error){
-      console.log('Failed to create new object, with error code: ' + error.message);
+  try {
+    let result = await trip.save();
+    userQ.first({ useMasterKey: true }).then( function (user) {
+      console.log(user);
+      current_user = user.get('trips_accessed')
+      console.log(current_user);
+      current_user = [...current_user, result.id]
+  
+      user.set('trips_accessed', current_user)
+      console.log('halo')
+      user.save();
+    })
+    console.log('New object created with objectId: ' + result.id);
+  } catch (error) {
+    console.log('Failed to create new object, with error code: ' + error.message);
   }
 })
 

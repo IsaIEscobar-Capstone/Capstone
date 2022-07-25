@@ -64,6 +64,7 @@ export default function Dashboard(props) {
                 </div>
                 <div className="Dash">
                     <p style={{ paddingLeft: '10px', height: '20px', width: '100px' }}>Current Trips:</p>
+                    {/* add current Trips */}
                     <div className="popUp" onClick={popUp} style={{ marginLeft: '100px', textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', height: '20px', width: '200px', marginTop: '34%' }}>New Trip</div>
                     <span className="popupText" id="myPopup" style={{ visibility: visibility }}>Name Your Trip
                         <section>
