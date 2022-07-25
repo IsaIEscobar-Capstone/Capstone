@@ -6,8 +6,12 @@ import axios from "axios";
 
 
 export default function Dashboard(props) {
+    console.log('currentTripList: ' + props.currentTripList);
+    // console.log('currentTripList[0]: ' + props.currentTripList[0]);
+    // console.log(props.currentTripList)
     const [visibility, setVisibility] = React.useState('hidden');
     const PORT = 3001
+
     const response = () => {
         axios.post(`http://localhost:${PORT}/users/dashboard`, {
             sessionToken: props.sessionToken
@@ -64,15 +68,22 @@ export default function Dashboard(props) {
                 </div>
                 <div className="Dash">
                     <p style={{ paddingLeft: '10px', height: '20px', width: '100px' }}>Current Trips:</p>
-                    {/* add current Trips */}
+                    <div className="currentTrips">
+                    {
+                        props.currentTripList.map((trip) => {
+                            return (
+                                <section>
+                                    <div key={trip.id} style={{margin: '0.5vh', border: '2px solid white', borderRadius: '5px', height: '30px', width: '200px'}}>{trip.name}</div>
+                                </section>
+                            )
+                        })
+                    }
+                    </div>
                     <div className="popUp" onClick={popUp} style={{ marginLeft: '100px', textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', height: '20px', width: '200px', marginTop: '34%' }}>New Trip</div>
                     <span className="popupText" id="myPopup" style={{ visibility: visibility }}>Name Your Trip
                         <section>
                             <input id="tripName" placeholder="Vacation..." type="text" style={{ marginTop: '1vh', padding: '5px' }} />
                         </section>
-                        {/* <section>
-                            <input id="password" placeholder="Password..." type="password" />
-                        </section> */}
                         <section>
                             <Link to='/users/trip' onClick={() => { calResponse(); updateTrip(); }} id="NewTrip" style={{ textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '20px', width: '200px', margin: '10vh' }}>New Trip</Link>
                         </section>

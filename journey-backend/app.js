@@ -38,9 +38,17 @@ app.post('/users/register', async (req, res) => {
 
 // Expects parameters for username and password
 app.post('/users/login', async (req, res) => {
+  let query = new Parse.Query("User_Data")
+  query.equalTo("User_id", req.body.username)
+
   try {
     const user = await Parse.User.logIn(req.body.username, req.body.password)
-    res.send({ "sessionToken": user.getSessionToken() })
+    query.first({ useMasterKey: true }).then(function (trip) {
+      let tripList = trip.get('trips_accessed')
+      res.send({ "sessionToken": user.getSessionToken() , "trips": tripList })
+    }).catch(function (error) {
+      console.log(error)
+    })
   } catch (error) {
     res.status(400).send({ "error": error.message })
   }
@@ -55,8 +63,6 @@ app.post('/users/dashboard', async (req, res) => {
 
   query.first({ useMasterKey: true }).then(function (user) {
     if (user) {
-      console.log(user)
-
       user.destroy({ useMasterKey: true }).then(function (res) {
         console.log("session destroyed")
       }).catch(function (error) {
@@ -87,13 +93,14 @@ app.post('/users/trip', async (req, res) => {
   try {
     let result = await trip.save();
     userQ.first({ useMasterKey: true }).then( function (user) {
-      console.log(user);
       current_user = user.get('trips_accessed')
-      console.log(current_user);
-      current_user = [...current_user, result.id]
+      current_trip = {
+        id: result.id,
+        name: vacationName
+      }
+      current_user = [...current_user, current_trip]
   
       user.set('trips_accessed', current_user)
-      console.log('halo')
       user.save();
     })
     console.log('New object created with objectId: ' + result.id);
@@ -102,5 +109,17 @@ app.post('/users/trip', async (req, res) => {
   }
 })
 
+app.post('/users/tripList', async (req, res) => {
+  let username = req.body.username;
+  let query = new Parse.Query("User_Data");
+
+  query.equalTo("User_id", username)
+  query.first({ useMasterKey: true }).then(function (trip) {
+    let tripList = trip.get('trips_accessed')
+    res.send({ "trips": tripList })
+  }).catch(function (error) {
+    console.log(error)
+  })
+})
 
 module.exports = app

@@ -30,6 +30,21 @@ export default function Trip(props) {
     })
     }
 
+    const tripResponse = () => {
+        axios.post(`http://localhost:${PORT}/users/tripList`, {
+            username: props.username
+        })
+        .then(function(response) {
+            console.log('response:' + response)
+            props.handleCurrentTripList(response.data.trips)
+            console.log('trips response: ' + response.data.trips)
+            console.log(props.currentTripList)
+        })
+        .catch(function (error) {
+            console.log("Trip list update failed: " + error.response.data);
+          })
+    }
+
     function changeCurrentDate(day) {
         console.log(day)
         console.log(day.year)
@@ -49,12 +64,8 @@ export default function Trip(props) {
             }}>
                 <div className="returnButtons">
                 <Link to='/' onClick={response} id= "dashLogOut" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px'}}>Log Out</Link>
-                <Link to='/users/dashboard' id="BackToDash" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px'}}>Back To Dash</Link>
+                <Link to='/users/dashboard' onClick={tripResponse} id="BackToDash" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px'}}>Back To Dash</Link>
                 </div>
-            {/* <div className="returnButtons">
-                <Link to='/' id="logOut" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', width: '200px', marginRight: '90%', marginTop: "-0.8%" }}>Log Out</Link>
-                <Link to='/users/dashboard' id="BackToDash" style={{textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', width: '150px'}}>Back To Dash</Link>
-            </div> */}
             <div className="Home">
                 <div className="Header">
                     <h2>{props.currentTrip}</h2>
