@@ -8,6 +8,7 @@ import axios from "axios";
 export default function Dashboard(props) {
     const [visibility, setVisibility] = React.useState('hidden');
     const PORT = 3001
+
     const response = () => {
         axios.post(`http://localhost:${PORT}/users/dashboard`, {
             sessionToken: props.sessionToken
@@ -27,13 +28,45 @@ export default function Dashboard(props) {
             vacationName: document.getElementById('tripName').value,
             username: props.username
         })
+            .then(function (response) {
+                props.handleTrip_id(response.data.trip_id);
+                props.handleCurrentTrip(document.getElementById('tripName').value,);
+            })
             .catch(function (error) {
                 console.log(error)
             })
     }
 
+    const responseList = (trip_id) => {
+        axios.post(`http://localhost:${PORT}/users/calendar`, {
+            trip_id: trip_id
+        })
+            .then(function (response) {
+                props.handleActivityList(response.data.activities)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
+    // TODO: finish sharing functionality
+    // const responseShare = (trip_id, user) => {
+    //     axios.post(`http://localhost:${PORT}/users/share`, {
+    //         user: user,
+    //         trip_id: trip_id
+    //     })
+    //     .catch(function (error) {
+    //         console.log(error)
+    //     })
+    // }
+
+    function calendarClicked(trip_id, trip_name) {
+        props.handleTrip_id(trip_id);
+        props.handleCurrentTrip(trip_name);
+        responseList(trip_id);
+    }
+
     function popUp() {
-        if (visibility == 'hidden') {
+        if (visibility === 'hidden') {
             setVisibility('visible')
         }
         else {
@@ -43,7 +76,6 @@ export default function Dashboard(props) {
 
     function updateTrip() {
         var vacationName = document.getElementById('tripName').value
-        console.log(vacationName)
         props.handleCurrentTrip(vacationName)
     }
 
@@ -64,16 +96,27 @@ export default function Dashboard(props) {
                 </div>
                 <div className="Dash">
                     <p style={{ paddingLeft: '10px', height: '20px', width: '100px' }}>Current Trips:</p>
+                    <div className="currentTrips">
+                        {
+                            props.currentTripList.map((trip) => {
+                                return (
+                                    <section>
+                                        <Link to='/users/trip' onClick={() => { calendarClicked(trip.id, trip.name); }} key={trip.id} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '300px' }}>{trip.name}</Link>
+                                        {/* TODO: Sharing button */}
+                                        {/* <input id="shareInput" placeholder="Share with..." type="text"/>
+                                    <button onClick={responseShare(trip.id, document.getElementById("shareInput"))}>Share</button> */}
+                                    </section>
+                                )
+                            })
+                        }
+                    </div>
                     <div className="popUp" onClick={popUp} style={{ marginLeft: '100px', textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', height: '20px', width: '200px', marginTop: '34%' }}>New Trip</div>
                     <span className="popupText" id="myPopup" style={{ visibility: visibility }}>Name Your Trip
                         <section>
                             <input id="tripName" placeholder="Vacation..." type="text" style={{ marginTop: '1vh', padding: '5px' }} />
                         </section>
-                        {/* <section>
-                            <input id="password" placeholder="Password..." type="password" />
-                        </section> */}
                         <section>
-                            <Link to='/users/trip' onClick={() => { calResponse(); updateTrip(); }} id="NewTrip" style={{ textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '20px', width: '200px', margin: '10vh' }}>New Trip</Link>
+                            <Link to='/users/trip' onClick={() => { calResponse(); updateTrip(); }} id="newTrip" style={{ textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '30px', width: '200px', margin: '10vh' }}>New Trip</Link>
                         </section>
                     </span>
                     <hr id="TripsDivide" />
