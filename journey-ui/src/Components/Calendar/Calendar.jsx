@@ -3,8 +3,10 @@ import * as React from "react";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from "axios";
 
 function CalendarDays(props) {
+    const PORT = 3001
     let firstDayOfMonth = new Date(props.day.getFullYear(), props.day.getMonth(), 1);
     let weekdayOfFirstDay = firstDayOfMonth.getDay();
     let currentDays = [];
@@ -16,6 +18,17 @@ function CalendarDays(props) {
     const [activityDescription, setActivityDescription] = React.useState('');
     const [activityList, setActivityList] = React.useState([]);
     const [dVisibility, setDVisibility] = React.useState('hidden');
+    const [activity, setActivity] = React.useState('');
+
+    const response = () => {
+        axios.post(`http://localhost:${PORT}/users/activity`, {
+            trip_id: props.trip_id,
+            activity: activity
+        })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
 
     function handleStartChange(date) {
         setStartDate(date)
@@ -27,12 +40,10 @@ function CalendarDays(props) {
 
     function onStartFormSubmit(e) {
         e.preventDefault();
-        console.log('start:' + startDate)
     }
 
     function onEndFormSubmit(e) {
         e.preventDefault();
-        console.log('end:' + endDate)
     }
 
     function popUp() {
@@ -103,12 +114,13 @@ function CalendarDays(props) {
             endDate: endDate,
             description: activityDescription
         }
+        setActivity(activity)
+        response()
         setActivityList([...activityList, activity])
         setEndDate(props.day)
         // setEndDate(new Date());
         setActivityName('');
         setActivityDescription('');
-        console.log(activityList);
     }
 
     function descriptionPopUp() {
@@ -154,7 +166,6 @@ function CalendarDays(props) {
                     for (let i = 0; i < activityList.length; i++) {
                         if (activityList[i].startDate.getTime() === day.date.getTime() || activityList[i].endDate.getTime() === day.date.getTime()) {
                             aName.push(activityList[i])
-                            console.log('name: ' + activityList[i].name)
                         }
                     }
                     return (
@@ -166,8 +177,8 @@ function CalendarDays(props) {
                                         aName.map((activity) => {
                                             return (
                                                 <section>
-                                                    <p onClick={descriptionPopUp}style={{}}>{activity.name}</p>
-                                                    <span className="popupDescription" id="myDescription" style={{ visibility: dVisibility}}>
+                                                    <p onClick={descriptionPopUp} style={{}}>{activity.name}</p>
+                                                    <span className="popupDescription" id="myDescription" style={{ visibility: dVisibility }}>
                                                         <button onClick={descriptionPopUp}>X</button>
                                                         {activity.description}
                                                     </span>
@@ -210,7 +221,7 @@ function CalendarDays(props) {
                 </form>
                 <p>Description:</p>
                 <input id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
-                <button onClick={() => { createActivity(); popUp(); }}>Create Activity</button>
+                <button onClick={() => { createActivity(); popUp();}}>Create Activity</button>
             </span>
             <button onClick={prevClicked}>Prev</button>
             <button onClick={nextClicked}>Next</button>

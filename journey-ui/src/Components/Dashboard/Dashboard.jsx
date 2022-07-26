@@ -6,9 +6,6 @@ import axios from "axios";
 
 
 export default function Dashboard(props) {
-    console.log('currentTripList: ' + props.currentTripList);
-    // console.log('currentTripList[0]: ' + props.currentTripList[0]);
-    // console.log(props.currentTripList)
     const [visibility, setVisibility] = React.useState('hidden');
     const PORT = 3001
 
@@ -47,7 +44,6 @@ export default function Dashboard(props) {
 
     function updateTrip() {
         var vacationName = document.getElementById('tripName').value
-        console.log(vacationName)
         props.handleCurrentTrip(vacationName)
     }
 
@@ -73,7 +69,7 @@ export default function Dashboard(props) {
                         props.currentTripList.map((trip) => {
                             return (
                                 <section>
-                                    <div key={trip.id} style={{margin: '0.5vh', border: '2px solid white', borderRadius: '5px', height: '30px', width: '200px'}}>{trip.name}</div>
+                                    <Link to='/users/trip' onClick={() => {props.handleTrip_id(trip.id); props.handleCurrentTrip(trip.name);}} key={trip.id} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '300px'}}>{trip.name}</Link>
                                 </section>
                             )
                         })
@@ -85,7 +81,7 @@ export default function Dashboard(props) {
                             <input id="tripName" placeholder="Vacation..." type="text" style={{ marginTop: '1vh', padding: '5px' }} />
                         </section>
                         <section>
-                            <Link to='/users/trip' onClick={() => { calResponse(); updateTrip(); }} id="NewTrip" style={{ textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '20px', width: '200px', margin: '10vh' }}>New Trip</Link>
+                            <Link to='/users/trip' onClick={() => { calResponse(); updateTrip(); }} id="newTrip" style={{textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '30px', width: '200px', margin: '10vh' }}>New Trip</Link>
                         </section>
                     </span>
                     <hr id="TripsDivide" />

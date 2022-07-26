@@ -3,7 +3,8 @@ const express = require('express')
 const app = express()
 const cors = require("cors")
 const morgan = require('morgan')
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const { query } = require('express');
 const masterKey = "EiLDaqAiTMab4Qws2g5nEQEzW75Jn6lKZ44dp9A3"
 
 app.use(bodyParser.json());
@@ -117,6 +118,35 @@ app.post('/users/tripList', async (req, res) => {
   query.first({ useMasterKey: true }).then(function (trip) {
     let tripList = trip.get('trips_accessed')
     res.send({ "trips": tripList })
+  }).catch(function (error) {
+    console.log(error)
+  })
+})
+
+app.post('/users/calendar', async (req, res) => {
+  let trip_id = req.body.trip_id;
+  let query = new Parse.Query("Trip")
+
+  query.equalTo("objectId", trip_id)
+  query.first({ useMasterKey: true }).then(function (trip) {
+    let activityList = trip.get('Activities')
+    res.send({ "activities": activityList })
+  }).catch(function (error) {
+    console.log(error)
+  })
+})
+
+app.post('/users/activity', async (req, res) => {
+  let trip_id = req.body.trip_id
+  let activity = req.body.activity
+  let query = new Parse.Query("Trip")
+
+  query.equalTo("objectId", trip_id)
+  query.first({ useMasterKey: true }).then(function (trip) {
+    let activityList = trip.get('Activities')
+    activityList = [...activityList, activity]
+    trip.set('Activities', activityList)
+    trip.save()
   }).catch(function (error) {
     console.log(error)
   })

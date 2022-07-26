@@ -16,6 +16,7 @@ function App() {
   const [currentRoute, setCurrentRoute] = React.useState("/");
   const [currentTrip, setCurrentTrip] = React.useState("");
   const [currentTripList, setCurrentTripList] = React.useState([]);
+  const [trip_id, setTrip_id] = React.useState("");
 
   function handleSignUpErrorMessage(message) {
     setSignUpErrorMessage(message);
@@ -35,9 +36,13 @@ function App() {
   function handleCurrentTrip(trip) {
     setCurrentTrip(trip)
   }
-
   function handleCurrentTripList(trips) {
     setCurrentTripList(trips);
+  }
+  function handleTrip_id(id) {
+    console.log('halo: ', id);
+    console.log('p_trip: ', trip_id);
+    setTrip_id(id);
   }
 
   return (
@@ -92,6 +97,8 @@ function App() {
                 handleCurrentTrip={handleCurrentTrip}
                 currentTripList={currentTripList}
                 handleCurrentTripList={handleCurrentTripList}
+                handleTrip_id={handleTrip_id}
+                trip_id={trip_id}
               />}
             />
             <Route
@@ -103,6 +110,8 @@ function App() {
               currentTrip={currentTrip}
               currentTripList={currentTripList}
               handleCurrentTripList={handleCurrentTripList}
+              handleTrip_id={handleTrip_id}
+              trip_id={trip_id}
               />}
             />
           </Routes>
