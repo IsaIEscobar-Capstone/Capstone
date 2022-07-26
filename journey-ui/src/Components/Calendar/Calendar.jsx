@@ -29,6 +29,17 @@ function CalendarDays(props) {
         })
     }
 
+    // TODO:
+    // const responseDelete = (activity) => {
+    //     axios.post(`http://localhost:${PORT}/user/removeActivity`, {
+    //         trip_id: props.trip_id,
+    //         activity: activity
+    //     })
+    //     .catch(function (error) {
+    //         console.log(error)
+    //     })
+    // }
+
     function handleStartChange(date) {
         setStartDate(date)
     }
@@ -102,7 +113,7 @@ function CalendarDays(props) {
     }
 
     function createActivity() {
-        
+
         let activity = {
             name: activityName,
             startDate: startDate,
@@ -160,15 +171,13 @@ function CalendarDays(props) {
                     for (let i = 0; i < props.activityList.length; i++) {
                         let tempStart = new Date(props.activityList[i].startDate);
                         let tempEnd = new Date(props.activityList[i].endDate);
-                        console.log(props.activityList)
-                        console.log('activity list: ', props.activityList[i])
-                        if (tempStart.getTime()=== day.date.getTime() || tempEnd.getTime() === day.date.getTime()) {
+                        if (tempStart.getTime() <= day.date.getTime() && day.date.getTime() <= tempEnd.getTime()) {
                             aName.push(props.activityList[i])
                         }
                     }
                     return (
                         <div className={"calendar-day" + (day.currentMonth ? " current" : "") + (day.selected ? " selected" : "")}
-                            onClick={() => { props.changeCurrentDate(day); clearActivity(); popUp(); }} key={"calendar-day" + day.number + day.currentMonth + (day.selected ? " selected" : "")}>
+                        onDoubleClick={() => { clearActivity(); popUp(); props.changeCurrentDate(day)}} key={"calendar-day" + day.number + day.currentMonth + (day.selected ? " selected" : "")}>
                             <div id="day-number">{day.number}
                                 <section className='activities-section'>
                                     {
@@ -177,8 +186,10 @@ function CalendarDays(props) {
                                                 <section>
                                                     <p onClick={descriptionPopUp} style={{}}>{activity.name}</p>
                                                     <span className="popupDescription" id="myDescription" style={{ visibility: dVisibility }}>
-                                                        <button onClick={descriptionPopUp}>X</button>
+                                                        <button onClick={() => {descriptionPopUp();}}>X</button>
                                                         {activity.description}
+                                                        {/* TODO: delete activity button*/}
+                                                        {/* <button onClick={responseDelete(activity)}>Remove Activity</button> */}
                                                     </span>
                                                 </section>
                                             )

@@ -156,4 +156,29 @@ app.post('/users/activity', async (req, res) => {
   })
 })
 
+app.post('/user/removeActivity', async (req, res) => {
+  let activity = req.body.activity
+  let trip_id = req.body.trip_id
+  console.log('deleted id: ' + trip_id)
+  console.log('deleted activity: ' + activity)
+  let query = new Parse.Query("Trip");
+
+  query.equalTo("objectId", trip_id)
+  query.first({ useMasterKey: true }).then(function (trip) {
+    let activityList = trip.get('Activities')
+    let new_activities = []
+    for( let i = 0; i < activityList.length; i++ ) {
+      // comparison needs work
+      if (activityList[i].name != activity.name || activityList[i].startDate != activity.startDate || activityList[i].endDate != activity.endDate) {
+        console.log(activityList[i].name + ' ' + activity.name)
+        new_activities = [...new_activities, activityList[i]]
+      }
+    }
+    trip.set('Activities', new_activities)
+    trip.save()
+  }).catch(function (error) {
+    console.log(error)
+  })
+})
+
 module.exports = app
