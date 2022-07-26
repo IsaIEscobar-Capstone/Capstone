@@ -28,6 +28,11 @@ export default function Dashboard(props) {
             vacationName: document.getElementById('tripName').value,
             username: props.username
         })
+        .then(function (response) {
+            console.log('response id front: ' + response.data.trip_id)
+            props.handleTrip_id(response.data.trip_id);
+            props.handleCurrentTrip(document.getElementById('tripName').value,);
+        })
             .catch(function (error) {
                 console.log(error)
             })
@@ -45,6 +50,16 @@ export default function Dashboard(props) {
             console.log(error)
         })
     }
+// TODO: finish sharing functionality
+    // const responseShare = (trip_id, user) => {
+    //     axios.post(`http://localhost:${PORT}/users/share`, {
+    //         user: user,
+    //         trip_id: trip_id
+    //     })
+    //     .catch(function (error) {
+    //         console.log(error)
+    //     })
+    // }
 
     function calendarClicked(trip_id, trip_name) {
         props.handleTrip_id(trip_id);
@@ -89,6 +104,8 @@ export default function Dashboard(props) {
                             return (
                                 <section>
                                     <Link to='/users/trip' onClick={() => {calendarClicked(trip.id, trip.name);}} key={trip.id} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '300px'}}>{trip.name}</Link>
+                                    {/* <input id="shareInput" placeholder="Share with..." type="text"/>
+                                    <button onClick={responseShare(trip.id, document.getElementById("shareInput"))}>Share</button> */}
                                 </section>
                             )
                         })
@@ -100,7 +117,7 @@ export default function Dashboard(props) {
                             <input id="tripName" placeholder="Vacation..." type="text" style={{ marginTop: '1vh', padding: '5px' }} />
                         </section>
                         <section>
-                            <Link to='/users/trip' onClick={() => { calResponse(); updateTrip(); responseList();}} id="newTrip" style={{textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '30px', width: '200px', margin: '10vh' }}>New Trip</Link>
+                            <Link to='/users/trip' onClick={() => { calResponse(); updateTrip();}} id="newTrip" style={{textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '30px', width: '200px', margin: '10vh' }}>New Trip</Link>
                         </section>
                     </span>
                     <hr id="TripsDivide" />

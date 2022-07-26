@@ -31,7 +31,7 @@ function CalendarDays(props) {
 
     // TODO:
     // const responseDelete = (activity) => {
-    //     axios.post(`http://localhost:${PORT}/user/removeActivity`, {
+    //     axios.post(`http://localhost:${PORT}/users/removeActivity`, {
     //         trip_id: props.trip_id,
     //         activity: activity
     //     })

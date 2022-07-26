@@ -103,6 +103,7 @@ app.post('/users/trip', async (req, res) => {
   
       user.set('trips_accessed', current_user)
       user.save();
+      res.send({"trip_id": result.id});
     })
     console.log('New object created with objectId: ' + result.id);
   } catch (error) {
@@ -133,7 +134,6 @@ app.post('/users/calendar', async (req, res) => {
   query.first({ useMasterKey: true }).then(function (trip) {
     console.log('trip: ', trip)
     let activityList = trip.get('Activities')
-    console.log(activityList)
     res.send({ "activities": activityList })
   }).catch(function (error) {
     console.log(error)
@@ -156,7 +156,8 @@ app.post('/users/activity', async (req, res) => {
   })
 })
 
-app.post('/user/removeActivity', async (req, res) => {
+// TODO:
+app.post('/users/removeActivity', async (req, res) => {
   let activity = req.body.activity
   let trip_id = req.body.trip_id
   console.log('deleted id: ' + trip_id)
@@ -178,6 +179,24 @@ app.post('/user/removeActivity', async (req, res) => {
     trip.save()
   }).catch(function (error) {
     console.log(error)
+  })
+})
+
+// TODO:
+app.post('/users/share', async (req, res) => {
+  let user = req.body.user
+  let trip_id = req.body.trip_id
+  let query = new Parse.Query("User_Data");
+  console.log('trip_id: ', trip_id)
+
+  query.equalTo("User_id", user)
+
+  console.log(query.toJSON())
+  query.first({ useMasterKey: true}).then(function (trip) {
+    let trips = trip.get('trips_accessed')
+    trips = [...trips, trip_id]
+    trip.set('trips_accessed', trips)
+    trip.save();
   })
 })
 
