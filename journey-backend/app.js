@@ -46,7 +46,7 @@ app.post('/users/login', async (req, res) => {
     const user = await Parse.User.logIn(req.body.username, req.body.password)
     query.first({ useMasterKey: true }).then(function (trip) {
       let tripList = trip.get('trips_accessed')
-      res.send({ "sessionToken": user.getSessionToken() , "trips": tripList })
+      res.send({ "sessionToken": user.getSessionToken(), "trips": tripList })
     }).catch(function (error) {
       console.log(error)
     })
@@ -89,21 +89,21 @@ app.post('/users/trip', async (req, res) => {
 
   trip.set("TripName", vacationName)
   trip.set("Travelers", [username])
-  trip.set("Activities", []) 
+  trip.set("Activities", [])
 
   try {
     let result = await trip.save();
-    userQ.first({ useMasterKey: true }).then( function (user) {
+    userQ.first({ useMasterKey: true }).then(function (user) {
       current_user = user.get('trips_accessed')
       current_trip = {
         id: result.id,
         name: vacationName
       }
       current_user = [...current_user, current_trip]
-  
+
       user.set('trips_accessed', current_user)
       user.save();
-      res.send({"trip_id": result.id});
+      res.send({ "trip_id": result.id });
     })
     console.log('New object created with objectId: ' + result.id);
   } catch (error) {
@@ -168,7 +168,7 @@ app.post('/users/removeActivity', async (req, res) => {
   query.first({ useMasterKey: true }).then(function (trip) {
     let activityList = trip.get('Activities')
     let new_activities = []
-    for( let i = 0; i < activityList.length; i++ ) {
+    for (let i = 0; i < activityList.length; i++) {
       // comparison needs work
       if (activityList[i].name != activity.name || activityList[i].startDate != activity.startDate || activityList[i].endDate != activity.endDate) {
         console.log(activityList[i].name + ' ' + activity.name)
@@ -192,7 +192,7 @@ app.post('/users/share', async (req, res) => {
   query.equalTo("User_id", user)
 
   console.log(query.toJSON())
-  query.first({ useMasterKey: true}).then(function (trip) {
+  query.first({ useMasterKey: true }).then(function (trip) {
     let trips = trip.get('trips_accessed')
     trips = [...trips, trip_id]
     trip.set('trips_accessed', trips)

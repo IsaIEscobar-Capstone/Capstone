@@ -20,13 +20,10 @@ export default function Trip(props) {
 
             .then(function (response) {
                 console.log("sessionToken: " + response.data.sessionToken)
-                //   props.handleSessionToken(response.data.sessionToken)
-                //   props.handleUsername(document.getElementById('username').value);
             })
 
             .catch(function (error) {
                 console.log(error)
-                //   props.handleSignInErrorMessage("Sign in failed: " + error.response.data.error);
             })
     }
 
@@ -35,7 +32,6 @@ export default function Trip(props) {
             username: props.username
         })
             .then(function (response) {
-                console.log('response:' + response)
                 props.handleCurrentTripList(response.data.trips)
                 props.handleActivityList([])
             })
@@ -45,10 +41,6 @@ export default function Trip(props) {
     }
 
     function changeCurrentDate(day) {
-        console.log(day)
-        console.log(day.year)
-        console.log(day.month)
-        console.log(day.number)
         setCurrentDay(new Date(day.year, day.month, day.number));
     }
 

@@ -41,8 +41,6 @@ function App() {
     setCurrentTripList(trips);
   }
   function handleTrip_id(id) {
-    console.log('halo: ', id);
-    console.log('p_trip: ', trip_id);
     setTrip_id(id);
   }
   function handleActivityList(activityList) {
