@@ -16,18 +16,17 @@ function CalendarDays(props) {
     const [endDate, setEndDate] = React.useState(props.day);
     const [activityName, setActivityName] = React.useState('');
     const [activityDescription, setActivityDescription] = React.useState('');
-    const [activityList, setActivityList] = React.useState([]);
     const [dVisibility, setDVisibility] = React.useState('hidden');
     const [activity, setActivity] = React.useState('');
 
-    const response = () => {
+    const response = (activity) => {
         axios.post(`http://localhost:${PORT}/users/activity`, {
             trip_id: props.trip_id,
             activity: activity
         })
-            .catch(function (error) {
-                console.log(error)
-            })
+        .catch(function (error) {
+            console.log(error)
+        })
     }
 
     function handleStartChange(date) {
@@ -97,17 +96,13 @@ function CalendarDays(props) {
     }
 
     function clearActivity() {
-        // setStartDate(props.day);
-        // setStartDate(new Date());
-        // setEndDate(new Date());
         setEndDate(props.day)
         setActivityName('');
         setActivityDescription('');
     }
 
     function createActivity() {
-        // setStartDate(props.day);
-
+        
         let activity = {
             name: activityName,
             startDate: startDate,
@@ -115,10 +110,9 @@ function CalendarDays(props) {
             description: activityDescription
         }
         setActivity(activity)
-        response()
-        setActivityList([...activityList, activity])
+        response(activity)
+        props.handleActivityList([...props.activityList, activity])
         setEndDate(props.day)
-        // setEndDate(new Date());
         setActivityName('');
         setActivityDescription('');
     }
@@ -163,9 +157,13 @@ function CalendarDays(props) {
             {
                 currentDays.map((day) => {
                     let aName = []
-                    for (let i = 0; i < activityList.length; i++) {
-                        if (activityList[i].startDate.getTime() === day.date.getTime() || activityList[i].endDate.getTime() === day.date.getTime()) {
-                            aName.push(activityList[i])
+                    for (let i = 0; i < props.activityList.length; i++) {
+                        let tempStart = new Date(props.activityList[i].startDate);
+                        let tempEnd = new Date(props.activityList[i].endDate);
+                        console.log(props.activityList)
+                        console.log('activity list: ', props.activityList[i])
+                        if (tempStart.getTime()=== day.date.getTime() || tempEnd.getTime() === day.date.getTime()) {
+                            aName.push(props.activityList[i])
                         }
                     }
                     return (
@@ -221,7 +219,7 @@ function CalendarDays(props) {
                 </form>
                 <p>Description:</p>
                 <input id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
-                <button onClick={() => { createActivity(); popUp();}}>Create Activity</button>
+                <button onClick={() => {createActivity(); popUp();}}>Create Activity</button>
             </span>
             <button onClick={prevClicked}>Prev</button>
             <button onClick={nextClicked}>Next</button>

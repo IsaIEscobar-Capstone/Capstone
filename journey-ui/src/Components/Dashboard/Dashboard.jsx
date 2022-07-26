@@ -33,6 +33,25 @@ export default function Dashboard(props) {
             })
     }
 
+    const responseList = (trip_id) => {
+        axios.post(`http://localhost:${PORT}/users/calendar`, {
+            trip_id: trip_id
+        })
+        .then(function (response) {
+            console.log('response: ', response.data.activities)
+            props.handleActivityList(response.data.activities)
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
+
+    function calendarClicked(trip_id, trip_name) {
+        props.handleTrip_id(trip_id);
+        props.handleCurrentTrip(trip_name);
+        responseList(trip_id);
+    }
+
     function popUp() {
         if (visibility == 'hidden') {
             setVisibility('visible')
@@ -69,7 +88,7 @@ export default function Dashboard(props) {
                         props.currentTripList.map((trip) => {
                             return (
                                 <section>
-                                    <Link to='/users/trip' onClick={() => {props.handleTrip_id(trip.id); props.handleCurrentTrip(trip.name);}} key={trip.id} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '300px'}}>{trip.name}</Link>
+                                    <Link to='/users/trip' onClick={() => {calendarClicked(trip.id, trip.name);}} key={trip.id} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '300px'}}>{trip.name}</Link>
                                 </section>
                             )
                         })
@@ -81,7 +100,7 @@ export default function Dashboard(props) {
                             <input id="tripName" placeholder="Vacation..." type="text" style={{ marginTop: '1vh', padding: '5px' }} />
                         </section>
                         <section>
-                            <Link to='/users/trip' onClick={() => { calResponse(); updateTrip(); }} id="newTrip" style={{textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '30px', width: '200px', margin: '10vh' }}>New Trip</Link>
+                            <Link to='/users/trip' onClick={() => { calResponse(); updateTrip(); responseList();}} id="newTrip" style={{textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '30px', width: '200px', margin: '10vh' }}>New Trip</Link>
                         </section>
                     </span>
                     <hr id="TripsDivide" />

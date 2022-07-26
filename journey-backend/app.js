@@ -125,11 +125,15 @@ app.post('/users/tripList', async (req, res) => {
 
 app.post('/users/calendar', async (req, res) => {
   let trip_id = req.body.trip_id;
+  console.log('id: ', trip_id)
   let query = new Parse.Query("Trip")
 
   query.equalTo("objectId", trip_id)
+  console.log('query', query.toJSON())
   query.first({ useMasterKey: true }).then(function (trip) {
+    console.log('trip: ', trip)
     let activityList = trip.get('Activities')
+    console.log(activityList)
     res.send({ "activities": activityList })
   }).catch(function (error) {
     console.log(error)

@@ -37,8 +37,7 @@ export default function Trip(props) {
             .then(function (response) {
                 console.log('response:' + response)
                 props.handleCurrentTripList(response.data.trips)
-                console.log('trips response: ' + response.data.trips)
-                console.log(props.currentTripList)
+                props.handleActivityList([])
             })
             .catch(function (error) {
                 console.log("Trip list update failed: " + error.response.data);
@@ -83,6 +82,8 @@ export default function Trip(props) {
                     changeCurrentDate={changeCurrentDate}
                     handleTrip_id={props.handleTrip_id}
                     trip_id={props.trip_id}
+                    activityList={props.activityList}
+                    handleActivityList={props.handleActivityList}
                 />
             </div>
         </div>
