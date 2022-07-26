@@ -18,27 +18,29 @@ function CalendarDays(props) {
     const [activityDescription, setActivityDescription] = React.useState('');
     const [dVisibility, setDVisibility] = React.useState('hidden');
     const [activity, setActivity] = React.useState('');
+    const [currentDescription, setCurrentDescription] = React.useState('');
+    const [currentActivity, setCurrentActivity] = React.useState();
 
     const response = (activity) => {
         axios.post(`http://localhost:${PORT}/users/activity`, {
             trip_id: props.trip_id,
             activity: activity
         })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
+
+    // TODO:
+    const responseDelete = () => {
+        axios.post(`http://localhost:${PORT}/users/removeActivity`, {
+            trip_id: props.trip_id,
+            activity: currentActivity
+        })
         .catch(function (error) {
             console.log(error)
         })
     }
-
-    // TODO:
-    // const responseDelete = (activity) => {
-    //     axios.post(`http://localhost:${PORT}/users/removeActivity`, {
-    //         trip_id: props.trip_id,
-    //         activity: activity
-    //     })
-    //     .catch(function (error) {
-    //         console.log(error)
-    //     })
-    // }
 
     function handleStartChange(date) {
         setStartDate(date)
@@ -126,6 +128,11 @@ function CalendarDays(props) {
         setActivityDescription('');
     }
 
+    function deleteActivity() {
+        let new_aList = props.activityList.filter(item => item != currentActivity)
+        props.handleActivityList(new_aList)
+    }
+
     function descriptionPopUp() {
         if (dVisibility == 'hidden') {
             setDVisibility('visible')
@@ -175,20 +182,14 @@ function CalendarDays(props) {
                     }
                     return (
                         <div className={"calendar-day" + (day.currentMonth ? " current" : "") + (day.selected ? " selected" : "")}
-                        onDoubleClick={() => { clearActivity(); popUp(); props.changeCurrentDate(day)}} key={"calendar-day" + day.number + day.currentMonth + (day.selected ? " selected" : "")}>
+                            onDoubleClick={() => { clearActivity(); popUp(); props.changeCurrentDate(day) }} key={"calendar-day" + day.number + day.currentMonth + (day.selected ? " selected" : "")}>
                             <div id="day-number">{day.number}
                                 <section className='activities-section'>
                                     {
                                         aName.map((activity) => {
                                             return (
                                                 <section>
-                                                    <p onClick={descriptionPopUp} style={{}}>{activity.name}</p>
-                                                    <span className="popupDescription" id="myDescription" style={{ visibility: dVisibility }}>
-                                                        <button onClick={() => {descriptionPopUp();}}>X</button>
-                                                        {activity.description}
-                                                        {/* TODO: delete activity button*/}
-                                                        {/* <button onClick={responseDelete(activity)}>Remove Activity</button> */}
-                                                    </span>
+                                                    <p onClick={() => { descriptionPopUp(); setCurrentDescription(activity.description); setCurrentActivity(activity);}}>{activity.name}</p>
                                                 </section>
                                             )
                                         })
@@ -228,8 +229,15 @@ function CalendarDays(props) {
                 </form>
                 <p>Description:</p>
                 <input id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
-                <button onClick={() => {createActivity(); popUp();}}>Create Activity</button>
+                <button onClick={() => { createActivity(); popUp(); }}>Create Activity</button>
             </span>
+            {/* <div className="descriptionPopUp"> */}
+                <span className="popupDescription" id="myDescription" style={{position: 'absolute', visibility: dVisibility , backgroundColor: 'white' , color: 'black', minHeight: '80px', minWidth: '100px', marginLeft: '30%', marginTop: '20%'}}>
+                    <button onClick={() => { descriptionPopUp(); }} style={{marginRight: '-67%', marginLeft: '10%'}}>X</button>
+                    <p>{currentDescription}</p>
+                    <button onClick={() => {responseDelete(); deleteActivity(); descriptionPopUp();}}>Delete Activity</button>
+                </span>
+            {/* </div> */}
             <button onClick={prevClicked}>Prev</button>
             <button onClick={nextClicked}>Next</button>
         </div>

@@ -7,7 +7,7 @@ import axios from "axios";
 
 export default function Dashboard(props) {
     const [visibility, setVisibility] = React.useState('hidden');
-    const [sharedUser, setSharedUser] = React.useState('');
+    const [dVisibility, setDVisibility] = React.useState('hidden');
     const PORT = 3001
 
     const response = () => {
@@ -49,16 +49,16 @@ export default function Dashboard(props) {
                 console.log(error)
             })
     }
-    
+
     const responseShare = (trip_id, trip_name, user) => {
         axios.post(`http://localhost:${PORT}/users/share`, {
             user: user,
             trip_id: trip_id,
             trip_name: trip_name
         })
-        .catch(function (error) {
-            console.log(error)
-        })
+            .catch(function (error) {
+                console.log(error)
+            })
     }
 
     function calendarClicked(trip_id, trip_name) {
@@ -73,6 +73,15 @@ export default function Dashboard(props) {
         }
         else {
             setVisibility('hidden')
+        }
+    }
+
+    function deletePopUp() {
+        if (dVisibility === 'hidden') {
+            setDVisibility('visible')
+        }
+        else {
+            setDVisibility('hidden')
         }
     }
 
@@ -104,24 +113,30 @@ export default function Dashboard(props) {
                                 return (
                                     <section>
                                         <Link to='/users/trip' onClick={() => { calendarClicked(trip.id, trip.name); }} key={trip.id} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '300px' }}>{trip.name}</Link>
-                                        <input id={trip.name + ' ' + trip.id} placeholder="Share with..." type="text"/>
-                                        <button onClick={() => responseShare(trip.id, trip.name, document.getElementById(trip.name + ' ' + trip.id).value)}>Share</button>
+                                        <input id={trip.name + ' ' + trip.id} placeholder="Friend Username..." type="text" />
+                                        <button onClick={() => responseShare(trip.id, trip.name, document.getElementById(trip.name + ' ' + trip.id).value)}>Share with friend</button>
+                                        <button onClick={() => {deletePopUp()}}>Delete Trip</button>
+                                        <div className="deletePopUP" style={{ visibility: dVisibility , backgroundColor: "white", color: "black"}}>
+                                            <p>Are you sure you want to delete this trip?</p>
+                                            <button onClick={deletePopUp}>yes</button>
+                                        </div>
                                     </section>
                                 )
                             })
                         }
+                        <div className="popUp" onClick={popUp} style={{ marginLeft: '100px', textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', height: '20px', width: '200px', marginTop: '34%' }}>New Trip</div>
+                        <span className="popupText" id="myPopup" style={{ visibility: visibility}}>Name Your Trip
+                        <button onClick={popUp}>X</button>
+                            <section>
+                                <input id="tripName" placeholder="Vacation..." type="text" style={{ marginTop: '1vh', padding: '5px' }} />
+                            </section>
+                            <section>
+                                <Link to='/users/trip' onClick={() => { calResponse(); updateTrip(); }} id="newTrip" style={{ textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '30px', width: '200px', margin: '10vh' }}>New Trip</Link>
+                            </section>
+                        </span>
                     </div>
-                    <div className="popUp" onClick={popUp} style={{ marginLeft: '100px', textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', height: '20px', width: '200px', marginTop: '34%' }}>New Trip</div>
-                    <span className="popupText" id="myPopup" style={{ visibility: visibility }}>Name Your Trip
-                        <section>
-                            <input id="tripName" placeholder="Vacation..." type="text" style={{ marginTop: '1vh', padding: '5px' }} />
-                        </section>
-                        <section>
-                            <Link to='/users/trip' onClick={() => { calResponse(); updateTrip(); }} id="newTrip" style={{ textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '30px', width: '200px', margin: '10vh' }}>New Trip</Link>
-                        </section>
-                    </span>
                     <hr id="TripsDivide" />
-                    <p style={{ paddingRight: '42%', height: '20px', width: '100px' }}>Past Trips:</p>
+                    <p style={{ paddingRight: '30%', height: '20px', width: '200px' }}>Past Trips:</p>
                 </div>
             </div>
         </div>
