@@ -7,6 +7,7 @@ import axios from "axios";
 
 export default function Dashboard(props) {
     const [visibility, setVisibility] = React.useState('hidden');
+    const [sharedUser, setSharedUser] = React.useState('');
     const PORT = 3001
 
     const response = () => {
@@ -48,16 +49,17 @@ export default function Dashboard(props) {
                 console.log(error)
             })
     }
-    // TODO: finish sharing functionality
-    // const responseShare = (trip_id, user) => {
-    //     axios.post(`http://localhost:${PORT}/users/share`, {
-    //         user: user,
-    //         trip_id: trip_id
-    //     })
-    //     .catch(function (error) {
-    //         console.log(error)
-    //     })
-    // }
+    
+    const responseShare = (trip_id, trip_name, user) => {
+        axios.post(`http://localhost:${PORT}/users/share`, {
+            user: user,
+            trip_id: trip_id,
+            trip_name: trip_name
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
 
     function calendarClicked(trip_id, trip_name) {
         props.handleTrip_id(trip_id);
@@ -102,9 +104,8 @@ export default function Dashboard(props) {
                                 return (
                                     <section>
                                         <Link to='/users/trip' onClick={() => { calendarClicked(trip.id, trip.name); }} key={trip.id} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '300px' }}>{trip.name}</Link>
-                                        {/* TODO: Sharing button */}
-                                        {/* <input id="shareInput" placeholder="Share with..." type="text"/>
-                                    <button onClick={responseShare(trip.id, document.getElementById("shareInput"))}>Share</button> */}
+                                        <input id={trip.name + ' ' + trip.id} placeholder="Share with..." type="text"/>
+                                        <button onClick={() => responseShare(trip.id, trip.name, document.getElementById(trip.name + ' ' + trip.id).value)}>Share</button>
                                     </section>
                                 )
                             })

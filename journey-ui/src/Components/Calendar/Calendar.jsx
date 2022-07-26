@@ -57,15 +57,13 @@ function CalendarDays(props) {
     }
 
     function popUp() {
-        if (visibility == 'hidden') {
+        if (visibility === 'hidden') {
             setStartDate(new Date());
             setVisibility('visible')
         }
         else {
             setVisibility('hidden')
         }
-
-        // setStartDate(props.day);
     }
 
     function nextClicked() {

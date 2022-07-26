@@ -36,7 +36,6 @@ app.post('/users/register', async (req, res) => {
     res.status(400).send({ loginMessage: error.message, RegisterMessage: '', typeStatus: "danger", infoUser: infoUser });
   }
 })
-
 // Expects parameters for username and password
 app.post('/users/login', async (req, res) => {
   let query = new Parse.Query("User_Data")
@@ -182,10 +181,14 @@ app.post('/users/removeActivity', async (req, res) => {
   })
 })
 
-// TODO:
 app.post('/users/share', async (req, res) => {
   let user = req.body.user
   let trip_id = req.body.trip_id
+  let trip_name = req.body.trip_name
+  let new_trip = {
+    id: trip_id,
+    name: trip_name
+  }
   let query = new Parse.Query("User_Data");
   console.log('trip_id: ', trip_id)
 
@@ -194,7 +197,7 @@ app.post('/users/share', async (req, res) => {
   console.log(query.toJSON())
   query.first({ useMasterKey: true }).then(function (trip) {
     let trips = trip.get('trips_accessed')
-    trips = [...trips, trip_id]
+    trips = [...trips, new_trip]
     trip.set('trips_accessed', trips)
     trip.save();
   })
