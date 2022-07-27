@@ -27,7 +27,6 @@ export default function Login(props) {
         localStorage.setItem('tripList', JSON.stringify(response.data.trips))
         // props.handleCurrentTripList(response.data.trips)
         navigate("/users/dashboard")
-        console.log(props.username)
       })
       .catch(function (error) {
         props.handleSignInErrorMessage("Sign in failed: " + error.response.data);

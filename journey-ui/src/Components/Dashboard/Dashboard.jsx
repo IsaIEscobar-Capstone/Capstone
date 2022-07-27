@@ -3,14 +3,14 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import background from "../Images/Background.png";
 import axios from "axios";
+import { useNavigate } from 'react-router';
 
 
 export default function Dashboard(props) {
+    let navigate = useNavigate();
     const [visibility, setVisibility] = React.useState('hidden');
     const [dVisibility, setDVisibility] = React.useState('hidden');
     const PORT = 3001
-    // console.log(typeof(JSON.parse(localStorage.getItem('tripList'))))
-    // const [trips, setTrips] = React.useState(JSON.parse(localStorage.getItem('tripList')));
 
     const response = () => {
         axios.post(`http://localhost:${PORT}/users/dashboard`, {
@@ -32,8 +32,10 @@ export default function Dashboard(props) {
             username: localStorage.getItem('username')
         })
             .then(function (response) {
-                props.handleTrip_id(response.data.trip_id);
-                props.handleCurrentTrip(document.getElementById('tripName').value,);
+                localStorage.setItem('trip_id', response.data.trip_id)
+                // props.handleTrip_id(response.data.trip_id);
+                localStorage.setItem('currentTrip', document.getElementById('tripName').value)
+                // props.handleCurrentTrip(document.getElementById('tripName').value);
             })
             .catch(function (error) {
                 console.log(error)
@@ -45,7 +47,10 @@ export default function Dashboard(props) {
             trip_id: trip_id
         })
             .then(function (response) {
-                props.handleActivityList(response.data.activities)
+                localStorage.setItem('activityList', JSON.stringify(response.data.activities))
+                console.log('activityList: ', JSON.parse(localStorage.getItem('activityList')));
+                // props.handleActivityList(response.data.activities)
+                navigate("/users/trip")
             })
             .catch(function (error) {
                 console.log(error)
@@ -64,9 +69,11 @@ export default function Dashboard(props) {
     }
 
     function calendarClicked(trip_id, trip_name) {
-        props.handleTrip_id(trip_id);
-        props.handleCurrentTrip(trip_name);
-        responseList(trip_id);
+        localStorage.setItem('trip_id', trip_id)
+        // props.handleTrip_id(trip_id);
+        localStorage.setItem('currentTrip', trip_name)
+        // props.handleCurrentTrip(trip_name);
+        // responseList(trip_id);
     }
 
     function popUp() {
@@ -89,7 +96,8 @@ export default function Dashboard(props) {
 
     function updateTrip() {
         var vacationName = document.getElementById('tripName').value
-        props.handleCurrentTrip(vacationName)
+        localStorage.setItem('currentTrip', vacationName)
+        // props.handleCurrentTrip(vacationName)
     }
 
     return (
@@ -114,7 +122,7 @@ export default function Dashboard(props) {
                             JSON.parse(localStorage.getItem('tripList')).map((trip) => {
                                 return (
                                     <section>
-                                        <Link to='/users/trip' onClick={() => { calendarClicked(trip.id, trip.name); }} key={trip.id} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '300px' }}>{trip.name}</Link>
+                                        <button to='/users/trip' onClick={() => { responseList(trip.id); calendarClicked(trip.id, trip.name); }} key={trip.id} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '300px' }}>{trip.name}</button>
                                         <input id={trip.name + ' ' + trip.id} placeholder="Friend Username..." type="text" />
                                         <button onClick={() => responseShare(trip.id, trip.name, document.getElementById(trip.name + ' ' + trip.id).value)}>Share with friend</button>
                                         <button onClick={() => {deletePopUp()}}>Delete Trip</button>

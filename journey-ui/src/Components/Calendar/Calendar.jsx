@@ -22,7 +22,7 @@ function CalendarDays(props) {
 
     const response = (activity) => {
         axios.post(`http://localhost:${PORT}/users/activity`, {
-            trip_id: props.trip_id,
+            trip_id: localStorage.getItem('trip_id'),
             activity: activity
         })
             .catch(function (error) {
@@ -30,10 +30,9 @@ function CalendarDays(props) {
             })
     }
 
-    // TODO:
     const responseDelete = () => {
         axios.post(`http://localhost:${PORT}/users/removeActivity`, {
-            trip_id: props.trip_id,
+            trip_id: localStorage.getItem('trip_id'),
             activity: currentActivity
         })
         .catch(function (error) {
@@ -112,23 +111,32 @@ function CalendarDays(props) {
     }
 
     function createActivity() {
+        let id = String(Math.random() * 10000000) + activityName + activityDescription
 
         let activity = {
+            id: id,
             name: activityName,
             startDate: startDate,
             endDate: endDate,
             description: activityDescription
         }
         response(activity)
-        props.handleActivityList([...props.activityList, activity])
+        let temp = JSON.parse(localStorage.getItem('activityList'))
+        temp.push(activity)
+        localStorage.setItem('activityList', JSON.stringify(temp))
         setEndDate(props.day)
         setActivityName('');
         setActivityDescription('');
     }
 
     function deleteActivity() {
-        let new_aList = props.activityList.filter(item => item != currentActivity)
-        props.handleActivityList(new_aList)
+        let new_aList = []
+        for (let i = 0; i < JSON.parse(localStorage.getItem('activityList')).length; i++) {
+            if (JSON.parse(localStorage.getItem('activityList'))[i].id != currentActivity.id) {
+                new_aList.push(JSON.parse(localStorage.getItem('activityList'))[i])
+            }
+        }
+        localStorage.setItem('activityList', JSON.stringify(new_aList));
     }
 
     function descriptionPopUp() {
@@ -164,18 +172,18 @@ function CalendarDays(props) {
         currentDays.push(calendarDay);
     }
 
-    React.useEffect(() => { setStartDate(props.day); });
+    React.useEffect(() => { setStartDate(props.day);});
 
     return (
         <div className="calendar-content">
             {
                 currentDays.map((day) => {
                     let aName = []
-                    for (let i = 0; i < props.activityList.length; i++) {
-                        let tempStart = new Date(props.activityList[i].startDate);
-                        let tempEnd = new Date(props.activityList[i].endDate);
+                    for (let i = 0; i < JSON.parse(localStorage.getItem('activityList')).length; i++) {
+                        let tempStart = new Date(JSON.parse(localStorage.getItem('activityList'))[i].startDate);
+                        let tempEnd = new Date(JSON.parse(localStorage.getItem('activityList'))[i].endDate);
                         if (tempStart.getTime() <= day.date.getTime() && day.date.getTime() <= tempEnd.getTime()) {
-                            aName.push(props.activityList[i])
+                            aName.push(JSON.parse(localStorage.getItem('activityList'))[i])
                         }
                     }
                     return (
