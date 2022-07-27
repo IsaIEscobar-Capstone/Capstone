@@ -19,10 +19,12 @@ export default function Register(props){
 
     .then(function(response) {
       console.log("hi register: " + response.data.sessionToken)
-      props.handleSessionToken(response.data.sessionToken)
-      props.handleUsername(document.getElementById('username').value);
+      localStorage.setItem('sessionToken', response.data.sessionToken)
+      // props.handleSessionToken(response.data.sessionToken)
+      localStorage.setItem('username', document.getElementById('username').value)
+      // props.handleUsername(document.getElementById('username').value);
       navigate("/users/dashboard")
-      console.log(props.username)
+      console.log(localStorage.getItem('username'))
     })
 
     .catch(function(error) {

@@ -9,10 +9,12 @@ export default function Dashboard(props) {
     const [visibility, setVisibility] = React.useState('hidden');
     const [dVisibility, setDVisibility] = React.useState('hidden');
     const PORT = 3001
+    // console.log(typeof(JSON.parse(localStorage.getItem('tripList'))))
+    // const [trips, setTrips] = React.useState(JSON.parse(localStorage.getItem('tripList')));
 
     const response = () => {
         axios.post(`http://localhost:${PORT}/users/dashboard`, {
-            sessionToken: props.sessionToken
+            sessionToken: localStorage.getItem('sessionToken')
         })
 
             .then(function (response) {
@@ -27,7 +29,7 @@ export default function Dashboard(props) {
     const calResponse = () => {
         axios.post(`http://localhost:${PORT}/users/trip`, {
             vacationName: document.getElementById('tripName').value,
-            username: props.username
+            username: localStorage.getItem('username')
         })
             .then(function (response) {
                 props.handleTrip_id(response.data.trip_id);
@@ -102,14 +104,14 @@ export default function Dashboard(props) {
             <Link to='/' onClick={response} id="logOut" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', width: '200px', marginRight: '90%' }}>Log Out</Link>
             <div className="Home">
                 <div className="Header">
-                    <p>{props.username.toUpperCase()}'S Trip Dashboard</p>
+                    <p>{localStorage.getItem('username').toUpperCase()}'S Trip Dashboard</p>
                     <hr id="DashDivide" />
                 </div>
                 <div className="Dash">
                     <p style={{ paddingLeft: '10px', height: '20px', width: '100px' }}>Current Trips:</p>
                     <div className="currentTrips">
                         {
-                            props.currentTripList.map((trip) => {
+                            JSON.parse(localStorage.getItem('tripList')).map((trip) => {
                                 return (
                                     <section>
                                         <Link to='/users/trip' onClick={() => { calendarClicked(trip.id, trip.name); }} key={trip.id} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '300px' }}>{trip.name}</Link>

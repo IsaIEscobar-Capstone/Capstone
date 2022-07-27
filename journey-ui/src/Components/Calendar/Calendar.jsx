@@ -17,7 +17,6 @@ function CalendarDays(props) {
     const [activityName, setActivityName] = React.useState('');
     const [activityDescription, setActivityDescription] = React.useState('');
     const [dVisibility, setDVisibility] = React.useState('hidden');
-    const [activity, setActivity] = React.useState('');
     const [currentDescription, setCurrentDescription] = React.useState('');
     const [currentActivity, setCurrentActivity] = React.useState();
 
@@ -120,7 +119,6 @@ function CalendarDays(props) {
             endDate: endDate,
             description: activityDescription
         }
-        setActivity(activity)
         response(activity)
         props.handleActivityList([...props.activityList, activity])
         setEndDate(props.day)

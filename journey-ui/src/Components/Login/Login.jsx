@@ -20,9 +20,12 @@ export default function Login(props) {
 
       .then(function (response) {
         console.log("hi: " + response.data.sessionToken)
-        props.handleSessionToken(response.data.sessionToken)
-        props.handleUsername(document.getElementById('username').value);
-        props.handleCurrentTripList(response.data.trips)
+        localStorage.setItem('sessionToken', response.data.sessionToken);
+        // props.handleSessionToken(response.data.sessionToken)
+        localStorage.setItem('username', document.getElementById('username').value);
+        // props.handleUsername(document.getElementById('username').value);
+        localStorage.setItem('tripList', JSON.stringify(response.data.trips))
+        // props.handleCurrentTripList(response.data.trips)
         navigate("/users/dashboard")
         console.log(props.username)
       })

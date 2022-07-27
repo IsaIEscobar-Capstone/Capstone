@@ -15,7 +15,7 @@ export default function Trip(props) {
     const PORT = 3001
     const response = () => {
         axios.post(`http://localhost:${PORT}/users/dashboard`, {
-            sessionToken: props.sessionToken
+            sessionToken: localStorage.getItem('sessionToken')
         })
 
             .then(function (response) {
@@ -29,10 +29,11 @@ export default function Trip(props) {
 
     const tripResponse = () => {
         axios.post(`http://localhost:${PORT}/users/tripList`, {
-            username: props.username
+            username: localStorage.getItem('username')
         })
             .then(function (response) {
-                props.handleCurrentTripList(response.data.trips)
+                localStorage.setItem('tripList', JSON.stringify(response.data.trips))
+                // props.handleCurrentTripList(response.data.trips)
                 props.handleActivityList([])
             })
             .catch(function (error) {
@@ -56,6 +57,9 @@ export default function Trip(props) {
             <div className="returnButtons">
                 <Link to='/' onClick={response} id="dashLogOut" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Log Out</Link>
                 <Link to='/users/dashboard' onClick={tripResponse} id="BackToDash" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Back To Dash</Link>
+            </div>
+            <div className="SearchActivities">
+                <Link to='/users/activitySearch' id="activitySearch">Search Activities</Link>
             </div>
             <div className="Home">
                 <div className="Header">
