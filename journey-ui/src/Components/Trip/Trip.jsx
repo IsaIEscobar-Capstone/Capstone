@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import CalendarDays from "../Calendar/Calendar";
 
-export default function Trip(props) {
-
+export default function Trip() {
     const [currentDay, setCurrentDay] = React.useState(new Date())
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
     const months = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -15,7 +14,7 @@ export default function Trip(props) {
     const PORT = 3001
     const response = () => {
         axios.post(`http://localhost:${PORT}/users/dashboard`, {
-            sessionToken: props.sessionToken
+            sessionToken: localStorage.getItem('sessionToken')
         })
 
             .then(function (response) {
@@ -29,11 +28,11 @@ export default function Trip(props) {
 
     const tripResponse = () => {
         axios.post(`http://localhost:${PORT}/users/tripList`, {
-            username: props.username
+            username: localStorage.getItem('username')
         })
             .then(function (response) {
-                props.handleCurrentTripList(response.data.trips)
-                props.handleActivityList([])
+                localStorage.setItem('tripList', JSON.stringify(response.data.trips))
+                localStorage.setItem('activityList', JSON.stringify([]))
             })
             .catch(function (error) {
                 console.log("Trip list update failed: " + error.response.data);
@@ -57,9 +56,12 @@ export default function Trip(props) {
                 <Link to='/' onClick={response} id="dashLogOut" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Log Out</Link>
                 <Link to='/users/dashboard' onClick={tripResponse} id="BackToDash" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Back To Dash</Link>
             </div>
+            <div className="SearchActivities">
+                <Link to='/users/activitySearch' id="activitySearch">Search Activities</Link>
+            </div>
             <div className="Home">
                 <div className="Header">
-                    <h2>{props.currentTrip}</h2>
+                    <h2>{localStorage.getItem('currentTrip')}</h2>
                     <h2>{months[currentDay.getMonth()]} {currentDay.getFullYear()}</h2>
                 </div>
                 <div className="weekly-header">
@@ -72,10 +74,6 @@ export default function Trip(props) {
                 <CalendarDays
                     day={currentDay}
                     changeCurrentDate={changeCurrentDate}
-                    handleTrip_id={props.handleTrip_id}
-                    trip_id={props.trip_id}
-                    activityList={props.activityList}
-                    handleActivityList={props.handleActivityList}
                 />
             </div>
         </div>

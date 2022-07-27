@@ -17,28 +17,28 @@ function CalendarDays(props) {
     const [activityName, setActivityName] = React.useState('');
     const [activityDescription, setActivityDescription] = React.useState('');
     const [dVisibility, setDVisibility] = React.useState('hidden');
-    const [activity, setActivity] = React.useState('');
+    const [currentDescription, setCurrentDescription] = React.useState('');
+    const [currentActivity, setCurrentActivity] = React.useState();
 
     const response = (activity) => {
         axios.post(`http://localhost:${PORT}/users/activity`, {
-            trip_id: props.trip_id,
+            trip_id: localStorage.getItem('trip_id'),
             activity: activity
+        })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
+
+    const responseDelete = () => {
+        axios.post(`http://localhost:${PORT}/users/removeActivity`, {
+            trip_id: localStorage.getItem('trip_id'),
+            activity: currentActivity
         })
         .catch(function (error) {
             console.log(error)
         })
     }
-
-    // TODO:
-    // const responseDelete = (activity) => {
-    //     axios.post(`http://localhost:${PORT}/users/removeActivity`, {
-    //         trip_id: props.trip_id,
-    //         activity: activity
-    //     })
-    //     .catch(function (error) {
-    //         console.log(error)
-    //     })
-    // }
 
     function handleStartChange(date) {
         setStartDate(date)
@@ -57,15 +57,13 @@ function CalendarDays(props) {
     }
 
     function popUp() {
-        if (visibility == 'hidden') {
+        if (visibility === 'hidden') {
             setStartDate(new Date());
             setVisibility('visible')
         }
         else {
             setVisibility('hidden')
         }
-
-        // setStartDate(props.day);
     }
 
     function nextClicked() {
@@ -113,19 +111,32 @@ function CalendarDays(props) {
     }
 
     function createActivity() {
+        let id = String(Math.random() * 10000000) + activityName + activityDescription
 
         let activity = {
+            id: id,
             name: activityName,
             startDate: startDate,
             endDate: endDate,
             description: activityDescription
         }
-        setActivity(activity)
         response(activity)
-        props.handleActivityList([...props.activityList, activity])
+        let temp = JSON.parse(localStorage.getItem('activityList'))
+        temp.push(activity)
+        localStorage.setItem('activityList', JSON.stringify(temp))
         setEndDate(props.day)
         setActivityName('');
         setActivityDescription('');
+    }
+
+    function deleteActivity() {
+        let new_aList = []
+        for (let i = 0; i < JSON.parse(localStorage.getItem('activityList')).length; i++) {
+            if (JSON.parse(localStorage.getItem('activityList'))[i].id != currentActivity.id) {
+                new_aList.push(JSON.parse(localStorage.getItem('activityList'))[i])
+            }
+        }
+        localStorage.setItem('activityList', JSON.stringify(new_aList));
     }
 
     function descriptionPopUp() {
@@ -161,36 +172,30 @@ function CalendarDays(props) {
         currentDays.push(calendarDay);
     }
 
-    React.useEffect(() => { setStartDate(props.day); });
+    React.useEffect(() => { setStartDate(props.day);});
 
     return (
         <div className="calendar-content">
             {
                 currentDays.map((day) => {
                     let aName = []
-                    for (let i = 0; i < props.activityList.length; i++) {
-                        let tempStart = new Date(props.activityList[i].startDate);
-                        let tempEnd = new Date(props.activityList[i].endDate);
+                    for (let i = 0; i < JSON.parse(localStorage.getItem('activityList')).length; i++) {
+                        let tempStart = new Date(JSON.parse(localStorage.getItem('activityList'))[i].startDate);
+                        let tempEnd = new Date(JSON.parse(localStorage.getItem('activityList'))[i].endDate);
                         if (tempStart.getTime() <= day.date.getTime() && day.date.getTime() <= tempEnd.getTime()) {
-                            aName.push(props.activityList[i])
+                            aName.push(JSON.parse(localStorage.getItem('activityList'))[i])
                         }
                     }
                     return (
                         <div className={"calendar-day" + (day.currentMonth ? " current" : "") + (day.selected ? " selected" : "")}
-                        onDoubleClick={() => { clearActivity(); popUp(); props.changeCurrentDate(day)}} key={"calendar-day" + day.number + day.currentMonth + (day.selected ? " selected" : "")}>
+                            onDoubleClick={() => { clearActivity(); popUp(); props.changeCurrentDate(day) }} key={"calendar-day" + day.number + day.currentMonth + (day.selected ? " selected" : "")}>
                             <div id="day-number">{day.number}
                                 <section className='activities-section'>
                                     {
                                         aName.map((activity) => {
                                             return (
                                                 <section>
-                                                    <p onClick={descriptionPopUp} style={{}}>{activity.name}</p>
-                                                    <span className="popupDescription" id="myDescription" style={{ visibility: dVisibility }}>
-                                                        <button onClick={() => {descriptionPopUp();}}>X</button>
-                                                        {activity.description}
-                                                        {/* TODO: delete activity button*/}
-                                                        {/* <button onClick={responseDelete(activity)}>Remove Activity</button> */}
-                                                    </span>
+                                                    <p onClick={() => { descriptionPopUp(); setCurrentDescription(activity.description); setCurrentActivity(activity);}}>{activity.name}</p>
                                                 </section>
                                             )
                                         })
@@ -230,8 +235,15 @@ function CalendarDays(props) {
                 </form>
                 <p>Description:</p>
                 <input id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
-                <button onClick={() => {createActivity(); popUp();}}>Create Activity</button>
+                <button onClick={() => { createActivity(); popUp(); }}>Create Activity</button>
             </span>
+            {/* <div className="descriptionPopUp"> */}
+                <span className="popupDescription" id="myDescription" style={{position: 'absolute', visibility: dVisibility , backgroundColor: 'white' , color: 'black', minHeight: '80px', minWidth: '100px', marginLeft: '30%', marginTop: '20%'}}>
+                    <button onClick={() => { descriptionPopUp(); }} style={{marginRight: '-67%', marginLeft: '10%'}}>X</button>
+                    <p>{currentDescription}</p>
+                    <button onClick={() => {responseDelete(); deleteActivity(); descriptionPopUp();}}>Delete Activity</button>
+                </span>
+            {/* </div> */}
             <button onClick={prevClicked}>Prev</button>
             <button onClick={nextClicked}>Next</button>
         </div>
