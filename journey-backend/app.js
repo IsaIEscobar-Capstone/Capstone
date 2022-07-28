@@ -29,6 +29,20 @@ app.post('/users/flightExample', async (req, res) => {
   }
 })
 
+app.post ('/users/accessInfo', async (req, res) => {
+  let objectId = 'brGe5Fg4K7'
+  let query = new Parse.Query("Flight_Example_Calls");
+
+  query.equalTo("objectId", objectId)
+  query.first({ useMasterKey: true }).then(function (trip) {
+    let flightData = trip.get('responseCall')
+    res.send({"flightData":  flightData})
+  }).catch(function (error) {
+    console.log(error)
+  })
+
+})
+
 // Expects parameters for username and password
 app.post('/users/register', async (req, res) => {
   let infoUser = req.body;

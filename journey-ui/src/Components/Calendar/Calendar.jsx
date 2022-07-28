@@ -182,10 +182,15 @@ function CalendarDays(props) {
                     for (let i = 0; i < JSON.parse(localStorage.getItem('activityList')).length; i++) {
                         let tempStart = new Date(JSON.parse(localStorage.getItem('activityList'))[i].startDate);
                         let tempEnd = new Date(JSON.parse(localStorage.getItem('activityList'))[i].endDate);
-                        if (tempStart.getTime() <= day.date.getTime() && day.date.getTime() <= tempEnd.getTime()) {
+                        if (tempStart.getFullYear() <= day.date.getFullYear() && day.date.getFullYear() <= tempEnd.getFullYear() &&
+                        tempStart.getMonth() <= day.date.getMonth() && day.date.getMonth() <= tempEnd.getMonth() &&
+                        tempStart.getDate(0) <= day.date.getDate() && day.date.getDate() <= tempEnd.getDate()
+                        ) {
+                            console.log(JSON.parse(localStorage.getItem('activityList'))[i])
                             aName.push(JSON.parse(localStorage.getItem('activityList'))[i])
                         }
                     }
+                    console.log(aName)
                     return (
                         <div className={"calendar-day" + (day.currentMonth ? " current" : "") + (day.selected ? " selected" : "")}
                             onDoubleClick={() => { clearActivity(); popUp(); props.changeCurrentDate(day) }} key={"calendar-day" + day.number + day.currentMonth + (day.selected ? " selected" : "")}>
