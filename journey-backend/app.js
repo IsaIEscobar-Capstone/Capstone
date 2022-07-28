@@ -15,6 +15,20 @@ Parse.initialize("f3uKzoRyLgM4hnYMxkTFbZr6oABcuO4kHbAxQ3Ur", "hJKEz9itTiqQbFq0bx
 Parse.serverURL = 'https://parseapi.back4app.com/'
 // Parse.Cloud.useMasterKey();
 
+app.post('/users/flightExample', async (req, res) => {
+  let exampleRes = req.body.exampleRes;
+  let exampleCall = new Parse.Object("Flight_Example_Calls")
+  console.log('exampleres: ', typeof(exampleRes), exampleRes)
+
+  exampleCall.set("responseCall", exampleRes)
+
+  try {
+    await exampleCall.save()
+  } catch (error) {
+    console.log('flightExample eror: ', error.message)
+  }
+})
+
 // Expects parameters for username and password
 app.post('/users/register', async (req, res) => {
   let infoUser = req.body;
