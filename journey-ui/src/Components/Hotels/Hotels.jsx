@@ -97,8 +97,8 @@ export default function Hotels() {
         let activity = {
             id: id,
             name: activityName,
-            startDate: new Date(hotel.startDate),
-            endDate: new Date(hotel.endDate),
+            startDate: new Date(startDate),
+            endDate: new Date(endDate),
             description: activityDescription
         }
         addActivity(activity)
@@ -215,6 +215,7 @@ export default function Hotels() {
                                 <p>{hotel.name}</p>
                                 <p>{hotel.address.streetAddress}</p>
                                 <p>Star Rating: {hotel.starRating}</p>
+                                <p>{hotel.ratePlan.price.current} a night</p>
                                 <button onClick={()=>{popUp(); setCurrentHotel(hotel);}}>Add to calendar</button>
                             </section>
                         )
