@@ -57,7 +57,12 @@ export default function Trip() {
                 <Link to='/users/dashboard' onClick={tripResponse} id="BackToDash" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Back To Dash</Link>
             </div>
             <div className="SearchActivities">
+                <section>
+                <Link to='/users/hotels' id='hotelSearch'>Search Hotels</Link>
+                </section>
+                <section>
                 <Link to='/users/activitySearch' id="activitySearch">Search Activities</Link>
+                </section>
             </div>
             <div className="Home">
                 <div className="Header">

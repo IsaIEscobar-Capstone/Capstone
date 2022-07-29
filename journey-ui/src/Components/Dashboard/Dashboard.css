@@ -13,12 +13,12 @@
     border: 5px solid white;
 }
 
-#TripsDivide {
+/* #TripsDivide {
     border: 4px solid white;
     height: 1000px;
     margin-top: -1%;
     margin-right: 0.5%;
-}
+} */
 
 .Dash {
     display: flex;
@@ -44,4 +44,10 @@
 
 .currentTrips {
     margin-top: 5vh;
+}
+
+body {
+    background-image: url('../Images/Background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
 }

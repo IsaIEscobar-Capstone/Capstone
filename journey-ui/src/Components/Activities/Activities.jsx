@@ -225,14 +225,7 @@ export default function Activities() {
     }
 
     return (
-        <div className="background"
-            style={{
-                backgroundImage: `url(${background})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: 'cover',
-                width: '100vw',
-                height: '100vh'
-            }}>
+        <div>
             <div className="returnButtons">
                 <Link to='/' onClick={logOut} id="dashLogOut" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Log Out</Link>
                 <Link to='/users/trip' id="BackToCal" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Back To Calendar</Link>

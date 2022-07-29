@@ -33,9 +33,7 @@ export default function Dashboard(props) {
         })
             .then(function (response) {
                 localStorage.setItem('trip_id', response.data.trip_id)
-                // props.handleTrip_id(response.data.trip_id);
                 localStorage.setItem('currentTrip', document.getElementById('tripName').value)
-                // props.handleCurrentTrip(document.getElementById('tripName').value);
             })
             .catch(function (error) {
                 console.log(error)
@@ -49,7 +47,6 @@ export default function Dashboard(props) {
             .then(function (response) {
                 localStorage.setItem('activityList', JSON.stringify(response.data.activities))
                 console.log('activityList: ', JSON.parse(localStorage.getItem('activityList')));
-                // props.handleActivityList(response.data.activities)
                 navigate("/users/trip")
             })
             .catch(function (error) {
@@ -70,10 +67,7 @@ export default function Dashboard(props) {
 
     function calendarClicked(trip_id, trip_name) {
         localStorage.setItem('trip_id', trip_id)
-        // props.handleTrip_id(trip_id);
         localStorage.setItem('currentTrip', trip_name)
-        // props.handleCurrentTrip(trip_name);
-        // responseList(trip_id);
     }
 
     function popUp() {
@@ -101,14 +95,15 @@ export default function Dashboard(props) {
     }
 
     return (
-        <div className="background"
-            style={{
-                backgroundImage: `url(${background})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: 'cover',
-                width: '100vw',
-                height: '100vh'
-            }}>
+        <div>
+        {/* className="background" */}
+        {/* //     style={{ */}
+        {/* //         backgroundImage: `url(${background})`,
+        //         backgroundRepeat: "no-repeat",
+        //         backgroundSize: 'cover',
+        //         width: '100vw',
+        //         height: '100vh'
+        //     }}> */}
             <Link to='/' onClick={response} id="logOut" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', width: '200px', marginRight: '90%' }}>Log Out</Link>
             <div className="Home">
                 <div className="Header">
@@ -116,7 +111,7 @@ export default function Dashboard(props) {
                     <hr id="DashDivide" />
                 </div>
                 <div className="Dash">
-                    <p style={{ paddingLeft: '10px', height: '20px', width: '100px' }}>Current Trips:</p>
+                    {/* <p style={{ paddingLeft: '10px', height: '20px', width: '100px' }}>Current Trips:</p> */}
                     <div className="currentTrips">
                         {
                             JSON.parse(localStorage.getItem('tripList')).map((trip) => {
@@ -134,19 +129,22 @@ export default function Dashboard(props) {
                                 )
                             })
                         }
-                        <div className="popUp" onClick={popUp} style={{ marginLeft: '100px', textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', height: '20px', width: '200px', marginTop: '34%' }}>New Trip</div>
+                        <div className="popUp" onClick={popUp} style={{ marginLeft: '15vw', textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', height: '20px', width: '200px', marginTop: '10%' , padding: '2%', paddingBottom: '5%'}}>New Trip</div>
                         <span className="popupText" id="myPopup" style={{ visibility: visibility}}>Name Your Trip
                         <button onClick={popUp}>X</button>
                             <section>
                                 <input id="tripName" placeholder="Vacation..." type="text" style={{ marginTop: '1vh', padding: '5px' }} />
                             </section>
                             <section>
-                                <Link to='/users/trip' onClick={() => { calResponse(); updateTrip(); }} id="newTrip" style={{ textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '30px', width: '200px', margin: '10vh' }}>New Trip</Link>
+                                <Link to='/users/trip' onClick={() => { calResponse(); updateTrip(); }} id="newTrip" style={{ textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '30px', width: '200px'}}>New Trip</Link>
+                            </section>
+                            <section>
+                            <Link to='/users/hotels' onClick={() => { calResponse(); updateTrip(); }} id="newTrip" style={{ textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '30px', width: '200px'}}>New Trip</Link>
                             </section>
                         </span>
                     </div>
-                    <hr id="TripsDivide" />
-                    <p style={{ paddingRight: '30%', height: '20px', width: '200px' }}>Past Trips:</p>
+                    {/* <hr id="TripsDivide" />
+                    <p style={{ paddingRight: '30%', height: '20px', width: '200px' }}>Past Trips:</p> */}
                 </div>
             </div>
         </div>
