@@ -8,7 +8,7 @@ import Login from "../Login/Login";
 import Dashboard from "../Dashboard/Dashboard";
 import Trip from "../Trip/Trip";
 import Activities from "../Activities/Activities"
-import Hotels from "../Hotels/Hotels"
+import Hotels from "../Hotels/Hotels";
 
 function App() {
   const [signUpErrorMessage, setSignUpErrorMessage] = React.useState("");

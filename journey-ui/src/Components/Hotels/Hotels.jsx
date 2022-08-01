@@ -210,12 +210,13 @@ export default function Hotels() {
                 {
                     hotelDetails.map((hotel) => {
                         return (
-                            <section>
+                            <section key={hotel.id}>
                                 <img src={hotel.optimizedThumbUrls.srpDesktop} alt="hotel image" />
                                 <p>{hotel.name}</p>
                                 <p>{hotel.address.streetAddress}</p>
                                 <p>Star Rating: {hotel.starRating}</p>
                                 <p>{hotel.ratePlan.price.current} a night</p>
+                                <a href={'https://www.hotels.com/ho'+ hotel.id} target="_blank">More Info/Booking</a>
                                 <button onClick={()=>{popUp(); setCurrentHotel(hotel);}}>Add to calendar</button>
                             </section>
                         )

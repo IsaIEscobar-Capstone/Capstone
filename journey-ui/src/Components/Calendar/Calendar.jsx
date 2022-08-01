@@ -19,6 +19,7 @@ function CalendarDays(props) {
     const [dVisibility, setDVisibility] = React.useState('hidden');
     const [currentDescription, setCurrentDescription] = React.useState('');
     const [currentActivity, setCurrentActivity] = React.useState();
+    const [doubleCheck, setDoubleCheck] = React.useState('hidden');
 
     const response = (activity) => {
         axios.post(`http://localhost:${PORT}/users/activity`, {
@@ -35,9 +36,18 @@ function CalendarDays(props) {
             trip_id: localStorage.getItem('trip_id'),
             activity: currentActivity
         })
-        .catch(function (error) {
-            console.log(error)
-        })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
+
+    function handleDoubleCheck() {
+        if (doubleCheck === 'hidden') {
+            setDoubleCheck('visible')
+        }
+        else {
+            setDoubleCheck('hidden')
+        }
     }
 
     function handleStartChange(date) {
@@ -172,7 +182,7 @@ function CalendarDays(props) {
         currentDays.push(calendarDay);
     }
 
-    React.useEffect(() => { setStartDate(props.day);});
+    React.useEffect(() => { setStartDate(props.day); });
 
     return (
         <div className="calendar-content">
@@ -183,8 +193,8 @@ function CalendarDays(props) {
                         let tempStart = new Date(JSON.parse(localStorage.getItem('activityList'))[i].startDate);
                         let tempEnd = new Date(JSON.parse(localStorage.getItem('activityList'))[i].endDate);
                         if (tempStart.getFullYear() <= day.date.getFullYear() && day.date.getFullYear() <= tempEnd.getFullYear() &&
-                        tempStart.getMonth() <= day.date.getMonth() && day.date.getMonth() <= tempEnd.getMonth() &&
-                        tempStart.getDate(0) <= day.date.getDate() && day.date.getDate() <= tempEnd.getDate()
+                            tempStart.getMonth() <= day.date.getMonth() && day.date.getMonth() <= tempEnd.getMonth() &&
+                            tempStart.getDate(0) <= day.date.getDate() && day.date.getDate() <= tempEnd.getDate()
                         ) {
                             console.log(JSON.parse(localStorage.getItem('activityList'))[i])
                             aName.push(JSON.parse(localStorage.getItem('activityList'))[i])
@@ -200,7 +210,7 @@ function CalendarDays(props) {
                                         aName.map((activity) => {
                                             return (
                                                 <section>
-                                                    <p onClick={() => { descriptionPopUp(); setCurrentDescription(activity.description); setCurrentActivity(activity);}}>{activity.name}</p>
+                                                    <p onClick={() => { descriptionPopUp(); setCurrentDescription(activity.description); setCurrentActivity(activity); }}>{activity.name}</p>
                                                 </section>
                                             )
                                         })
@@ -242,13 +252,16 @@ function CalendarDays(props) {
                 <input id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
                 <button onClick={() => { createActivity(); popUp(); }}>Create Activity</button>
             </span>
-            {/* <div className="descriptionPopUp"> */}
-                <span className="popupDescription" id="myDescription" style={{position: 'absolute', visibility: dVisibility , backgroundColor: 'white' , color: 'black', minHeight: '80px', minWidth: '100px', marginLeft: '30%', marginTop: '20%'}}>
-                    <button onClick={() => { descriptionPopUp(); }} style={{marginRight: '-67%', marginLeft: '10%'}}>X</button>
-                    <p>{currentDescription}</p>
-                    <button onClick={() => {responseDelete(); deleteActivity(); descriptionPopUp();}}>Delete Activity</button>
+            <span className="popupDescription" id="myDescription" style={{ position: 'absolute', visibility: dVisibility, backgroundColor: 'white', color: 'black', minHeight: '80px', minWidth: '100px', marginLeft: '30%', marginTop: '20%' }}>
+                <button onClick={() => { descriptionPopUp(); }} style={{ marginRight: '-67%', marginLeft: '10%' }}>X</button>
+                <p>{currentDescription}</p>
+                <button onClick={() => {descriptionPopUp(); handleDoubleCheck();}}>Delete Activity</button>
+                <span className="deletePopUP" style={{ visibility: doubleCheck , backgroundColor: "white", color: "black"}}>
+                <button onClick={() => {handleDoubleCheck()}}>X</button>
+                <p>Are you sure you want to delete this trip?</p>
+                <button onClick={() => { responseDelete(); deleteActivity(); handleDoubleCheck(); }}>yes</button>
                 </span>
-            {/* </div> */}
+            </span>
             <button onClick={prevClicked}>Prev</button>
             <button onClick={nextClicked}>Next</button>
         </div>
