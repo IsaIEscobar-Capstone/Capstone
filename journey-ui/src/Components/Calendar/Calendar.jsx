@@ -4,6 +4,17 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
+import ChatSetUp from "../ChatSetUp/ChatSetUp";
+import { initializeParse } from "@parse/react";
+const PARSE_LIVE_QUERY_URL = "https://journey.b4a.io/";
+const PARSE_APPLICATION_ID = "f3uKzoRyLgM4hnYMxkTFbZr6oABcuO4kHbAxQ3Ur";
+const PARSE_JAVASCRIPT_KEY = "hJKEz9itTiqQbFq0bx5bRyO15LI95m9H44kSWLR0"
+
+initializeParse(
+    PARSE_LIVE_QUERY_URL,
+    PARSE_APPLICATION_ID,
+    PARSE_JAVASCRIPT_KEY
+  );
 
 function CalendarDays(props) {
     const PORT = 3001
@@ -273,6 +284,7 @@ function CalendarDays(props) {
             </span>
             <button onClick={prevClicked} style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px',  border: '2px solid white'}}>Prev</button>
             <button onClick={nextClicked} style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px',  border: '2px solid white'}}>Next</button>
+            <ChatSetUp/>
         </div>
     )
 }

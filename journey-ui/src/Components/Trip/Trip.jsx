@@ -44,14 +44,7 @@ export default function Trip() {
     }
 
     return (
-        <div className="background"
-            style={{
-                backgroundImage: `url(${background})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: 'cover',
-                width: '100vw',
-                height: '150vh'
-            }}>
+        <div>
             <div className="returnButtons">
                 <Link to='/' onClick={response} id="dashLogOut" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Log Out</Link>
                 <Link to='/users/dashboard' onClick={tripResponse} id="BackToDash" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Back To Dash</Link>
