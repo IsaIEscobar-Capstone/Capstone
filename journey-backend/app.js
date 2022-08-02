@@ -5,6 +5,7 @@ const cors = require("cors")
 const morgan = require('morgan')
 const bodyParser = require('body-parser');
 const { query } = require('express');
+// const { applyStyles } = require('@popperjs/core');
 const masterKey = "EiLDaqAiTMab4Qws2g5nEQEzW75Jn6lKZ44dp9A3"
 
 app.use(bodyParser.json());
@@ -13,7 +14,65 @@ app.use(morgan('tiny'))
 
 Parse.initialize("f3uKzoRyLgM4hnYMxkTFbZr6oABcuO4kHbAxQ3Ur", "hJKEz9itTiqQbFq0bx5bRyO15LI95m9H44kSWLR0", `${masterKey}`);
 Parse.serverURL = 'https://parseapi.back4app.com/'
-// Parse.Cloud.useMasterKey();
+
+app.post('/users/deleteCalendar', async (req, res) => {
+  let trip_id = req.body.trip_id
+  let username = req.body.username
+  let query = new Parse.Query('Trip');
+  let userQ = new Parse.Query('User_Data');
+
+  query.equalTo('objectId', trip_id);
+  userQ.equalTo("User_id", username);
+
+  userQ.first({ useMasterKey: true }).then(function (user_trip) { 
+    let temp = user_trip.get('trips_accessed').filter(trip => trip.id != trip_id)
+    user_trip.set('trips_accessed', temp)
+    user_trip.save()
+  })
+  query.first({ useMasterKey: true}).then(function (trip) {
+    if (trip) {
+      trip.destroy({ useMasterKey: true }).then(function (res) {
+            console.log("session destroyed")
+          }).catch(function (error) {
+            console.log(error)
+            return null
+          })
+    }
+    else {
+      console.log("Nothing to destroy")
+      return null
+    }
+  })
+})
+
+
+app.post('/users/flightExample', async (req, res) => {
+  let exampleRes = req.body.exampleRes;
+  let exampleCall = new Parse.Object("Flight_Example_Calls")
+  console.log('exampleres: ', typeof(exampleRes), exampleRes)
+
+  exampleCall.set("responseCall", exampleRes)
+
+  try {
+    await exampleCall.save()
+  } catch (error) {
+    console.log('flightExample eror: ', error.message)
+  }
+})
+
+app.post ('/users/accessInfo', async (req, res) => {
+  let objectId = 'brGe5Fg4K7'
+  let query = new Parse.Query("Flight_Example_Calls");
+
+  query.equalTo("objectId", objectId)
+  query.first({ useMasterKey: true }).then(function (trip) {
+    let flightData = trip.get('responseCall')
+    res.send({"flightData":  flightData})
+  }).catch(function (error) {
+    console.log(error)
+  })
+
+})
 
 // Expects parameters for username and password
 app.post('/users/register', async (req, res) => {
