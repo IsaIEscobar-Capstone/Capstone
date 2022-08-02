@@ -57,11 +57,11 @@ export default function Trip() {
                 <Link to='/users/dashboard' onClick={tripResponse} id="BackToDash" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Back To Dash</Link>
             </div>
             <div className="SearchActivities">
-                <section>
-                <Link to='/users/hotels' id='hotelSearch'>Search Hotels</Link>
+                <section style={{marginBottom: '4vh'}}>
+                <Link to='/users/hotels' id='hotelSearch' style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px', marginRight: '-85%'}}>Search Hotels</Link>
                 </section>
                 <section>
-                <Link to='/users/activitySearch' id="activitySearch">Search Activities</Link>
+                <Link to='/users/activitySearch' id="activitySearch" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px', marginRight: '-85%'}}>Search Activities</Link>
                 </section>
             </div>
             <div className="Home">

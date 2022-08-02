@@ -3,3 +3,34 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.inputs {
+    display: grid;
+    grid-template-columns: 200px 200px 200px 200px 200px 200px 200px;
+    margin-left: 2%;
+    gap: 10px; 
+}
+
+::placeholder {
+    color: white;
+}
+
+.hotelDisplay{
+    color: white
+}
+
+.hotelAddress {
+    position: relative;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+/* .innerContent {
+    justify
+} */

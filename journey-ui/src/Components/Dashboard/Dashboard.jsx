@@ -131,9 +131,9 @@ export default function Dashboard(props) {
                             JSON.parse(localStorage.getItem('tripList')).map((trip) => {
                                 return (
                                     <section key={trip.id}>
-                                        <button to='/users/trip' onClick={() => { responseList(trip.id); calendarClicked(trip.id, trip.name); }} key={trip.id} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '300px' }}>{trip.name}</button>
-                                        <input id={trip.name + ' ' + trip.id} placeholder="Friend Username..." type="text" />
-                                        <button onClick={() => responseShare(trip.id, trip.name, document.getElementById(trip.name + ' ' + trip.id).value)}>Share with friend</button>
+                                        <button to='/users/trip' onClick={() => { responseList(trip.id); calendarClicked(trip.id, trip.name); }} key={trip.id} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '300px' , backgroundColor: 'transparent'}}>{trip.name}</button>
+                                        <input id={trip.name + ' ' + trip.id} placeholder="Friend Username..." type="text"/>
+                                        <button onClick={() => responseShare(trip.id, trip.name, document.getElementById(trip.name + ' ' + trip.id).value)} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '150px' , backgroundColor: 'transparent'}}>Share with friend</button>
                                         <DeletePopup 
                                         responseDelete={responseDelete}
                                         trip={trip}
@@ -143,17 +143,19 @@ export default function Dashboard(props) {
                                 )
                             })
                         }
-                        <div className="popUp" onClick={popUp} style={{ marginLeft: '15vw', textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', height: '20px', width: '200px', marginTop: '10%' , padding: '2%', paddingBottom: '5%'}}>New Trip</div>
-                        <span className="popupText" id="myPopup" style={{ visibility: visibility}}>Name Your Trip
-                        <button onClick={popUp}>X</button>
+                        <div style={{backgroundColor: 'white', borderRadius: '10px', height: '17vh', width: '15vw', marginLeft: '26vh', visibility: visibility}}>
+                        <span className="popupText" id="myPopup" style={{ visibility: visibility, backgroundColor: 'white'}}>Name Your Trip
+                            <button onClick={popUp} style={{backgroundColor: 'transparent', borderRadius: '60%', marginRight:'-2.5vw', marginLeft: '2vw'}}>X</button>
                             <section>
-                                <input id="tripName" placeholder="Vacation..." type="text" style={{ marginTop: '1vh', padding: '5px' }} />
+                                <input id="tripName" placeholder="Vacation..." type="text" style={{ marginTop: '2.5vh', padding: '5px' , marginBottom: '1vh'}} />
                             </section>
                             <section>
                                 <Link to='/users/trip' onClick={() => { calResponse(); updateTrip(); }} id="newTrip" style={{ textDecoration: 'none', color: 'black', border: '2px solid black', borderRadius: '5px', height: '30px', width: '200px'}}>New Trip</Link>
                             </section>
                         </span>
-                    </div>
+                        </div>
+                        <div className="popUp" onClick={popUp} style={{ marginLeft: '15vw', textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', height: '20px', width: '200px', marginTop: '10%' , padding: '2%', paddingBottom: '5%', marginBottom: '5%'}}>New Trip</div>
+                        </div>
                 </div>
             </div>
         </div>

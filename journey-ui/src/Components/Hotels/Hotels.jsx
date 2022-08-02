@@ -93,13 +93,15 @@ export default function Hotels() {
 
     function createActivity(hotel) {
         let id = String(Math.random() * 10000000) + activityName + activityDescription
+        let address = hotel.address.streetAddress
+        let price = hotel.ratePlan.price.current + ' a night'
 
         let activity = {
             id: id,
             name: activityName,
             startDate: new Date(startDate),
             endDate: new Date(endDate),
-            description: activityDescription
+            description: 'Name: ' + hotel.name + '\nAddress: '+ address + '\nPrice: ' + price + '\n' + activityDescription
         }
         addActivity(activity)
         let temp = JSON.parse(localStorage.getItem('activityList'))
@@ -161,11 +163,10 @@ export default function Hotels() {
                 <Link to='/' onClick={logOut} id="dashLogOut" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Log Out</Link>
                 <Link to='/users/trip' id="BackToCal" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Back To Calendar</Link>
             </div>
-            <p>Find Your Perfect Hotel</p>
-            <section>
-                <input id="location" type="text" placeholder="Location" />
-            </section>
-            <form onSubmit={onStartFormSubmit}>
+            <p style={{fontFamily: 'Impact, Haettenschweiler, Arial Narrow Bold, sans-serif' , fontSize: '20px'}}>Find Your Perfect Hotel</p>
+            <div className="inputs">
+            <input id="location" type="text" placeholder="Location" style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}/>
+            <form onSubmit={onStartFormSubmit} style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}>
                 <div className="form-group">
                     <DatePicker
                         selected={startDate}
@@ -176,7 +177,7 @@ export default function Hotels() {
                     <p className="start">Start Date</p>
                 </div>
             </form>
-            <form onSubmit={onEndFormSubmit}>
+            <form onSubmit={onEndFormSubmit} style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}>
                 <div className="form-group">
                     <DatePicker
                         selected={endDate}
@@ -187,38 +188,44 @@ export default function Hotels() {
                     <p className="end">End Date</p>
                 </div>
             </form>
-            <section>
-            <input id="traveler-number" type="number" min="0" placeholder="# of travelers" />
-            </section>
-            <section>
-                <input id="price-min" type="number" min="0" placeholder="Minimum Price" />
-            </section>
-            <input id="price-max" type="number" min="0" placeholder="Maximum Price" />
-            <section>
-                <button onClick={() => {searchHotel();}}>Search Hotel</button>
-            </section>
-            <span className="popupText" id="myPopup" style={{ position: 'absolute', visibility: visibility, marginLeft: '450px', height: '500px', width: '450px' }}>New Activity
-                <button onClick={() => { popUp(); }}>X</button>
+            <input id="traveler-number" type="number" min="0" placeholder="# of travelers" style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}/>
+            <input id="price-min" type="number" min="0" placeholder="Minimum Price" style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}/>
+            <input id="price-max" type="number" min="0" placeholder="Maximum Price" style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}/>
+            <button onClick={() => {searchHotel();}} style={{backgroundColor: 'transparent', color: 'grey', borderRadius: '10px', border: '2px solid grey'}}>Search Hotel</button>
+            </div>
+            <span className="popupText" id="myPopup" style={{ position: 'absolute', visibility: visibility, height: '500px', width: '450px' }}>
+                New Activity
+                <button style={{backgroundColor: 'transparent', borderRadius: '80%', marginLeft: '33%', marginRight: '-38%'}} onClick={() => {popUp();}}>X</button>
                 <section>
                     <input id="activityName" value={activityName} onChange={(e) => setActivityName(e.target.value)} type="text" />
                 </section>
                 <p>Description:</p>
-                <input id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
-                <button onClick={() => { createActivity(currentHotel); popUp(); }}>Create Activity</button>
+                <textarea id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
+                <button style={{backgroundColor: 'transparent', borderRadius: '10px', marginTop: '10%'}} onClick={() => { createActivity(currentHotel); popUp(); }}>Create Activity</button>
             </span>
-            <section>
+            <section className='hotelDisplay'>
                 {
                     hotelDetails.map((hotel) => {
                         return (
-                            <section key={hotel.id}>
-                                <img src={hotel.optimizedThumbUrls.srpDesktop} alt="hotel image" />
+                            <div key={hotel.id} style={{padding: '2%', margin: '2%', border: '2px solid white', borderRadius: '10px', display: 'grid', gridTemplateColumns: '1fr 1fr'}}>
+                                <div syle={{justifyContent: 'center'}}>
+                                <img src={hotel.optimizedThumbUrls.srpDesktop} alt="hotel image" style={{borderRadius: '10px'}}/>
+                                </div>
+                                <div className="hotelAddress">
+                                    <div className='content'>
+                                        <p className='innerContent'>{hotel.address.streetAddress}</p>
+                                    </div>
+                                </div>
                                 <p>{hotel.name}</p>
-                                <p>{hotel.address.streetAddress}</p>
                                 <p>Star Rating: {hotel.starRating}</p>
                                 <p>{hotel.ratePlan.price.current} a night</p>
-                                <a href={'https://www.hotels.com/ho'+ hotel.id} target="_blank">More Info/Booking</a>
-                                <button onClick={()=>{popUp(); setCurrentHotel(hotel);}}>Add to calendar</button>
-                            </section>
+                                <div sylte={{justifyContent: 'center'}}>
+                                <a href={'https://www.hotels.com/ho'+ hotel.id} target="_blank" style={{ textDecoration: 'none', color: 'black', border: '1px solid black', borderRadius: '10px', padding: '10px', width: '30%'}}>More Info/Booking</a>
+                                </div>
+                                <div sylte={{justifyContent: 'center'}}>
+                                <button onClick={()=>{popUp(); setCurrentHotel(hotel);}} style={{backgroundColor: 'transparent', border: '1px solid black', borderRadius: '10px', width: '20%'}}>Add to calendar</button>
+                                </div>
+                            </div>
                         )
                     })
                 }
