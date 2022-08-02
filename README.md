@@ -62,9 +62,8 @@
 
 <img width="877" alt="image" src="https://user-images.githubusercontent.com/71234828/177361000-e33f60fb-a0c7-47df-a3d8-cbdfb0daf317.png">
 
-### Choose Activity Page:
-
-<img width="873" alt="image" src="https://user-images.githubusercontent.com/71234828/177361279-c98b1484-6733-4307-aaac-d8a40e981880.png">
+### Choose Hotel Page:
+<img width="621" alt="Screen Shot 2022-08-01 at 9 58 48 PM" src="https://user-images.githubusercontent.com/71234828/182295245-3e516ac0-b542-4a39-8424-86c3e0669a42.png">
 
 ### Choose Flight Page:
 
