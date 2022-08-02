@@ -3,3 +3,10 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.inputFields {
+    display: grid;
+    grid-template-columns: 200px 200px 200px 200px 200px 200px 200px;
+    margin-left: 2%;
+    gap: 10px; 
+}

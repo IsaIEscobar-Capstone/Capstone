@@ -231,11 +231,10 @@ export default function Activities() {
                 <Link to='/users/trip' id="BackToCal" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Back To Calendar</Link>
             </div>
             <p>Find Your Perfect Flight</p>
-            <section>
-                <input id="origin" type="text" placeholder="Origin" />
-            </section>
-            <input id="destination" type="text" placeholder="Destination" />
-            <form onSubmit={onStartFormSubmit}>
+            <div className="inputFields" style={{justifyContent: 'center'}}>
+            <input id="origin" type="text" placeholder="Origin" style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}/>
+            <input id="destination" type="text" placeholder="Destination" style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}/>
+            <form onSubmit={onStartFormSubmit} style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}>
                 <div className="form-group">
                     <DatePicker
                         selected={originDate}
@@ -246,7 +245,7 @@ export default function Activities() {
                     <p className="start">Start Date</p>
                 </div>
             </form>
-            <form onSubmit={onEndFormSubmit}>
+            <form onSubmit={onEndFormSubmit} style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}>
                 <div className="form-group">
                     <DatePicker
                         selected={destinationDate}
@@ -257,15 +256,12 @@ export default function Activities() {
                     <p className="end">End Date</p>
                 </div>
             </form>
-            <input id="traveler-number" type="number" min="0" placeholder="# of travelers" />
-            <section>
-                <button onClick={() => {searchFlight();}}>Search Flight</button>
-            </section>
+            <input id="traveler-number" type="number" min="0" placeholder="# of travelers" style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}/>
+            <button onClick={() => {searchFlight();}} style={{backgroundColor: 'transparent', color: 'grey', borderRadius: '10px', border: '2px solid grey'}}>Search Flight</button>
+            </div>
             <span className="popupText" id="myPopup" style={{ position: 'absolute', visibility: visibility, marginLeft: '450px', height: '500px', width: '450px' }}>New Activity
                 <button onClick={() => { popUp(); }}>X</button>
-                <section>
                     <input id="activityName" value={activityName} onChange={(e) => setActivityName(e.target.value)} type="text" />
-                </section>
                 <p>Description:</p>
                 <input id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
                 <button onClick={() => { createActivity(currentFlight); popUp(); }}>Create Activity</button>

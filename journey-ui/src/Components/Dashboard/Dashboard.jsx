@@ -132,7 +132,7 @@ export default function Dashboard(props) {
                                 return (
                                     <section key={trip.id}>
                                         <button to='/users/trip' onClick={() => { responseList(trip.id); calendarClicked(trip.id, trip.name); }} key={trip.id} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '300px' , backgroundColor: 'transparent'}}>{trip.name}</button>
-                                        <input id={trip.name + ' ' + trip.id} placeholder="Friend Username..." type="text"/>
+                                        <input id={trip.name + ' ' + trip.id} placeholder="Friend Username..." type="text" style={{ backgroundColor: 'transparent', border: '2px solid white', borderRadius: '5px',}}/>
                                         <button onClick={() => responseShare(trip.id, trip.name, document.getElementById(trip.name + ' ' + trip.id).value)} style={{ color: 'white', textDecoration: 'none', margin: '0.5vh', border: '2px solid white', borderRadius: '5px', width: '150px' , backgroundColor: 'transparent'}}>Share with friend</button>
                                         <DeletePopup 
                                         responseDelete={responseDelete}
