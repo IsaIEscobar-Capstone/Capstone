@@ -80,15 +80,14 @@ export default function LiveChat(props) {
   return (
     <div>
       <div className="flex_between">
-        <h2 class="list_heading">{`${props.senderNicknameName} sending, ${props.receiverNicknameName} receiving!`}</h2>
-        <Tooltip title="Reload">
+        <h2 class="list_heading">{`${props.receiverNicknameName}`}</h2>
           <Button
+            className="rld-btn"
             onClick={reload}
             type="primary"
             shape="circle"
             icon={<SyncOutlined />}
           />
-        </Tooltip>
       </div>
       {results && (
         <div className="messages">
@@ -117,6 +116,7 @@ export default function LiveChat(props) {
       )}
       <div className="new_message">
         <h2 className="new_message_title">New message</h2>
+        <div className='reciever-wrapper'>
         <Input
           className="form_input"
           value={messageInput}
@@ -124,10 +124,10 @@ export default function LiveChat(props) {
           placeholder={"Your message..."}
           size="large"
         />
+        </div>
         <Button
           type="primary"
           className="form_button"
-          color={"#208AEC"}
           size={"large"}
           onClick={sendMessage}
         >

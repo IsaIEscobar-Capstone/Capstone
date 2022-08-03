@@ -197,6 +197,7 @@ function CalendarDays(props) {
     React.useEffect(() => { setStartDate(props.day); });
 
     return (
+        <div className="calender-chat">
         <div className="calendar-content">
             {
                 currentDays.map((day) => {
@@ -284,7 +285,11 @@ function CalendarDays(props) {
             </span>
             <button onClick={prevClicked} style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px',  border: '2px solid white'}}>Prev</button>
             <button onClick={nextClicked} style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px',  border: '2px solid white'}}>Next</button>
-            <ChatSetUp/>
+        </div>
+        <span></span>
+        <div className='liveChat'>
+        <ChatSetUp/>
+        </div>
         </div>
     )
 }
