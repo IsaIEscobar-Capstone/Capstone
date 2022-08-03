@@ -148,6 +148,7 @@ app.post('/users/trip', async (req, res) => {
   trip.set("TripName", vacationName)
   trip.set("Travelers", [username])
   trip.set("Activities", [])
+  trip.set('chat_access', [username])
 
   try {
     let result = await trip.save();
@@ -248,16 +249,43 @@ app.post('/users/share', async (req, res) => {
     name: trip_name
   }
   let query = new Parse.Query("User_Data");
+  let tripQ = new Parse.Query("Trip")
   console.log('trip_id: ', trip_id)
 
   query.equalTo("User_id", user)
+  tripQ.equalTo("objectId", trip_id)
 
   console.log(query.toJSON())
+  tripQ.first({ useMasterKey: true }).then(function(chat) {
+    let current_chat = chat.get('chat_access')
+    chat.set('chat_access', [...current_chat, user])
+    chat.save()
+  })
   query.first({ useMasterKey: true }).then(function (trip) {
+    console.log('trip: ', trip)
     let trips = trip.get('trips_accessed')
     trips = [...trips, new_trip]
     trip.set('trips_accessed', trips)
     trip.save();
+  })
+})
+
+app.post('/users/chatCheck', async (req, res) => {
+  let trip_id = req.body.trip_id
+  let user = req.body.user
+  let query = new Parse.Query("Trip")
+
+  query.equalTo('objectId', trip_id)
+  
+  query.first({ useMasterKey: true}).then(function (trip) {
+    let accessTrue = trip.get('chat_access')
+    let access = false
+    for (let i = 0; i < accessTrue.length; i++) {
+      if (accessTrue[i] === user) {
+        access = true
+      }
+    }
+    res.send({'access': access})
   })
 })
 
