@@ -17,7 +17,7 @@ export default function Home() {
                 height: '100vh'
             }}>
             <div className="Home">
-                <div className="header">
+                <div className="header-main">
                     <p>Welcome to your</p>
                     <img id="logo" src={journey} width="250" height="200" />
                 </div>
