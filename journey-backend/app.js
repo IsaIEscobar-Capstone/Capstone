@@ -1,19 +1,49 @@
 const Parse = require('parse/node');
-const express = require('express')
-const app = express()
-const cors = require("cors")
-const morgan = require('morgan')
+const express = require('express');
+const app = express();
+const cors = require("cors");
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const { query } = require('express');
-// const { applyStyles } = require('@popperjs/core');
 const masterKey = "EiLDaqAiTMab4Qws2g5nEQEzW75Jn6lKZ44dp9A3"
 
 app.use(bodyParser.json());
 app.use(cors())
 app.use(morgan('tiny'))
 
+
 Parse.initialize("f3uKzoRyLgM4hnYMxkTFbZr6oABcuO4kHbAxQ3Ur", "hJKEz9itTiqQbFq0bx5bRyO15LI95m9H44kSWLR0", `${masterKey}`);
 Parse.serverURL = 'https://parseapi.back4app.com/'
+
+app.post('/users/uploadPhotos', async (req, res) => {
+  let trip_id = req.body.trip_id
+  let imgUrl = req.body.imgUrl
+  let query = new Parse.Query('Trip');
+
+  query.equalTo('objectId', trip_id);
+
+  query.first({ useMasterKey: true}).then(function (trip) {
+    let temp = trip.get('img_list')
+    temp = [...temp, imgUrl]
+    trip.set('img_list', temp)
+    trip.save()
+  })
+})
+
+app.post('/users/getPhotos', async (req, res) => {
+  let trip_id = req.body.trip_id
+  let query = new Parse.Query('Trip');
+
+  query.equalTo('objectId', trip_id);
+
+  query.first({ useMasterKey: true}).then(function (trip) {
+    let temp = trip.get('img_list')
+    res.send({"photoList": temp })
+  })
+  .catch(function (err) {
+    console.log(error)
+  })
+})
+
 
 app.post('/users/deleteCalendar', async (req, res) => {
   let trip_id = req.body.trip_id
@@ -268,6 +298,13 @@ app.post('/users/share', async (req, res) => {
     trip.set('trips_accessed', trips)
     trip.save();
   })
+})
+
+app.post('/users/imageUpload', async (req, res) => {
+  let trip_id = req.body.trip_id
+  let file = req.body.file
+  let query = new Parse.Query("Trip")
+
 })
 
 app.post('/users/chatCheck', async (req, res) => {

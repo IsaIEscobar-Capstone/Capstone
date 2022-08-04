@@ -209,11 +209,9 @@ function CalendarDays(props) {
                             tempStart.getMonth() <= day.date.getMonth() && day.date.getMonth() <= tempEnd.getMonth() &&
                             tempStart.getDate(0) <= day.date.getDate() && day.date.getDate() <= tempEnd.getDate()
                         ) {
-                            console.log(JSON.parse(localStorage.getItem('activityList'))[i])
                             aName.push(JSON.parse(localStorage.getItem('activityList'))[i])
                         }
                     }
-                    console.log(aName)
                     return (
                         <div className={"calendar-day" + (day.currentMonth ? " current" : "") + (day.selected ? " selected" : "")}
                             onDoubleClick={() => { clearActivity(); popUp(); props.changeCurrentDate(day) }} key={"calendar-day" + day.number + day.currentMonth + (day.selected ? " selected" : "")}>

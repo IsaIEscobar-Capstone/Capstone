@@ -1,7 +1,6 @@
 import "./Activities.css";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import background from "../Images/Background.png";
 import axios from "axios";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -19,6 +18,7 @@ export default function Activities() {
     const [activityName, setActivityName] = React.useState('');
     const [activityDescription, setActivityDescription] = React.useState('');
     const [currentFlight, setCurrentFlight] = React.useState();
+    const [isLoading, setIsLoading] = React.useState('hidden');
     const PORT = 3001
 
     function timeConvert(n) {
@@ -47,6 +47,7 @@ export default function Activities() {
     const getResponse = () => {
         axios.post(`http://localhost:${PORT}/users/accessInfo`)
         .then(function (response) {
+            setIsLoading('hidden')
             let best = response.data.flightData.data.itineraries.buckets[0].items
             let bestList = []
             let fastest = response.data.flightData.data.itineraries.buckets[1].items
@@ -208,6 +209,7 @@ export default function Activities() {
     }
 
     function searchFlight() {
+        setIsLoading('visible')
         console.log('originDate: ' + originDate.getDate())
         let originMonth = originDate.getMonth() + 1
         let originDay = originDate.getDate()
@@ -266,6 +268,7 @@ export default function Activities() {
                 <input id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
                 <button onClick={() => { createActivity(currentFlight); popUp(); }}>Create Activity</button>
             </span>
+            <p style={{visibility: isLoading, color: 'white'}}>Loading...</p>
             <section>Best
                 {
                     bestFlightDetails.map((flight) => {
