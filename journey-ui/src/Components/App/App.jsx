@@ -15,7 +15,6 @@ function App() {
   const [signUpErrorMessage, setSignUpErrorMessage] = React.useState("");
   const [signInErrorMessage, setSignInErrorMessage] = React.useState("");
   const [currentRoute, setCurrentRoute] = React.useState("/");
-  const [currentGallery, setCurrentGallery] = React.useState([]);
 
   function handleSignUpErrorMessage(message) {
     setSignUpErrorMessage(message);
@@ -25,9 +24,6 @@ function App() {
   }
   function handleCurrentRoute(route) {
     setCurrentRoute(route)
-  }
-  function handleCurrentGallery(gallery) {
-    setCurrentGallery(gallery)
   }
   
 
@@ -70,10 +66,8 @@ function App() {
             />
             <Route
               path="/users/trip"
-              element={<Trip
-                currentGallery={currentGallery}
-                handleCurrentGallery={handleCurrentGallery}
-              />}
+              element={<Trip/>
+            }
             />
             <Route 
             path="/users/activitySearch"
@@ -90,10 +84,7 @@ function App() {
             <Route 
             path="/users/gallery"
             element={
-              <Gallery
-              currentGallery={currentGallery}
-              handleCurrentGallery={handleCurrentGallery}
-              />
+              <Gallery/>
             }
             />
           </Routes>

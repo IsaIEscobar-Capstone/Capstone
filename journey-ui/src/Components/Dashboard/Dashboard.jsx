@@ -93,7 +93,8 @@ export default function Dashboard(props) {
     function deleteFromList(trip_id) {
         let temp = JSON.parse(localStorage.getItem('tripList')).filter(trip => trip.id != trip_id)
         localStorage.setItem('tripList', JSON.stringify(temp))
-        console.log(JSON.parse(localStorage.getItem('tripList')))
+        window.location.reload()
+        // console.log(JSON.parse(localStorage.getItem('tripList')))
     }
 
     function calendarClicked(trip_id, trip_name) {

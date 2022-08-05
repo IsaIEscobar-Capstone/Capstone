@@ -7,7 +7,7 @@ import { ref, uploadBytesResumable, getDownloadURL} from "firebase/storage"
 import {storage} from "../Firebase"
 import { useEffect } from "react";
 
-export default function Trip(props) {
+export default function Trip() {
     const [currentDay, setCurrentDay] = React.useState(new Date())
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
     const months = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -36,6 +36,7 @@ export default function Trip(props) {
             .then(function (response) {
                 localStorage.setItem('tripList', JSON.stringify(response.data.trips))
                 localStorage.setItem('activityList', JSON.stringify([]))
+                window.location.reload()
             })
             .catch(function (error) {
                 console.log("Trip list update failed: " + error.response.data);

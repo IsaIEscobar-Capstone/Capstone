@@ -3,7 +3,7 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-export default function Gallery(props) {
+export default function Gallery() {
     const PORT = 3001
 
     const logOut = () => {
