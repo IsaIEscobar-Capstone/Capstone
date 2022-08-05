@@ -22,12 +22,14 @@ export default function DeletePhoto(props) {
 
     return (
         <div className="delete">
-        <button onClick={() => {deletePopUp()}} style={{ color: 'red', textDecoration: 'none', margin: '0.5vh', border: '2px solid red', borderRadius: '5px', width: '100px' , backgroundColor: 'transparent', opacity: '0.4'}}>Delete Photo</button>
-        <div className="deletePopUP" style={{ visibility: visibility , backgroundColor: "white", color: "black"}}>
-        <button onClick={() => {deletePopUp()}}>X</button>
-        <p>Are you sure you want to delete this photo?</p>
-        <button onClick={() => {props.responseDelete(props.photoLink); deletePopUp(); deleteFromList(props.photoLink);}}>yes</button>
-        </div>
+            <button onClick={() => { deletePopUp() }} style={{ color: 'red', textDecoration: 'none', margin: '0.5vh', border: '2px solid red', borderRadius: '5px', width: '100px', backgroundColor: 'transparent', opacity: '0.4' }}>Delete Photo</button>
+            <div className="deletePopUP" style={{ visibility: visibility, backgroundColor: "white", color: "black", borderRadius: '10px'}}>
+                <div style={{ display: 'grid', gridTemplateColumns: '13fr 1fr'}}>
+                    <p >Are you sure you want to delete this photo?</p>
+                    <button onClick={() => { deletePopUp() }} style={{ backgroundColor: 'transparent', border: '2px solid black', borderRadius: '60%', width: '30px' }}>X</button>
+                </div>
+                <button onClick={() => { props.responseDelete(props.photoLink); deletePopUp(); deleteFromList(props.photoLink); }} style={{ backgroundColor: 'transparent', border: '2px solid black', borderRadius: '5px', width: '40px' }}>yes</button>
+            </div>
         </div>
     )
 }
