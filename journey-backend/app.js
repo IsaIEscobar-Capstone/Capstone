@@ -1,19 +1,67 @@
 const Parse = require('parse/node');
-const express = require('express')
-const app = express()
-const cors = require("cors")
-const morgan = require('morgan')
+const express = require('express');
+const app = express();
+const cors = require("cors");
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const { query } = require('express');
-// const { applyStyles } = require('@popperjs/core');
 const masterKey = "EiLDaqAiTMab4Qws2g5nEQEzW75Jn6lKZ44dp9A3"
 
 app.use(bodyParser.json());
 app.use(cors())
 app.use(morgan('tiny'))
 
+
 Parse.initialize("f3uKzoRyLgM4hnYMxkTFbZr6oABcuO4kHbAxQ3Ur", "hJKEz9itTiqQbFq0bx5bRyO15LI95m9H44kSWLR0", `${masterKey}`);
 Parse.serverURL = 'https://parseapi.back4app.com/'
+
+app.post('/users/uploadPhotos', async (req, res) => {
+  let trip_id = req.body.trip_id
+  let imgUrl = req.body.imgUrl
+  let query = new Parse.Query('Trip');
+
+  query.equalTo('objectId', trip_id);
+
+  query.first({ useMasterKey: true}).then(function (trip) {
+    let temp = trip.get('img_list')
+    temp = [...temp, imgUrl]
+    trip.set('img_list', temp)
+    trip.save()
+  })
+})
+
+app.post('/users/getPhotos', async (req, res) => {
+  let trip_id = req.body.trip_id
+  let query = new Parse.Query('Trip');
+
+  query.equalTo('objectId', trip_id);
+
+  query.first({ useMasterKey: true}).then(function (trip) {
+    let photoList = trip.get('img_list')
+    res.send({"photoList": photoList })
+  })
+  .catch(function (err) {
+    console.log(error)
+  })
+})
+
+app.post('/users/deletePhoto', async (req, res) => {
+  let trip_id = req.body.trip_id
+  let photoLink = req.body.photoLink
+  let query = new Parse.Query('Trip');
+
+  query.equalTo('objectId', trip_id);
+
+  query.first({ useMasterKey: true}).then(function (trip) {
+    let photoList = trip.get('img_list')
+    photoList = photoList.filter(photo => photo != photoLink)
+    trip.set('img_list', photoList)
+    trip.save()
+  })
+  .catch(function (err) {
+    console.log(error)
+  })
+})
+
 
 app.post('/users/deleteCalendar', async (req, res) => {
   let trip_id = req.body.trip_id
@@ -49,7 +97,6 @@ app.post('/users/deleteCalendar', async (req, res) => {
 app.post('/users/flightExample', async (req, res) => {
   let exampleRes = req.body.exampleRes;
   let exampleCall = new Parse.Object("Flight_Example_Calls")
-  console.log('exampleres: ', typeof(exampleRes), exampleRes)
 
   exampleCall.set("responseCall", exampleRes)
 
@@ -143,7 +190,6 @@ app.post('/users/trip', async (req, res) => {
   const trip = new Parse.Object("Trip");
 
   userQ.equalTo("User_id", username)
-  console.log(userQ.toJSON())
 
   trip.set("TripName", vacationName)
   trip.set("Travelers", [username])
@@ -185,13 +231,10 @@ app.post('/users/tripList', async (req, res) => {
 
 app.post('/users/calendar', async (req, res) => {
   let trip_id = req.body.trip_id;
-  console.log('id: ', trip_id)
   let query = new Parse.Query("Trip")
 
   query.equalTo("objectId", trip_id)
-  console.log('query', query.toJSON())
   query.first({ useMasterKey: true }).then(function (trip) {
-    console.log('trip: ', trip)
     let activityList = trip.get('Activities')
     res.send({ "activities": activityList })
   }).catch(function (error) {
@@ -219,8 +262,6 @@ app.post('/users/activity', async (req, res) => {
 app.post('/users/removeActivity', async (req, res) => {
   let activity = req.body.activity
   let trip_id = req.body.trip_id
-  console.log('deleted id: ' + trip_id)
-  console.log('deleted activity: ' + activity)
   let query = new Parse.Query("Trip");
 
   query.equalTo("objectId", trip_id)
@@ -229,7 +270,6 @@ app.post('/users/removeActivity', async (req, res) => {
     let new_activities = []
     for (let i = 0; i < activityList.length; i++) {
       if (activityList[i].name != activity.name || activityList[i].startDate != activity.startDate || activityList[i].endDate != activity.endDate) {
-        console.log(activityList[i].name + ' ' + activity.name)
         new_activities = [...new_activities, activityList[i]]
       }
     }
@@ -250,24 +290,28 @@ app.post('/users/share', async (req, res) => {
   }
   let query = new Parse.Query("User_Data");
   let tripQ = new Parse.Query("Trip")
-  console.log('trip_id: ', trip_id)
 
   query.equalTo("User_id", user)
   tripQ.equalTo("objectId", trip_id)
 
-  console.log(query.toJSON())
   tripQ.first({ useMasterKey: true }).then(function(chat) {
     let current_chat = chat.get('chat_access')
     chat.set('chat_access', [...current_chat, user])
     chat.save()
   })
   query.first({ useMasterKey: true }).then(function (trip) {
-    console.log('trip: ', trip)
     let trips = trip.get('trips_accessed')
     trips = [...trips, new_trip]
     trip.set('trips_accessed', trips)
     trip.save();
   })
+})
+
+app.post('/users/imageUpload', async (req, res) => {
+  let trip_id = req.body.trip_id
+  let file = req.body.file
+  let query = new Parse.Query("Trip")
+
 })
 
 app.post('/users/chatCheck', async (req, res) => {

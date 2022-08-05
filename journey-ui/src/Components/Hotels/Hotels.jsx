@@ -1,13 +1,10 @@
 import "./Hotels.css";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import background from "../Images/Background.png";
 import axios from "axios";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-
 
 export default function Hotels() {
     const [startDate, setStartDate] = React.useState(new Date());
@@ -17,6 +14,7 @@ export default function Hotels() {
     const [activityName, setActivityName] = React.useState('');
     const [activityDescription, setActivityDescription] = React.useState('');
     const [currentHotel, setCurrentHotel] = React.useState();
+    const [isLoading, setIsLoading] = React.useState('hidden');
     const PORT = 3001
 
     const logOut = () => {
@@ -34,6 +32,7 @@ export default function Hotels() {
         }
 
     const hotelResponse = (location) => {
+        setIsLoading('visible')
         axios.get('https://hotels-com-provider.p.rapidapi.com/v1/destinations/search', { params: {
             query: location.city,
             currency: 'USD',
@@ -69,7 +68,8 @@ export default function Hotels() {
         }).then(function (response) {
             console.log(response);
             console.table(response);
-            setHotelDetails(response.data.searchResults.results)
+            setHotelDetails(response.data.searchResults.results);
+            setIsLoading('hidden');
         })
     }
 
@@ -203,6 +203,7 @@ export default function Hotels() {
                 <textarea id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
                 <button style={{backgroundColor: 'transparent', borderRadius: '10px', marginTop: '10%'}} onClick={() => { createActivity(currentHotel); popUp(); }}>Create Activity</button>
             </span>
+            <p style={{visibility: isLoading, color: 'white'}}>Loading...</p>
             <section className='hotelDisplay'>
                 {
                     hotelDetails.map((hotel) => {

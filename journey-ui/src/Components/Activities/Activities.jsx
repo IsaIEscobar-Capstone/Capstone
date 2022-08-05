@@ -1,7 +1,6 @@
 import "./Activities.css";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import background from "../Images/Background.png";
 import axios from "axios";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -19,6 +18,7 @@ export default function Activities() {
     const [activityName, setActivityName] = React.useState('');
     const [activityDescription, setActivityDescription] = React.useState('');
     const [currentFlight, setCurrentFlight] = React.useState();
+    const [isLoading, setIsLoading] = React.useState('hidden');
     const PORT = 3001
 
     function timeConvert(n) {
@@ -44,109 +44,84 @@ export default function Activities() {
                 })
         }
 
-    const getResponse = () => {
-        axios.post(`http://localhost:${PORT}/users/accessInfo`)
-        .then(function (response) {
-            let best = response.data.flightData.data.itineraries.buckets[0].items
-            let bestList = []
-            let fastest = response.data.flightData.data.itineraries.buckets[1].items
-            let fastestList = []
-            let cheapest = response.data.flightData.data.itineraries.buckets[2].items
-            let cheapestList = []
-
-            for (let i = 0; i < best.length; i++) {
-                let temp = {
-                    url: best[i].deeplink,
-                    price: best[i].price.formatted,
-                    connectionsAmount: best[i].legs[0].segments.length,
-                    airline: best[i].legs[0].carriers.marketing[0],
-                    tags: best[i].tags,
-                    departure: best[i].legs[0].departure,
-                    arrival: best[i].legs[0].arrival,
-                    duration: timeConvert(best[i].legs[0].durationInMinutes)
+    const response = (temp) =>{
+    axios.get("https://skyscanner44.p.rapidapi.com/search", {params: {
+        adults: temp.adults,
+            origin: temp.origin,
+            destination: temp.destination,
+            departureDate: temp.departureDate,
+            currency: temp.currency
+    }, headers: {
+        'X-RapidAPI-Key': 'c23bacec5fmsh0cbe448beb1c0efp1ff928jsna6b98a7788ff',
+        'X-RapidAPI-Host': 'skyscanner44.p.rapidapi.com'
+    }}).then(function (res) {
+            axios.get("https://skyscanner44.p.rapidapi.com/search", {params: {
+                adults: temp.adults,
+                    origin: temp.origin,
+                    destination: temp.destination,
+                    departureDate: temp.departureDate,
+                    currency: temp.currency
+            }, headers: {
+                'X-RapidAPI-Key': 'c23bacec5fmsh0cbe448beb1c0efp1ff928jsna6b98a7788ff',
+                'X-RapidAPI-Host': 'skyscanner44.p.rapidapi.com'
+            }}).then(function (response) {
+                let best = response.data.itineraries.buckets[0].items
+                let bestList = []
+                let fastest = response.data.itineraries.buckets[1].items
+                let fastestList = []
+                let cheapest = response.data.itineraries.buckets[2].items
+                let cheapestList = []
+    
+                for (let i = 0; i < best.length; i++) {
+                    let temp = {
+                        url: best[i].deeplink,
+                        price: best[i].price.formatted,
+                        connectionsAmount: best[i].legs[0].segments.length,
+                        airline: best[i].legs[0].carriers.marketing[0],
+                        tags: best[i].tags,
+                        departure: best[i].legs[0].departure,
+                        arrival: best[i].legs[0].arrival,
+                        duration: timeConvert(best[i].legs[0].durationInMinutes)
+                    }
+                    bestList.push(temp)
                 }
-                bestList.push(temp)
-            }
-            for (let i = 0; i < fastest.length; i++) {
-                let temp = {
-                    url: fastest[i].deeplink,
-                    price: fastest[i].price.formatted,
-                    connectionsAmount: fastest[i].legs[0].segments.length,
-                    airline:fastest[i].legs[0].carriers.marketing[0],
-                    tags: fastest[i].tags,
-                    departure: fastest[i].legs[0].departure,
-                    arrival: fastest[i].legs[0].arrival,
-                    duration: timeConvert(fastest[i].legs[0].durationInMinutes)
+                for (let i = 0; i < fastest.length; i++) {
+                    let temp = {
+                        url: fastest[i].deeplink,
+                        price: fastest[i].price.formatted,
+                        connectionsAmount: fastest[i].legs[0].segments.length,
+                        airline:fastest[i].legs[0].carriers.marketing[0],
+                        tags: fastest[i].tags,
+                        departure: fastest[i].legs[0].departure,
+                        arrival: fastest[i].legs[0].arrival,
+                        duration: timeConvert(fastest[i].legs[0].durationInMinutes)
+                    }
+                    fastestList.push(temp)
                 }
-                fastestList.push(temp)
-            }
-            for (let i = 0; i < cheapest.length; i++) {
-                let temp = {
-                    url: cheapest[i].deeplink,
-                    price: cheapest[i].price.formatted,
-                    connectionsAmount: cheapest[i].legs[0].segments.length,
-                    airline: cheapest[i].legs[0].carriers.marketing[0],
-                    tags: cheapest[i].tags,
-                    departure: cheapest[i].legs[0].departure,
-                    arrival: cheapest[i].legs[0].arrival,
-                    duration: timeConvert(cheapest[i].legs[0].durationInMinutes)
+                for (let i = 0; i < cheapest.length; i++) {
+                    let temp = {
+                        url: cheapest[i].deeplink,
+                        price: cheapest[i].price.formatted,
+                        connectionsAmount: cheapest[i].legs[0].segments.length,
+                        airline: cheapest[i].legs[0].carriers.marketing[0],
+                        tags: cheapest[i].tags,
+                        departure: cheapest[i].legs[0].departure,
+                        arrival: cheapest[i].legs[0].arrival,
+                        duration: timeConvert(cheapest[i].legs[0].durationInMinutes)
+                    }
+                    cheapestList.push(temp)
                 }
-                cheapestList.push(temp)
-            }
-
-            localStorage.setItem('bestFlightDetails', bestList)
-            localStorage.setItem('fastestFlightDetails', fastestList)
-            localStorage.setItem('cheapestFlightDetails', cheapestList)
-            setBestFlightDetails(bestList)
-            setFastestFlightDetails(fastestList)
-            setCheapestFlightDetails(cheapestList)
-
-            console.log(bestList)
-            console.log(fastestList)
-            console.log(cheapestList)
-
-            console.log(response)
+    
+                localStorage.setItem('bestFlightDetails', bestList)
+                localStorage.setItem('fastestFlightDetails', fastestList)
+                localStorage.setItem('cheapestFlightDetails', cheapestList)
+                setBestFlightDetails(bestList)
+                setFastestFlightDetails(fastestList)
+                setCheapestFlightDetails(cheapestList)
+                setIsLoading('hidden')
+            })
         }
-        )
-    }
-
-    // const setResponse = () => {
-    //     axios.post(`http://localhost:${PORT}/users/flightExample`, {
-    //         exampleRes: exampleRes
-    //   })
-    //   .catch(function(error) {
-    //     console.log("Setting response failed: " + error.response);
-    //   })
-    //   }
-
-    // const response = (temp) =>{
-    // axios.get("https://skyscanner44.p.rapidapi.com/search", {params: {
-    //     adults: temp.adults,
-    //         origin: temp.origin,
-    //         destination: temp.destination,
-    //         departureDate: temp.departureDate,
-    //         currency: temp.currency
-    // }, headers: {
-    //     'X-RapidAPI-Key': 'c23bacec5fmsh0cbe448beb1c0efp1ff928jsna6b98a7788ff',
-    //     'X-RapidAPI-Host': 'skyscanner44.p.rapidapi.com'
-    // }}).then(function (res) {
-    //         axios.get("https://skyscanner44.p.rapidapi.com/search", {params: {
-    //             adults: temp.adults,
-    //                 origin: temp.origin,
-    //                 destination: temp.destination,
-    //                 departureDate: temp.departureDate,
-    //                 currency: temp.currency
-    //         }, headers: {
-    //             'X-RapidAPI-Key': 'c23bacec5fmsh0cbe448beb1c0efp1ff928jsna6b98a7788ff',
-    //             'X-RapidAPI-Host': 'skyscanner44.p.rapidapi.com'
-    //         }}).then(function (response) {
-    //             console.log(response)
-    //             setFlightDetails(response.data.itineraries.buckets[0].items[0].deeplink)
-    //             setExampleRes(response)
-    //             setResponse()
-    //         })
-    //     }
-    // )}
+    )}
 
     const addActivity = (activity) => {
         axios.post(`http://localhost:${PORT}/users/activity`, {
@@ -208,6 +183,7 @@ export default function Activities() {
     }
 
     function searchFlight() {
+        setIsLoading('visible')
         console.log('originDate: ' + originDate.getDate())
         let originMonth = originDate.getMonth() + 1
         let originDay = originDate.getDate()
@@ -219,9 +195,7 @@ export default function Activities() {
             departureDate: originStringDate,
             currency: "USD"
         }
-        console.log(temp)
-        getResponse()
-        // response(temp)
+        response(temp)
     }
 
     return (
@@ -259,26 +233,30 @@ export default function Activities() {
             <input id="traveler-number" type="number" min="0" placeholder="# of travelers" style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}/>
             <button onClick={() => {searchFlight();}} style={{backgroundColor: 'transparent', color: 'grey', borderRadius: '10px', border: '2px solid grey'}}>Search Flight</button>
             </div>
-            <span className="popupText" id="myPopup" style={{ position: 'absolute', visibility: visibility, marginLeft: '450px', height: '500px', width: '450px' }}>New Activity
+            <span className="popupText" id="myPopup" style={{ position: 'absolute', visibility: visibility, marginLeft: '250px', height: '500px', width: '450px' }}>New Activity
                 <button onClick={() => { popUp(); }}>X</button>
                     <input id="activityName" value={activityName} onChange={(e) => setActivityName(e.target.value)} type="text" />
                 <p>Description:</p>
                 <input id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
                 <button onClick={() => { createActivity(currentFlight); popUp(); }}>Create Activity</button>
             </span>
+            <p style={{visibility: isLoading, color: 'white'}}>Loading...</p>
             <section>Best
                 {
                     bestFlightDetails.map((flight) => {
                         return (
-                            <section>
-                                <p>{flight.airline.name}</p>
-                                <p>{flight.departure}</p>
-                                <p>{flight.arrival}</p>
+                            <section style={{padding: '2%', margin: '2%', border: '2px solid white', borderRadius: '10px', display: 'grid', gridTemplateColumns: '1fr 1fr', color: 'white'}}>
+                                <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', marginLeft: '200px', marginRight: '300px'}}>
+                                <img src={flight.airline.logoUrl} alt="airline logo" style={{height: '70px', width: '70px'}}/>
+                                <p style={{marginTop: '40px', fontFamily: "Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif"}}>{flight.airline.name}</p>
+                                </div>
+                                <p style={{marginTop: '40px'}}>{flight.price}</p>
+                                <p>Departure: {flight.departure}</p>
                                 <p>{flight.connectionsAmount} connections</p>
-                                <p>{flight.price}</p>
+                                <p>Arrival: {flight.arrival}</p>
                                 <p>{flight.duration}</p>
-                                <a href={flight.url} target="_blank">More Info/Booking</a>
-                                <button onClick={()=>{popUp(); setCurrentFlight(flight);}}>Add to calendar</button>
+                                <button onClick={()=>{popUp(); setCurrentFlight(flight);}} style={{backgroundColor: 'transparent', border: '1px solid black', borderRadius: '10px', width: '20%', marginLeft: '280px'}}>Add to calendar</button>
+                                <a href={flight.url} target="_blank" style={{ textDecoration: 'none', color: 'black', border: '1px solid black', borderRadius: '10px', padding: '10px', width: '30%', marginLeft: '250px'}}>More Info/Booking</a>  
                             </section>
                         )
                     })
@@ -288,15 +266,18 @@ export default function Activities() {
                 {
                     cheapestFlightDetails.map((flight) => {
                         return (
-                            <section>
-                                <p>{flight.airline.name}</p>
-                                <p>{flight.departure}</p>
-                                <p>{flight.arrival}</p>
+                            <section style={{padding: '2%', margin: '2%', border: '2px solid white', borderRadius: '10px', display: 'grid', gridTemplateColumns: '1fr 1fr', color: 'white'}}>
+                                <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', marginLeft: '200px', marginRight: '300px'}}>
+                                <img src={flight.airline.logoUrl} alt="airline logo" style={{height: '70px', width: '70px'}}/>
+                                <p style={{marginTop: '40px', fontFamily: "Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif"}}>{flight.airline.name}</p>
+                                </div>
+                                <p style={{marginTop: '40px'}}>{flight.price}</p>
+                                <p>Departure: {flight.departure}</p>
                                 <p>{flight.connectionsAmount} connections</p>
-                                <p>{flight.price}</p>
+                                <p>Arrival: {flight.arrival}</p>
                                 <p>{flight.duration}</p>
-                                <a href={flight.url} target="_blank">More Info/Booking</a>
-                                <button onClick={()=>{popUp();setCurrentFlight(flight);}}>Add to calendar</button>
+                                <button onClick={()=>{popUp(); setCurrentFlight(flight);}} style={{backgroundColor: 'transparent', border: '1px solid black', borderRadius: '10px', width: '20%', marginLeft: '280px'}}>Add to calendar</button>
+                                <a href={flight.url} target="_blank" style={{ textDecoration: 'none', color: 'black', border: '1px solid black', borderRadius: '10px', padding: '10px', width: '30%', marginLeft: '250px'}}>More Info/Booking</a>  
                             </section>
                         )
                     })
@@ -306,15 +287,18 @@ export default function Activities() {
                 {
                     fastestFlightDetails.map((flight) => {
                         return (
-                            <section>
-                                <p>{flight.airline.name}</p>
-                                <p>{flight.departure}</p>
-                                <p>{flight.arrival}</p>
+                            <section style={{padding: '2%', margin: '2%', border: '2px solid white', borderRadius: '10px', display: 'grid', gridTemplateColumns: '1fr 1fr', color: 'white'}}>
+                                <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', marginLeft: '200px', marginRight: '300px'}}>
+                                <img src={flight.airline.logoUrl} alt="airline logo" style={{height: '70px', width: '70px'}}/>
+                                <p style={{marginTop: '40px', fontFamily: "Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif"}}>{flight.airline.name}</p>
+                                </div>
+                                <p style={{marginTop: '40px'}}>{flight.price}</p>
+                                <p>Departure: {flight.departure}</p>
                                 <p>{flight.connectionsAmount} connections</p>
-                                <p>{flight.price}</p>
+                                <p>Arrival: {flight.arrival}</p>
                                 <p>{flight.duration}</p>
-                                <a href={flight.url} target="_blank">More Info/Booking</a>
-                                <button onClick={()=>{popUp();setCurrentFlight(flight);}}>Add to calendar</button>
+                                <button onClick={()=>{popUp(); setCurrentFlight(flight);}} style={{backgroundColor: 'transparent', border: '1px solid black', borderRadius: '10px', width: '20%', marginLeft: '280px'}}>Add to calendar</button>
+                                <a href={flight.url} target="_blank" style={{ textDecoration: 'none', color: 'black', border: '1px solid black', borderRadius: '10px', padding: '10px', width: '30%', marginLeft: '250px'}}>More Info/Booking</a>  
                             </section>
                         )
                     })

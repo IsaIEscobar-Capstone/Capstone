@@ -9,6 +9,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import Trip from "../Trip/Trip";
 import Activities from "../Activities/Activities"
 import Hotels from "../Hotels/Hotels";
+import Gallery from "../Gallery/Gallery";
 
 function App() {
   const [signUpErrorMessage, setSignUpErrorMessage] = React.useState("");
@@ -24,6 +25,7 @@ function App() {
   function handleCurrentRoute(route) {
     setCurrentRoute(route)
   }
+  
 
   return (
     <div className="App">
@@ -64,7 +66,8 @@ function App() {
             />
             <Route
               path="/users/trip"
-              element={<Trip/>}
+              element={<Trip/>
+            }
             />
             <Route 
             path="/users/activitySearch"
@@ -77,6 +80,12 @@ function App() {
               element={
                 <Hotels/>
               }
+            />
+            <Route 
+            path="/users/gallery"
+            element={
+              <Gallery/>
+            }
             />
           </Routes>
         </main>

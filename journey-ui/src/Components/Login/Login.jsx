@@ -26,6 +26,7 @@ export default function Login(props) {
         navigate("/users/dashboard")
       })
       .catch(function (error) {
+        console.log(error)
         props.handleSignInErrorMessage("Sign in failed: " + error.response.data);
       })
   }
