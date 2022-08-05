@@ -23,7 +23,10 @@ app.post('/users/uploadPhotos', async (req, res) => {
 
   query.first({ useMasterKey: true}).then(function (trip) {
     let temp = trip.get('img_list')
+    console.log(temp)
+    console.log(imgUrl)
     temp = [...temp, imgUrl]
+    console.log(temp)
     trip.set('img_list', temp)
     trip.save()
   })
@@ -36,8 +39,9 @@ app.post('/users/getPhotos', async (req, res) => {
   query.equalTo('objectId', trip_id);
 
   query.first({ useMasterKey: true}).then(function (trip) {
-    let temp = trip.get('img_list')
-    res.send({"photoList": temp })
+    let photoList = trip.get('img_list')
+    console.log('temp', photoList)
+    res.send({"photoList": photoList })
   })
   .catch(function (err) {
     console.log(error)

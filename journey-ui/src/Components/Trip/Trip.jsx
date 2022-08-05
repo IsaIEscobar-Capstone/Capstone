@@ -7,14 +7,14 @@ import { ref, uploadBytesResumable, getDownloadURL} from "firebase/storage"
 import {storage} from "../Firebase"
 import { useEffect } from "react";
 
-export default function Trip() {
+export default function Trip(props) {
     const [currentDay, setCurrentDay] = React.useState(new Date())
     const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
     const months = ['January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'];
     const [currentFiles, setCurrentFiles] = React.useState(null);
     const [currentImgUrl, setCurrentImgUrl] = React.useState('');
-    const [loadingPercent, setLoadingPercent] = React.useState(0);
+    const [loadingPercent, setLoadingPercent] = React.useState(-1);
 
     const PORT = 3001
     const response = () => {
@@ -50,10 +50,11 @@ export default function Trip() {
                 "state_changed",
                 (snapshot) => {
                     const percent = Math.round(
-                        (snapshot.bytesTransferre / snapshot.totalBytes) * 100
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
                     );
 
                     setLoadingPercent(percent);
+
                 },
             (err) => console.log(err),
             () => {
@@ -67,9 +68,19 @@ export default function Trip() {
     }, [currentFiles])
 
     const fileUpload = () => {
+        
         axios.post(`http://localhost:${PORT}/users/uploadPhotos`, {
             trip_id: localStorage.getItem('trip_id'),
             imgUrl: currentImgUrl
+        })
+    }
+    const getPhotoList = () => {
+        axios.post(`http://localhost:${PORT}/users/getPhotos`, {
+            trip_id: localStorage.getItem('trip_id'),
+        })
+        .then(function (response) {
+            localStorage.setItem('photoList', JSON.stringify(response.data.photoList))
+            window.location.reload()
         })
     }
 
@@ -90,8 +101,10 @@ export default function Trip() {
             </div>
             <form id="file-form" onSubmit={fileUpload}>
             <input type="file" name="trip-photos" onChange={onChange}/>
-            <input type="submit" value="Upload your files"/>
+            <p style={{visibility: (-1 < loadingPercent) ? 'visible' : 'hidden'}}>image loading {loadingPercent}%</p>
+            <input type="submit" value="Upload your files" style={{visibility: (loadingPercent === 100) ? 'visible' : 'hidden'}}/>
             </form>
+            <Link to="/users/gallery" onClick={() => {getPhotoList();}}>Go to Photo Gallery</Link>
             <div className="SearchActivities">
                 <section style={{marginBottom: '4vh'}}>
                 <Link to='/users/hotels' id='hotelSearch' style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px', marginRight: '-85%'}}>Search Hotels</Link>
