@@ -97,19 +97,18 @@ export default function Trip() {
     return (
         <div>
             <div className="returnButtons">
-                <Link to='/' onClick={response} id="dashLogOut" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Log Out</Link>
-                <Link to='/users/dashboard' onClick={tripResponse} id="BackToDash" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Back To Dash</Link>
-                <Link to="/users/gallery" onClick={() => { getPhotoList(); }} style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Go to Photo Gallery</Link>
-            </div>
-            <form id="file-form" onSubmit={fileUpload}>
-                <label for="inputTag">
-                    Select Image
-                    {/* style={{display: 'none'}} */}
-                    <input if="photo-input" type="file" name="trip-photos" onChange={onChange}/>
+                <Link to='/' onClick={response} id="dashLogOut" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' , marginTop: '-40px'}}>Log Out</Link>
+                <Link to='/users/dashboard' onClick={tripResponse} id="BackToDash" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' , marginTop: '-40px'}}>Back To Dash</Link>
+                <Link to="/users/gallery" onClick={() => { getPhotoList(); }} style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' , marginTop: '-40px'}}>Go to Photo Gallery</Link>
+                <form id="file-form" onSubmit={fileUpload}>
+                <label HTMLfor="photo-input" style={{color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px', marginTop: '10px' }}>
+                    Upload Image to Gallery
+                    <input id="photo-input" type="file" name="trip-photos" onChange={onChange} style={{visibility: 'hidden', height: '0.10px', width: '0.10px'}}/>
                 </label>
                 <p style={{ visibility: (-1 < loadingPercent) ? 'visible' : 'hidden' }}>image loading {loadingPercent}%</p>
-                <input type="submit" value="Upload your photos" style={{ visibility: (loadingPercent === 100) ? 'visible' : 'hidden' }} />
+                <input type="submit" value="Upload photo" style={{ visibility: (loadingPercent === 100) ? 'visible' : 'hidden' , color: 'black', border: '2px solid black', borderRadius: '5px', backgroundColor: 'transparent'}} />
             </form>
+            </div>
             <div className="SearchActivities">
                 <section style={{ marginBottom: '4vh' }}>
                     <Link to='/users/hotels' id='hotelSearch' style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px', marginRight: '-85%' }}>Search Hotels</Link>
@@ -120,7 +119,7 @@ export default function Trip() {
             </div>
             <div className="Home">
                 <div className="Header">
-                    <h2>{localStorage.getItem('currentTrip')}</h2>
+                    <h2 style={{marginTop: '-20px'}}>{localStorage.getItem('currentTrip')}</h2>
                     <h2>{months[currentDay.getMonth()]} {currentDay.getFullYear()}</h2>
                 </div>
                 <div className="weekly-header">
