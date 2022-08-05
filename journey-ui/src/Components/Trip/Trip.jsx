@@ -99,13 +99,13 @@ export default function Trip() {
             <div className="returnButtons">
                 <Link to='/' onClick={response} id="dashLogOut" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Log Out</Link>
                 <Link to='/users/dashboard' onClick={tripResponse} id="BackToDash" style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Back To Dash</Link>
+                <Link to="/users/gallery" onClick={() => {getPhotoList();}} style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px' }}>Go to Photo Gallery</Link>
             </div>
             <form id="file-form" onSubmit={fileUpload}>
             <input type="file" name="trip-photos" onChange={onChange}/>
             <p style={{visibility: (-1 < loadingPercent) ? 'visible' : 'hidden'}}>image loading {loadingPercent}%</p>
-            <input type="submit" value="Upload your files" style={{visibility: (loadingPercent === 100) ? 'visible' : 'hidden'}}/>
+            <input type="submit" value="Upload your photos" style={{visibility: (loadingPercent === 100) ? 'visible' : 'hidden'}}/>
             </form>
-            <Link to="/users/gallery" onClick={() => {getPhotoList();}}>Go to Photo Gallery</Link>
             <div className="SearchActivities">
                 <section style={{marginBottom: '4vh'}}>
                 <Link to='/users/hotels' id='hotelSearch' style={{ textDecoration: 'none', color: 'white', border: '2px solid white', borderRadius: '5px', padding: '10px', marginRight: '-85%'}}>Search Hotels</Link>
