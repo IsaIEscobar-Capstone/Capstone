@@ -19,6 +19,7 @@ export default function Activities() {
     const [activityDescription, setActivityDescription] = React.useState('');
     const [currentFlight, setCurrentFlight] = React.useState();
     const [isLoading, setIsLoading] = React.useState('hidden');
+    const [headerVisibility, setHeaderVisibility] = React.useState('hidden');
     const PORT = 3001
 
     function timeConvert(n) {
@@ -119,6 +120,7 @@ export default function Activities() {
                 setFastestFlightDetails(fastestList)
                 setCheapestFlightDetails(cheapestList)
                 setIsLoading('hidden')
+                setHeaderVisibility('visible')
             })
         }
     )}
@@ -155,7 +157,6 @@ export default function Activities() {
         let temp = JSON.parse(localStorage.getItem('activityList'))
         temp.push(activity)
         localStorage.setItem('activityList', JSON.stringify(temp))
-        console.log('activity update: ', JSON.parse(localStorage.getItem('activityList')))
     }
 
     function handleStartChange(date) {
@@ -198,6 +199,11 @@ export default function Activities() {
         response(temp)
     }
 
+    function bringPopUp() {
+        const element = document.getElementById("popupAdd")
+        element.scrollIntoView();
+    }
+
     return (
         <div>
             <div className="returnButtons">
@@ -233,15 +239,18 @@ export default function Activities() {
             <input id="traveler-number" type="number" min="0" placeholder="# of travelers" style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}/>
             <button onClick={() => {searchFlight();}} style={{backgroundColor: 'transparent', color: 'grey', borderRadius: '10px', border: '2px solid grey'}}>Search Flight</button>
             </div>
-            <span className="popupText" id="myPopup" style={{ position: 'absolute', visibility: visibility, marginLeft: '250px', height: '500px', width: '450px' }}>New Activity
-                <button onClick={() => { popUp(); }}>X</button>
+            <span id="popupAdd" style={{ backgroundColor: 'white', borderRadius: '10px', position: 'absolute', visibility: visibility, height: '500px', width: '550px', marginLeft: '-200px'}}>
+                New Activity
+                <button style={{backgroundColor: 'transparent', borderRadius: '80%', marginLeft: '33%', marginRight: '-38%'}} onClick={() => {popUp();}}>X</button>
+                <section>
                     <input id="activityName" value={activityName} onChange={(e) => setActivityName(e.target.value)} type="text" />
+                </section>
                 <p>Description:</p>
-                <input id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
-                <button onClick={() => { createActivity(currentFlight); popUp(); }}>Create Activity</button>
+                <textarea id="activityDescription" value={activityDescription} onChange={(e) => setActivityDescription(e.target.value)} type="txt" style={{ width: '80%', height: '40%' }} />
+                <button style={{backgroundColor: 'transparent', borderRadius: '10px', marginTop: '10%'}} onClick={() => { createActivity(currentFlight); popUp(); }}>Create Activity</button>
             </span>
             <p style={{visibility: isLoading, color: 'white'}}>Loading...</p>
-            <section>Best
+            <section style={{color: 'white', visibility: headerVisibility}}>Best
                 {
                     bestFlightDetails.map((flight) => {
                         return (
@@ -255,14 +264,14 @@ export default function Activities() {
                                 <p>{flight.connectionsAmount} connections</p>
                                 <p>Arrival: {flight.arrival}</p>
                                 <p>{flight.duration}</p>
-                                <button onClick={()=>{popUp(); setCurrentFlight(flight);}} style={{backgroundColor: 'transparent', border: '1px solid black', borderRadius: '10px', width: '20%', marginLeft: '280px'}}>Add to calendar</button>
+                                <button onClick={()=>{popUp(); setCurrentFlight(flight); bringPopUp();}} style={{backgroundColor: 'transparent', border: '1px solid black', borderRadius: '10px', width: '20%', marginLeft: '280px'}}>Add to calendar</button>
                                 <a href={flight.url} target="_blank" style={{ textDecoration: 'none', color: 'black', border: '1px solid black', borderRadius: '10px', padding: '10px', width: '30%', marginLeft: '250px'}}>More Info/Booking</a>  
                             </section>
                         )
                     })
                 }
             </section>
-            <section>Cheapest
+            <section style={{color: 'white', visibility: headerVisibility}}>Cheapest
                 {
                     cheapestFlightDetails.map((flight) => {
                         return (
@@ -276,14 +285,14 @@ export default function Activities() {
                                 <p>{flight.connectionsAmount} connections</p>
                                 <p>Arrival: {flight.arrival}</p>
                                 <p>{flight.duration}</p>
-                                <button onClick={()=>{popUp(); setCurrentFlight(flight);}} style={{backgroundColor: 'transparent', border: '1px solid black', borderRadius: '10px', width: '20%', marginLeft: '280px'}}>Add to calendar</button>
+                                <button onClick={()=>{popUp(); setCurrentFlight(flight); bringPopUp();}} style={{backgroundColor: 'transparent', border: '1px solid black', borderRadius: '10px', width: '20%', marginLeft: '280px'}}>Add to calendar</button>
                                 <a href={flight.url} target="_blank" style={{ textDecoration: 'none', color: 'black', border: '1px solid black', borderRadius: '10px', padding: '10px', width: '30%', marginLeft: '250px'}}>More Info/Booking</a>  
                             </section>
                         )
                     })
                 }
             </section>
-            <section>Fastest
+            <section style={{color: 'white', visibility: headerVisibility}}>Fastest
                 {
                     fastestFlightDetails.map((flight) => {
                         return (
@@ -297,7 +306,7 @@ export default function Activities() {
                                 <p>{flight.connectionsAmount} connections</p>
                                 <p>Arrival: {flight.arrival}</p>
                                 <p>{flight.duration}</p>
-                                <button onClick={()=>{popUp(); setCurrentFlight(flight);}} style={{backgroundColor: 'transparent', border: '1px solid black', borderRadius: '10px', width: '20%', marginLeft: '280px'}}>Add to calendar</button>
+                                <button onClick={()=>{popUp(); setCurrentFlight(flight); bringPopUp();}} style={{backgroundColor: 'transparent', border: '1px solid black', borderRadius: '10px', width: '20%', marginLeft: '280px'}}>Add to calendar</button>
                                 <a href={flight.url} target="_blank" style={{ textDecoration: 'none', color: 'black', border: '1px solid black', borderRadius: '10px', padding: '10px', width: '30%', marginLeft: '250px'}}>More Info/Booking</a>  
                             </section>
                         )

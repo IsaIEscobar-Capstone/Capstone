@@ -157,6 +157,11 @@ export default function Hotels() {
         hotelResponse(location)
     }
 
+    function bringPopUp() {
+        const element = document.getElementById("popupText");
+        element.scrollIntoView();
+    }
+
     return (
         <div>
             <div className="returnButtons">
@@ -193,7 +198,7 @@ export default function Hotels() {
             <input id="price-max" type="number" min="0" placeholder="Maximum Price" style={{backgroundColor: 'transparent', color: 'white', borderRadius: '10px', border: '2px solid white'}}/>
             <button onClick={() => {searchHotel();}} style={{backgroundColor: 'transparent', color: 'grey', borderRadius: '10px', border: '2px solid grey'}}>Search Hotel</button>
             </div>
-            <span className="popupText" id="myPopup" style={{ position: 'absolute', visibility: visibility, height: '500px', width: '450px' }}>
+            <span id="popupText" style={{ backgroundColor: 'white', borderRadius: '10px', position: 'absolute', visibility: visibility, height: '500px', width: '550px', marginLeft: '-200px'}}>
                 New Activity
                 <button style={{backgroundColor: 'transparent', borderRadius: '80%', marginLeft: '33%', marginRight: '-38%'}} onClick={() => {popUp();}}>X</button>
                 <section>
@@ -218,13 +223,13 @@ export default function Hotels() {
                                     </div>
                                 </div>
                                 <p>{hotel.name}</p>
-                                <p>Star Rating: {hotel.starRating}</p>
+                                <p style={{marginBottom: '20px'}}>Star Rating: {hotel.starRating}</p>
                                 <p>{hotel.ratePlan.price.current} a night</p>
                                 <div sylte={{justifyContent: 'center'}}>
                                 <a href={'https://www.hotels.com/ho'+ hotel.id} target="_blank" style={{ textDecoration: 'none', color: 'black', border: '1px solid black', borderRadius: '10px', padding: '10px', width: '30%'}}>More Info/Booking</a>
                                 </div>
                                 <div sylte={{justifyContent: 'center'}}>
-                                <button onClick={()=>{popUp(); setCurrentHotel(hotel);}} style={{backgroundColor: 'transparent', border: '1px solid black', borderRadius: '10px', width: '20%'}}>Add to calendar</button>
+                                <button onClick={()=>{popUp(); setCurrentHotel(hotel); bringPopUp()}} style={{backgroundColor: 'transparent', border: '1px solid black', borderRadius: '10px', width: '20%'}}>Add to calendar</button>
                                 </div>
                             </div>
                         )
