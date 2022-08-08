@@ -17,6 +17,8 @@ export default function Trip() {
   const [loadingPercent, setLoadingPercent] = React.useState(-1);
 
   const PORT = 3001;
+
+  // Log out user
   const response = () => {
     axios.post(`http://localhost:${PORT}/users/dashboard`, {
       sessionToken: localStorage.getItem('sessionToken'),
@@ -29,6 +31,8 @@ export default function Trip() {
       });
   };
 
+  // Gets list of trips user has access to and resets
+  // activities to display to none
   const tripResponse = () => {
     axios.post(`http://localhost:${PORT}/users/tripList`, {
       username: localStorage.getItem('username'),
@@ -43,6 +47,8 @@ export default function Trip() {
       });
   };
 
+  // Tracks upload of images and saves loading percentage in
+  // a use state to display
   useEffect(() => {
     if (currentFiles != null) {
       const imgRef = ref(storage, `images/${currentFiles.name}`);
