@@ -15,6 +15,8 @@ app.use(morgan('tiny'));
 Parse.initialize('f3uKzoRyLgM4hnYMxkTFbZr6oABcuO4kHbAxQ3Ur', 'hJKEz9itTiqQbFq0bx5bRyO15LI95m9H44kSWLR0', `${masterKey}`);
 Parse.serverURL = 'https://parseapi.back4app.com/';
 
+// Upload photos to Parse Trip Object
+// Expects trip object ID and image URL
 app.post('/users/uploadPhotos', async (req) => {
   const { tripId } = req.body;
   const { imgUrl } = req.body;
@@ -30,6 +32,8 @@ app.post('/users/uploadPhotos', async (req) => {
   });
 });
 
+// Gets list of image URLS from part trip Object
+// Expects trip object ID
 app.post('/users/getPhotos', async (req, res) => {
   const { tripId } = req.body;
   const query = new Parse.Query('Trip');
@@ -45,6 +49,8 @@ app.post('/users/getPhotos', async (req, res) => {
     });
 });
 
+// Deletes image URL from Parse trip Object image list
+// Expects trip object ID, and image URL
 app.post('/users/deletePhoto', async (req) => {
   const { tripId } = req.body;
   const { photoLink } = req.body;
@@ -63,6 +69,9 @@ app.post('/users/deletePhoto', async (req) => {
     });
 });
 
+// Deletes trip calendar object from Parse database.
+// Expects trip ID and username of current user to check
+// that the user has the permission to delete the trip.
 app.post('/users/deleteCalendar', async (req) => {
   const { tripId } = req.body;
   const { username } = req.body;
@@ -92,32 +101,7 @@ app.post('/users/deleteCalendar', async (req) => {
   });
 });
 
-app.post('/users/flightExample', async (req) => {
-  const { exampleRes } = req.body;
-  const exampleCall = new Parse.Object('Flight_Example_Calls');
-
-  exampleCall.set('responseCall', exampleRes);
-
-  try {
-    await exampleCall.save();
-  } catch (error) {
-    console.log('flightExample eror: ', error.message);
-  }
-});
-
-app.post('/users/accessInfo', async (req, res) => {
-  const objectId = 'brGe5Fg4K7';
-  const query = new Parse.Query('Flight_Example_Calls');
-
-  query.equalTo('objectId', objectId);
-  query.first({ useMasterKey: true }).then((trip) => {
-    const flightData = trip.get('responseCall');
-    res.send({ flightData });
-  }).catch((error) => {
-    console.log(error);
-  });
-});
-
+// Registers user
 // Expects parameters for username and password
 app.post('/users/register', async (req, res) => {
   const infoUser = req.body;
@@ -142,6 +126,7 @@ app.post('/users/register', async (req, res) => {
   }
 });
 
+// Logs in user
 // Expects parameters for username and password
 app.post('/users/login', async (req, res) => {
   const query = new Parse.Query('User_Data');
@@ -160,6 +145,7 @@ app.post('/users/login', async (req, res) => {
   }
 });
 
+// Logs out user by destroying session with the session key
 // Expects sessionToken
 app.post('/users/dashboard', async (req) => {
   const { sessionToken } = req.body;
@@ -182,6 +168,8 @@ app.post('/users/dashboard', async (req) => {
   });
 });
 
+// Creates new trip object and gives user access to that trip
+// Expects trip name and username of current user
 app.post('/users/trip', async (req, res) => {
   const { vacationName } = req.body;
   const { username } = req.body;
@@ -215,6 +203,8 @@ app.post('/users/trip', async (req, res) => {
   }
 });
 
+// Returns a list of trips that the current user has access to
+// Expects username of current user
 app.post('/users/tripList', async (req, res) => {
   const { username } = req.body;
   const query = new Parse.Query('User_Data');
@@ -228,6 +218,9 @@ app.post('/users/tripList', async (req, res) => {
   });
 });
 
+// Returns list of activities of current trip/calendar being
+// accessed
+// Expects object Id of trip
 app.post('/users/calendar', async (req, res) => {
   const { tripId } = req.body;
   const query = new Parse.Query('Trip');
@@ -241,6 +234,9 @@ app.post('/users/calendar', async (req, res) => {
   });
 });
 
+// Updates activity list of trip/calendar currently selected to
+// include activities added by the current user
+// Expects trip object ID and activity object
 app.post('/users/activity', async (req) => {
   const { tripId } = req.body;
   const { activity } = req.body;
@@ -257,6 +253,9 @@ app.post('/users/activity', async (req) => {
   });
 });
 
+// Remove activity from activity list of currently selected
+// trip/calendar.
+// Expects activity object and object ID of trip.
 app.post('/users/removeActivity', async (req) => {
   const { activity } = req.body;
   const { tripId } = req.body;
@@ -280,6 +279,9 @@ app.post('/users/removeActivity', async (req) => {
   });
 });
 
+// Shares trip/calendar object with other user
+// Expects username of user to share to, trip object ID
+// ,and trip name.
 app.post('/users/share', async (req) => {
   const { user } = req.body;
   const { tripId } = req.body;
@@ -307,6 +309,8 @@ app.post('/users/share', async (req) => {
   });
 });
 
+// Checks if username given has access to the trip chat
+// Expects object ID of trip and username
 app.post('/users/chatCheck', async (req, res) => {
   const { tripId } = req.body;
   const { user } = req.body;
