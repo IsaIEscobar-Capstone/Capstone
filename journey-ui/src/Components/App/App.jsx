@@ -1,20 +1,21 @@
+/* eslint-disable react/jsx-no-bind */
 import './App.css';
-import * as React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import * as React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Home from "../Home/Home";
-import Register from "../Register/Register";
-import Login from "../Login/Login";
-import Dashboard from "../Dashboard/Dashboard";
-import Trip from "../Trip/Trip";
-import Activities from "../Activities/Activities"
-import Hotels from "../Hotels/Hotels";
-import Gallery from "../Gallery/Gallery";
+import Home from '../Home/Home';
+import Register from '../Register/Register';
+import Login from '../Login/Login';
+import Dashboard from '../Dashboard/Dashboard';
+import Trip from '../Trip/Trip';
+import Activities from '../Activities/Activities';
+import Hotels from '../Hotels/Hotels';
+import Gallery from '../Gallery/Gallery';
 
 function App() {
-  const [signUpErrorMessage, setSignUpErrorMessage] = React.useState("");
-  const [signInErrorMessage, setSignInErrorMessage] = React.useState("");
-  const [currentRoute, setCurrentRoute] = React.useState("/");
+  const [signUpErrorMessage, setSignUpErrorMessage] = React.useState('');
+  const [signInErrorMessage, setSignInErrorMessage] = React.useState('');
+  const [currentRoute, setCurrentRoute] = React.useState('/');
 
   function handleSignUpErrorMessage(message) {
     setSignUpErrorMessage(message);
@@ -23,9 +24,8 @@ function App() {
     setSignInErrorMessage(message);
   }
   function handleCurrentRoute(route) {
-    setCurrentRoute(route)
+    setCurrentRoute(route);
   }
-  
 
   return (
     <div className="App">
@@ -40,51 +40,50 @@ function App() {
             />
             <Route
               path="/users/register"
-              element={
+              element={(
                 <Register
                   signUpErrorMessage={signUpErrorMessage}
                   handleSignUpErrorMessage={handleSignUpErrorMessage}
                   currentRoute={currentRoute}
                   handleCurrentRoute={handleCurrentRoute}
                 />
-              }
+              )}
             />
             <Route
               path="/users/login"
-              element={
+              element={(
                 <Login
                   signInErrorMessage={signInErrorMessage}
                   handleSignInErrorMessage={handleSignInErrorMessage}
                   currentRoute={currentRoute}
                   handleCurrentRoute={handleCurrentRoute}
                 />
-              }
+              )}
             />
             <Route
               path="/users/dashboard"
-              element={<Dashboard/>}
+              element={<Dashboard />}
             />
             <Route
               path="/users/trip"
-              element={<Trip/>
-            }
+              element={<Trip />}
             />
-            <Route 
-            path="/users/activitySearch"
-            element={
-              <Activities/>
+            <Route
+              path="/users/activitySearch"
+              element={
+                <Activities />
             }
             />
             <Route
               path="/users/hotels"
               element={
-                <Hotels/>
+                <Hotels />
               }
             />
-            <Route 
-            path="/users/gallery"
-            element={
-              <Gallery/>
+            <Route
+              path="/users/gallery"
+              element={
+                <Gallery />
             }
             />
           </Routes>
