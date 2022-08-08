@@ -59,7 +59,7 @@ export default function Login(props) {
       <div className="Login">
         <img id="logo" src={journey} height="400px" alt="logo" />
         <section>
-          <input id="username" placeholder="Username..." type="text" />
+          <input id="username" placeholder="Example Username..." type="text" />
         </section>
         <section>
           <input id="password" placeholder="Password..." type="password" />
