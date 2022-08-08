@@ -34,6 +34,7 @@ function CalendarDays(props) {
   const [currentActivity, setCurrentActivity] = React.useState();
   const [doubleCheck, setDoubleCheck] = React.useState('hidden');
 
+  // Adds activity provided
   const response = (activity) => {
     axios.post(`http://localhost:${PORT}/users/activity`, {
       tripId: localStorage.getItem('tripId'),
@@ -44,6 +45,7 @@ function CalendarDays(props) {
       });
   };
 
+  // Deletes activity provided
   const responseDelete = () => {
     axios.post(`http://localhost:${PORT}/users/removeActivity`, {
       tripId: localStorage.getItem('tripId'),
@@ -54,6 +56,9 @@ function CalendarDays(props) {
       });
   };
 
+  // Makes 'add activity' popup only visible on double click
+  // so that clicking the calendar day once (to see the activity description)
+  // doesn't trigger the popup
   function handleDoubleCheck() {
     if (doubleCheck === 'hidden') {
       setDoubleCheck('visible');
@@ -87,6 +92,7 @@ function CalendarDays(props) {
     }
   }
 
+  // Next button on calendar clicked (sets to next month)
   function nextClicked() {
     if (props.day.getMonth() < 11) {
       props.day.setMonth(parseInt(props.day.getMonth()) + 1);
@@ -105,6 +111,7 @@ function CalendarDays(props) {
     props.changeCurrentDate(newD);
   }
 
+  // Previous button on calendar clicked (sets to previous month)
   function prevClicked() {
     if (props.day.getMonth() > 0) {
       props.day.setMonth(parseInt(props.day.getMonth()) - 1);
@@ -166,6 +173,9 @@ function CalendarDays(props) {
     }
   }
 
+  // Calculates first day to display on the Calendar,
+  // (the date of the sunday before or on the start of the month).
+  // Caculates out of the 42 days displayed on Calendar.
   for (let day = 0; day < 42; day++) {
     if (day === 0 && weekdayOfFirstDay === 0) {
       firstDayOfMonth.setDate(firstDayOfMonth.getDate() - 7);
@@ -193,6 +203,8 @@ function CalendarDays(props) {
     <div className="calender-chat">
       <div className="calendar-content">
         {
+          // Maps over Calendar to display days and if there is an activity on
+          // that day displays the activity as well
                 currentDays.map((day) => {
                   const aName = [];
                   for (let i = 0; i < JSON.parse(localStorage.getItem('activityList')).length; i++) {
@@ -211,8 +223,11 @@ function CalendarDays(props) {
                   return (
                     <div
                       className={`calendar-day${day.currentMonth ? ' current' : ''}${day.selected ? ' selected' : ''}`}
-                      // eslint-disable-next-line max-len
-                      onDoubleClick={() => { clearActivity(); popUp(); props.changeCurrentDate(day); }}
+                      onDoubleClick={() => {
+                        clearActivity();
+                        popUp();
+                        props.changeCurrentDate(day);
+                      }}
                       key={`calendar-day${day.number}${day.currentMonth}${day.selected ? ' selected' : ''}`}
                     >
                       <div id="day-number">

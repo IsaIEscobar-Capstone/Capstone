@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router';
 import DeletePopup from '../DeletePopup/DeletePopup';
 
+// Logs out user
 export default function Dashboard() {
   const navigate = useNavigate();
   const [visibility, setVisibility] = React.useState('hidden');
@@ -27,6 +28,7 @@ export default function Dashboard() {
       });
   };
 
+  // Gets object ID and trip name of trip clicked on
   const calResponse = () => {
     axios.post(`http://localhost:${PORT}/users/trip`, {
       vacationName: document.getElementById('tripName').value,
@@ -41,6 +43,7 @@ export default function Dashboard() {
       });
   };
 
+  // Cets existing activity list from trip clicked on
   const responseList = (tripId) => {
     axios.post(`http://localhost:${PORT}/users/calendar`, {
       tripId,
@@ -54,6 +57,7 @@ export default function Dashboard() {
       });
   };
 
+  // Shares trip/calendar with the user specified
   const responseShare = (tripId, tripName, user) => {
     axios.post(`http://localhost:${PORT}/users/share`, {
       user,
@@ -65,6 +69,7 @@ export default function Dashboard() {
       });
   };
 
+  // Deletes trip/calendar object
   const responseDelete = (tripId) => {
     axios.post(`http://localhost:${PORT}/users/deleteCalendar`, {
       tripId,

@@ -9,6 +9,7 @@ export default function ChatSetUp() {
   const [receiverNicknameInput, setReceiverNicknameInput] = useState('');
   const [receiverNickname, setReceiverNickname] = React.useState(null);
 
+  // Checks that user has access to that calendar/calendar chat
   const checkUser = () => {
     const receiverNicknameName = receiverNicknameInput;
     const PORT = 3001;
