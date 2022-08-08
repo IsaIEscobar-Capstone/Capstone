@@ -160,7 +160,7 @@ app.post('/users/login', async (req, res) => {
   }
 });
 
-// Excpects sessionToken
+// Expects sessionToken
 app.post('/users/dashboard', async (req) => {
   const { sessionToken } = req.body;
   const query = new Parse.Query('_Session');
