@@ -31,6 +31,9 @@ export default function Hotels() {
       });
   };
 
+  // Makes an api call with information given from user and returns results
+  // for hotel that match specifications.
+  // Expects location id from hotelResponse call.
   const detailedResponse = (location, id) => {
     axios.get('https://hotels-com-provider.p.rapidapi.com/v1/hotels/search', {
       params: {
@@ -55,6 +58,7 @@ export default function Hotels() {
     });
   };
 
+  // Gets locationID necessary to call detailedResponse
   const hotelResponse = (location) => {
     setIsLoading('visible');
     axios.get('https://hotels-com-provider.p.rapidapi.com/v1/destinations/search', {
@@ -81,6 +85,7 @@ export default function Hotels() {
         console.log(error);
       });
   };
+
   function popUp() {
     if (visibility === 'hidden') {
       setVisibility('visible');
