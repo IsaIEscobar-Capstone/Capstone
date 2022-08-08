@@ -19,11 +19,9 @@ export default function Register(props) {
     })
 
       .then((res) => {
-        console.log(`hi register: ${res.data.sessionToken}`);
         localStorage.setItem('sessionToken', res.data.sessionToken);
         localStorage.setItem('username', document.getElementById('username').value);
         navigate('/users/dashboard');
-        console.log(localStorage.getItem('username'));
       })
 
       .catch((error) => {
@@ -57,7 +55,7 @@ export default function Register(props) {
           <input id="email" placeholder="Email..." type="text" />
         </section>
         <section>
-          <input id="username" placeholder="Username..." type="text" />
+          <input id="username" placeholder="Example Username..." type="text" />
         </section>
         <section>
           <input id="password" placeholder="Password..." type="password" />
