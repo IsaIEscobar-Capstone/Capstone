@@ -15,6 +15,7 @@ export default function Trip() {
   const [currentFiles, setCurrentFiles] = React.useState(null);
   const [currentImgUrl, setCurrentImgUrl] = React.useState('');
   const [loadingPercent, setLoadingPercent] = React.useState(-1);
+  const [alertVisibility, setAlertVisibility] = React.useState('hidden');
 
   const PORT = 3001;
 
@@ -94,6 +95,14 @@ export default function Trip() {
 
   function onChange(e) {
     setCurrentFiles(e.target.files[0]);
+  }
+
+  function deletePopUp() {
+    if (alertVisibility === 'hidden') {
+      setAlertVisibility('visible');
+    } else {
+      setAlertVisibility('hidden');
+    }
   }
 
   return (
@@ -185,7 +194,6 @@ export default function Trip() {
             }}
           />
         </form>
-
       </div>
       <div className="SearchActivities">
         <section style={{ marginBottom: '4vh' }}>
@@ -221,6 +229,34 @@ export default function Trip() {
           </Link>
         </section>
       </div>
+      <div
+        className="deletePopUP"
+        style={{
+          position: 'absolute',
+          padding: '5px',
+          visibility: alertVisibility,
+          backgroundColor: 'white',
+          borderRadius: '10px',
+          color: 'black',
+          zIndex: '10',
+          marginLeft: '60%',
+        }}
+      >
+        <button
+          type="submit"
+          onClick={() => { deletePopUp(); }}
+          style={{
+            marginLeft: '93%',
+            width: '10%',
+            borderRadius: '60%',
+            backgroundColor: 'transparent',
+            border: '0px',
+          }}
+        >
+          X
+        </button>
+        <p>Please choose traveler with trip access to start Live Chat</p>
+      </div>
       <div className="Home">
         <div className="Header">
           <h2 style={{ marginTop: '-20px' }}>{localStorage.getItem('currentTrip')}</h2>
@@ -236,6 +272,7 @@ export default function Trip() {
                     }
         </div>
         <CalendarDays
+          deletePopUp={deletePopUp}
           day={currentDay}
           changeCurrentDate={changeCurrentDate}
         />

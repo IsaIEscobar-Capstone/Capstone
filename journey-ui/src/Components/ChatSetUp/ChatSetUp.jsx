@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Button, Input } from 'antd';
 import LiveChat from '../LiveChat/LiveChat';
 
-export default function ChatSetUp() {
+export default function ChatSetUp(props) {
   // State variables holding input values and results
   const [receiverNicknameInput, setReceiverNicknameInput] = useState('');
   const [receiverNickname, setReceiverNickname] = React.useState(null);
@@ -19,9 +19,8 @@ export default function ChatSetUp() {
     })
 
       .then((response) => {
-        console.log(response.data.access);
         if (receiverNicknameName === null || response.data.access === false) {
-          alert('Please choose traveler with trip access to start Live Chat');
+          props.deletePopUp();
           return false;
         }
         setReceiverNickname(receiverNicknameName);
