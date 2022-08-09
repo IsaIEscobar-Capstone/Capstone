@@ -416,7 +416,7 @@ function CalendarDays(props) {
       </div>
       <span />
       <div className="liveChat">
-        <ChatSetUp />
+        <ChatSetUp deletePopUp={props.deletePopUp} />
       </div>
     </div>
   );
