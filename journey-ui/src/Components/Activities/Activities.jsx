@@ -78,40 +78,46 @@ export default function Activities() {
         const cheapestList = [];
 
         for (let i = 0; i < best.length; i++) {
+          const depBestDate = best[i].legs[0].departure.split('T');
+          const arBestDate = best[i].legs[0].arrival.split('T');
           const bestTemp = {
             url: best[i].deeplink,
             price: best[i].price.formatted,
             connectionsAmount: best[i].legs[0].segments.length,
             airline: best[i].legs[0].carriers.marketing[0],
             tags: best[i].tags,
-            departure: best[i].legs[0].departure,
-            arrival: best[i].legs[0].arrival,
+            departure: depBestDate,
+            arrival: arBestDate,
             duration: timeConvert(best[i].legs[0].durationInMinutes),
           };
           bestList.push(bestTemp);
         }
         for (let i = 0; i < fastest.length; i++) {
+          const depDate = fastest[i].legs[0].departure.split('T');
+          const arDate = fastest[i].legs[0].arrival.split('T');
           const fastestTemp = {
             url: fastest[i].deeplink,
             price: fastest[i].price.formatted,
             connectionsAmount: fastest[i].legs[0].segments.length,
             airline: fastest[i].legs[0].carriers.marketing[0],
             tags: fastest[i].tags,
-            departure: fastest[i].legs[0].departure,
-            arrival: fastest[i].legs[0].arrival,
+            departure: depDate,
+            arrival: arDate,
             duration: timeConvert(fastest[i].legs[0].durationInMinutes),
           };
           fastestList.push(fastestTemp);
         }
         for (let i = 0; i < cheapest.length; i++) {
+          const depCheapDate = cheapest[i].legs[0].departure.split('T');
+          const arCheapDate = cheapest[i].legs[0].arrival.split('T');
           const cheapestTemp = {
             url: cheapest[i].deeplink,
             price: cheapest[i].price.formatted,
             connectionsAmount: cheapest[i].legs[0].segments.length,
             airline: cheapest[i].legs[0].carriers.marketing[0],
             tags: cheapest[i].tags,
-            departure: cheapest[i].legs[0].departure,
-            arrival: cheapest[i].legs[0].arrival,
+            departure: depCheapDate,
+            arrival: arCheapDate,
             duration: timeConvert(cheapest[i].legs[0].durationInMinutes),
           };
           cheapestList.push(cheapestTemp);
@@ -371,7 +377,16 @@ export default function Activities() {
           Create Activity
         </button>
       </span>
-      <p style={{ visibility: isLoading, color: 'white' }}>Loading...</p>
+      <div style={{
+        justifyContent: 'center',
+        marginLeft: '50%',
+        marginTop: '5%',
+        width: '200px',
+        height: '20px',
+      }}
+      >
+        <div className="dot-flashing" style={{ visibility: isLoading }} />
+      </div>
       <section style={{ color: 'white', visibility: headerVisibility }}>
         Best
         {
@@ -399,7 +414,7 @@ export default function Activities() {
                         <p style={{ marginTop: '40px' }}>{flight.price}</p>
                         <p>
                           Departure:
-                          {flight.departure}
+                          {` ${flight.departure[0]} ${flight.departure[1]}`}
                         </p>
                         <p>
                           {flight.connectionsAmount}
@@ -408,7 +423,7 @@ export default function Activities() {
                         </p>
                         <p>
                           Arrival:
-                          {flight.arrival}
+                          {` ${flight.arrival[0]} ${flight.arrival[1]}`}
                         </p>
                         <p>{flight.duration}</p>
                         <button
@@ -471,7 +486,7 @@ export default function Activities() {
                         <p style={{ marginTop: '40px' }}>{flight.price}</p>
                         <p>
                           Departure:
-                          {flight.departure}
+                          {` ${flight.departure[0]} ${flight.departure[1]}`}
                         </p>
                         <p>
                           {flight.connectionsAmount}
@@ -480,7 +495,7 @@ export default function Activities() {
                         </p>
                         <p>
                           Arrival:
-                          {flight.arrival}
+                          {` ${flight.arrival[0]} ${flight.arrival[1]}`}
                         </p>
                         <p>{flight.duration}</p>
                         <button
@@ -543,7 +558,7 @@ export default function Activities() {
                         <p style={{ marginTop: '40px' }}>{flight.price}</p>
                         <p>
                           Departure:
-                          {flight.departure}
+                          {` ${flight.departure[0]} ${flight.departure[1]}`}
                         </p>
                         <p>
                           {flight.connectionsAmount}
@@ -552,7 +567,7 @@ export default function Activities() {
                         </p>
                         <p>
                           Arrival:
-                          {flight.arrival}
+                          {` ${flight.arrival[0]} ${flight.arrival[1]}`}
                         </p>
                         <p>{flight.duration}</p>
                         <button
