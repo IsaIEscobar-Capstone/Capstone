@@ -334,7 +334,16 @@ export default function Hotels() {
 
         </button>
       </span>
-      <p style={{ visibility: isLoading, color: 'white' }}>Loading...</p>
+      <div style={{
+        justifyContent: 'center',
+        marginLeft: '50%',
+        marginTop: '5%',
+        width: '200px',
+        height: '20px',
+      }}
+      >
+        <div className="dot-flashing" style={{ visibility: isLoading }} />
+      </div>
       <section className="hotelDisplay">
         {
                     hotelDetails.map((hotel) => (
