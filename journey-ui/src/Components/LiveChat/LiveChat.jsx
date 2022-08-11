@@ -11,6 +11,7 @@ export default function LiveChat(props) {
 
   // Create parse query for live querying using useParseQuery hook
   const parseQuery = new Parse.Query('Message');
+
   // Get messages that involve both nicknames
   parseQuery.containedIn('sender', [
     props.senderNicknameName,
@@ -33,6 +34,13 @@ export default function LiveChat(props) {
     enableLocalDatastore: true, // Enables cache in local datastore (default: true)
     enableLiveQuery: true, // Enables live query for real-time update (default: true)
   });
+
+  // const subscription = client.subscribe(parseQuery);
+
+  // subscription.on('update', (msg) => {
+  //   console.log('updated', msg);
+  //   reload();
+  // });
 
   // Message sender handler
   const sendMessage = async () => {
@@ -61,7 +69,7 @@ export default function LiveChat(props) {
   const formatDateToTime = (date) => `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 
   return (
-    <div>
+    <div onChange={reload}>
       <div className="flex_between">
         <h2 className="list_heading">{`${props.receiverNicknameName}`}</h2>
         <Button
@@ -76,7 +84,7 @@ export default function LiveChat(props) {
         <div className="messages">
           {
           results
-            .sort((a, b) => a.get('createdAt') > b.get('createdAt'))
+            .sort((a, b) => a.get('createdAt').getTime() > b.get('createdAt').getTime())
             .map((result) => (
               <div
                 key={result.id}
@@ -94,7 +102,7 @@ export default function LiveChat(props) {
                   {result.get('sender')}
                 </p>
               </div>
-            ))
+            )).reverse()
 }
         </div>
       )}
@@ -113,7 +121,7 @@ export default function LiveChat(props) {
           type="primary"
           className="form_button"
           size="large"
-          onClick={sendMessage}
+          onClick={() => { sendMessage(); reload(); }}
         >
           Send message
         </Button>

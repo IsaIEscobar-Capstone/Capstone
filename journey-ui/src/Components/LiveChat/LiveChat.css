@@ -105,6 +105,8 @@ p {
 overflow-y: auto;
 height: 200px;
   margin-top: 25px;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .message_sent {
@@ -119,12 +121,14 @@ height: 200px;
 }
 
 .message_bubble {
+  overflow-wrap: break-word;
   padding: 12px;
   border-radius: 25px;
   background-color: rgba(0, 0, 0, 0.2);
 }
 
 .message_sent .message_bubble {
+  overflow-wrap: break-word;
   background-color: #c320ec;
   color: #fff;
 }
